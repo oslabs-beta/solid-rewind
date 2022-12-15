@@ -17,6 +17,24 @@
   justify-content: center;
   font-size: calc(10px + 2vmin);
   color: white;
+  padding: 5%;
+}
+
+.container {
+  width: 80%;
+}
+
+.timelineContainer {
+  display: flex;
+  flex-direction: column;
+}
+
+.timelineSlider {
+  width: 100%;
+}
+
+.timeButtonContainer {
+  width: 100%;
 }
 
 .link {

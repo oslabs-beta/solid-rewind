@@ -1,0 +1,20 @@
+{
+  "name": "Solid Rewind",
+  "version": "0.0.1",
+  "description": "SolidJS time-travel debugger",
+  "main": "src/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "Moonwalk Team",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/oslabs-beta/solid-rewind.git"
+  },
+  "bugs": {
+    "url": "https://github.com/oslabs-beta/solid-rewind.git"
+  },
+  "homepage": "https://github.com/oslabs-beta/solid-rewind#readme"
+}

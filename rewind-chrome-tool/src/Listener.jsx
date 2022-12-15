@@ -1,6 +1,9 @@
 /* global chrome */
 import { createSignal } from 'solid-js';
+import { style } from 'solid-js/web';
+import styles from './App.module.css';
 import SendBack from './SendBack';
+import TimelineScrubber from './TimelineScrubber'
 
 function Listener() {
 
@@ -10,17 +13,20 @@ function Listener() {
   console.log('ONCE: adding event listener to listen for incoming messages from page');
   chrome.runtime.onMessage.addListener(
     function(request, sender, sendResponse) {
-      console.log("DevTab --- App.js:", request)
-      updateData(request.text);
+      if (request.value === 'TEXT') {
+        console.log("DevTab --- App.js:", request)
+        updateData(request.text);
+      }
     }
-  );
+  );//let data = { type: "FROM_PAGE", value: 'STATE_INCREMENT' };
 
   return (
-    <div className="App">
-      <header className="App-header">
-        {data}
-        <SendBack />
-      </header>
+    <div class={styles.container}>
+
+      {data}
+      <SendBack />
+      <TimelineScrubber />
+
     </div>
   );
 }

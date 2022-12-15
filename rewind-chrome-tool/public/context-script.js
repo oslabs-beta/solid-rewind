@@ -7,14 +7,16 @@ window.addEventListener("message", function(event) {
   
   if (event.data.type && (event.data.type === "FROM_PAGE")) {
       console.log("content-script.js received: " + event.data.text);
-      sendMessageToDevTool(event.data.text);
+      sendMessageToDevTool(event.data);
   }
 });
 
 // pass message along to dev tool
-const sendMessageToDevTool = async (msg) => {
-  console.log("sending message to dev tool:", msg);
-  const response = await chrome.runtime.sendMessage({text: msg});
+const sendMessageToDevTool = async ( message ) => {
+  console.log("sending message to dev tool:", message);
+  chrome.runtime.sendMessage({...message});
+  // got rid of await, was returning promise erros
+  //const response = await chrome.runtime.sendMessage({...message});
 
   // do something with response here, not outside the function ??
   //console.log(response);
