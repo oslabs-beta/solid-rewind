@@ -1,4 +1,5 @@
 import * as solid from "solid-js";
+import * as sender from "./sender";
 
 import seedrandom from 'seedrandom';
 
@@ -27,6 +28,29 @@ export function srInit() {
   // catch (error) {
   //   console.error('Error occurred:', error);
   // }
+  setupListeners();
+}
+
+////////////// TIME CONTROL LISTENERS FOR EVENTS FORM CHROME DEVTOOL /////////////////////
+function setupListeners() {
+  sender.listenFor('BACK', travelBack);
+  sender.listenFor('FORWARD', travelForward);
+  sender.listenFor('COPY_STATE', copyState);
+  sender.listenFor('LOAD_STATE', loadState);
+}
+
+function travelBack( data ) {
+  const steps = data.payload;
+  for (let i = 0; i < steps; i++) {
+    reverse();
+  }
+}
+
+function travelForward( data ) {
+  const steps = data.payload;
+  for (let i = 0; i < steps; i++) {
+    next();
+  }
 }
 
 ////////////// setter dictionary /////////////
@@ -96,13 +120,20 @@ export function next() {
 
 // save full state
 export function copyState() {
+  sender.sendData(stateStack, 'COPY_OF_STATE')
+  document.focus();
   navigator.clipboard.writeText(JSON.stringify(stateStack));
 }
 
 // load state
-export async function loadState () {
+export async function loadState (state) {
+  console.log('incoming state to load:', state);
   // get state from clipboard. Normally this would be done elsewhere.
-  const stateData = await navigator.clipboard.readText();
+  let stateData;
+
+  // try to get form clipboard but othewrise use the paseed in state
+  if (!state.payload) stateData = await navigator.clipboard.readText();
+  else stateData = state.payload;
 
   // reverse saved state
   const stateToDo = JSON.parse(stateData).reverse();

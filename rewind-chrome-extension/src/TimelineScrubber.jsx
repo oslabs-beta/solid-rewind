@@ -4,8 +4,8 @@
 import { createSignal } from 'solid-js';
 import styles from './App.module.css';
 
-import { Form } from 'solid-bootstrap';
-import { Button } from 'solid-bootstrap';
+
+import { sendData } from './sender';
 
 function TimelineScrubber() {
 
@@ -29,12 +29,12 @@ function TimelineScrubber() {
     }
   );
 
+  // step forward and back
   const goBack = () => {
-    
+    sendData(1, 'BACK');
   }
-
   const goForward = () => {
-    
+    sendData(1, 'FORWARD');
   }
 
   const onInput = (e) => {
@@ -50,9 +50,10 @@ function TimelineScrubber() {
       {/* <Form.Range min="0" max={maxSteps()} class={styles.timelineSlider} onInput={onInput} onChange={sliderChange} value={currentStep()} /> */}
       <br></br>
       <div class={ styles.timeButtonContainer }>
-        <Button variant="primary" onClick={goBack}>Back</Button>
-        <Button variant="primary" onClick={goForward}>Forward</Button>
+        <button onClick={goBack}>Back</button>
+        <button onClick={goForward}>Forward</button>
       </div>
+      
     </div>
   );
 }

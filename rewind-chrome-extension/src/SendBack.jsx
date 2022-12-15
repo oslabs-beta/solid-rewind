@@ -1,6 +1,8 @@
 /* global chrome */
 import { createSignal } from 'solid-js';
 
+import { sendData } from './sender';
+
 function SendBack() {
 
   const [text, updateText] = createSignal('');
@@ -8,16 +10,9 @@ function SendBack() {
   const displayAndSend = (e) => {
     // display text in app
     updateText(e.target.value);
-    // send text back to client
-    sendMessageBackToWebpage(e.target.value);
-  }
 
-  const sendMessageBackToWebpage = async (msg) => {
-    console.log("try to send message back to webpage...", msg);
-    const response = await chrome.runtime.sendMessage({
-      type: 'INCOMING_TEXT',
-      payload: msg
-    });
+    // send text back to client
+    sendData(e.target.value, 'INCOMING_TEXT');
   }
   
   return (

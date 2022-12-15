@@ -3,7 +3,8 @@ import { createSignal } from 'solid-js';
 import { style } from 'solid-js/web';
 import styles from './App.module.css';
 import SendBack from './SendBack';
-import TimelineScrubber from './TimelineScrubber'
+import TimelineScrubber from './TimelineScrubber';
+import StateCopyWindow from './StateCopyWindow';
 
 function Listener() {
 
@@ -26,7 +27,7 @@ function Listener() {
       {data}
       <SendBack />
       <TimelineScrubber />
-
+      <StateCopyWindow />
     </div>
   );
 }
