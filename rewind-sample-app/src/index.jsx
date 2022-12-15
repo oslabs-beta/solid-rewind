@@ -3,7 +3,7 @@ import { render } from 'solid-js/web';
 
 import './index.css';
 import App from './App';
-import Rewind from '../../dev-tool/Rewind.jsx'
+import Rewind from '../../dev-tool-tree-approach/Rewind.jsx'
 
 render(() => 
 <Rewind>
