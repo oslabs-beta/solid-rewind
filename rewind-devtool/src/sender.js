@@ -35,8 +35,10 @@ export function senderInit () {
   }, false);
 }
 
+
 export function listenFor ( type, callback ) {
-  document.addEventListener( type, callback );
+  // pass along only the payload to the callback
+  document.addEventListener( type, (data) => callback(data.detail) );
 }
 
 

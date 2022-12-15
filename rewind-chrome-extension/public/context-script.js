@@ -21,7 +21,7 @@ const sendMessageToDevTool = async ( message ) => {
 }
 const sendReplayToAppWeAreDebugging = (payload, type) => {
   let data = { from: "FROM_DEVTOOL", type, payload };
-  console.log('sending to page...', data);
+  console.log('From devtool to page:', data);
   window.postMessage(data, "*"); // send to div not window.
 }
 
