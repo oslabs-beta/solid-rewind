@@ -1,7 +1,7 @@
 import logo from './logo.svg';
 import styles from './App.module.css';
 
-import Listener from './ListenerComponent';
+import TimeTravel from './TimeTravel';
 
 // import {listenFor} from './listener';
 
@@ -17,7 +17,7 @@ function App() {
   return (
     <div class={styles.App}>
       <header class={styles.header}>
-        <Listener />
+        <TimeTravel />
       </header>
     </div>
   );

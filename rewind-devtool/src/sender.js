@@ -33,6 +33,12 @@ export function senderInit () {
       document.dispatchEvent(msgRecievedEvent);
     }
   }, false);
+
+  // send message to client to erase any saved state if the page refreshes
+  window.onbeforeunload = function(event) {
+    // return confirm("Confirm refresh");
+    sendData( undefined, 'RESET_STATE' )
+  };
 }
 
 

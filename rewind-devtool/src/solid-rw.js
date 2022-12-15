@@ -84,12 +84,20 @@ export default function createSignal( _default ) {
     
     // actually set the value
     s(v);
+
+    // send message that state changed
+    sendStateIncrement();
   }
 
   setterDictionary[uuid] = [g, setter, s];
   
   // maybe just output the normal getter?
   return [g, setter];
+}
+
+///////////// SEND STATE CHANGE ////////////////
+function sendStateIncrement () {
+  sender.sendData(undefined, 'STATE_INCREMENT');
 }
 
 

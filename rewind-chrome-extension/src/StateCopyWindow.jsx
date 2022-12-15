@@ -1,7 +1,7 @@
 import styles from './App.module.css';
 
 import { createSignal } from 'solid-js';
-import {listenFor} from './listener';
+import { listenFor } from './listener';
 import { sendData } from './sender';
 
 

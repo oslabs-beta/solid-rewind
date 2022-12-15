@@ -6,6 +6,7 @@ import styles from './App.module.css';
 
 
 import { sendData } from './sender';
+import { listenFor } from './listener';
 
 function TimelineScrubber() {
 
@@ -13,32 +14,43 @@ function TimelineScrubber() {
   const [currentStep, setCurrentStep] = createSignal(0);
 
   // LISTEN FOR STATE EVENTS
-  chrome.runtime.onMessage.addListener(
-    function(request, sender, sendResponse) {
-      console.log('TIME SCRUB MESG:', request);
-      if (request.value === 'STATE_INCREMENT') {
-        // max steps is current step
-        setMaxSteps(currentStep());
+  listenFor('STATE_INCREMENT', stateIncrementOccured)
+  function stateIncrementOccured() {
+    console.log("increment state function hit");
+    // max steps is current step
+    setMaxSteps(currentStep()+1);
         
-        // increment current step
-        setCurrentStep(Number(currentStep())+1); // needs number wrapper
+    // increment current step
+    setCurrentStep(Number(currentStep())+1); // needs number wrapper
 
-        console.log('cstep:', currentStep());
-        console.log('maxstep:', maxSteps());
-      }
-    }
-  );
+    console.log('cstep:', currentStep());
+    console.log('maxstep:', maxSteps());
+  }
+
+  listenFor('RESET_STATE', restState);
+  function restState() {
+    console.log("RESET STATE RECIEVED");
+    setMaxSteps(0);
+    setCurrentStep(0);
+  }
+
 
   // step forward and back
   const goBack = () => {
     sendData(1, 'BACK');
+    if (currentStep() > 0) setCurrentStep(Number(currentStep())-1);
   }
   const goForward = () => {
     sendData(1, 'FORWARD');
+    if (currentStep() < maxSteps()) setCurrentStep(Number(currentStep())+1);
   }
 
   const onInput = (e) => {
     // set current step
+    const diff = e.target.value - currentStep();
+    console.log("TIME TRAVEL THIS FAR:", diff);
+    if (diff < 0) sendData(Math.abs(diff), 'BACK');
+    else sendData(Math.abs(diff), 'FORWARD');
     setCurrentStep(e.target.value);
   }
 
