@@ -10,7 +10,7 @@ const subscribe = (eventName, listener) => {
 
 // CALL THIS ONCE WHEN APP IS STARTED
 // start listener
-export function init() {
+export function srInit() {
   subscribe('onStateChange', trackStateChange)
   console.log("FIRST");
   //Load the library and specify options
@@ -38,7 +38,7 @@ const setterDictionary = {}
 // if we go this route, this would istead be monkey-patched over createSingal, as well as something similar for any other way that a setter can be created.
 export default function createSignal( _default ) {
   if (!seededRandom) seededRandom = seedrandom('willem_robbie_christain_jason');
-  const uuid = seededRandom();
+  const uuid = seededRandom.quick();
 
   // create actual singal
   const [g, s] = solid.createSignal(_default);

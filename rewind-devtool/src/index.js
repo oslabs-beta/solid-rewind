@@ -1,4 +1,5 @@
-
+import { srInit } from './solid-rw';
+import { senderInit } from './sender';
 
 export function helloWorld() {
   const message = 'Hello World from my example modern npm package!';
@@ -10,13 +11,19 @@ export function goodBye() {
   return message;
 }
 
-export default {
-  helloWorld,
-  goodBye,
-};
+export function init() {
+  srInit();
+  senderInit();
+}
 
 export * from './solid-rw';
 export * from './sender';
+
+export default {
+  init,
+  helloWorld,
+  goodBye,
+};
 
 // function helloWorld() {
 //   console.log('Hello World!');

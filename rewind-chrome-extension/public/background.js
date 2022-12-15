@@ -1,8 +1,7 @@
-/* background.js */
 /* global chrome */
 /* global browser */
 
-// INTERCEPT MESSAGES HERE AS WELL
+// INTERCEPT MESSAGES and sends them to the PAGE
 chrome.runtime.onConnect.addListener(function(devToolsConnection) {
   chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
 

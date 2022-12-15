@@ -1,12 +1,15 @@
 /* global chrome */
 
+
+///////// FROM APP TOO DEV TOOL //////////
+
 // listens for messages from app / current page tab
 window.addEventListener("message", function(event) {
-  // We only accept messages from ourselves
+  // We only accept messages from the window. change this to a specific div
   if (event.source !== window) return;
   
-  if (event.data.type && (event.data.type === "FROM_PAGE")) {
-      console.log("content-script.js received: " + event.data.text);
+  if (event.data.from && (event.data.from === "FROM_PAGE")) {
+      console.log("message from app to devtool - in content-script.js: " + event.data);
       sendMessageToDevTool(event.data);
   }
 });
@@ -22,15 +25,18 @@ const sendMessageToDevTool = async ( message ) => {
   //console.log(response);
 }
 
+
+///////// FROM DEV TOOL TOO APP //////////
+
 // sends message to window.
 chrome.runtime.connect().onMessage.addListener(function(message, sender, sendResponse){
-  console.log('in context script', message)
-  console.log("sending from context-script.js -- B")
-  sendReplayToAppWeAreDebugging(message.reply)
+  console.log('message recieved from devtool:', message)
+  sendReplayToAppWeAreDebugging(message.payload, message.type);
 });
 
-function sendReplayToAppWeAreDebugging(msg) {
-  console.log('post to window from context-script.js')
-  let data = { type: "FROM_DEVTOOL", text: msg };
+function sendReplayToAppWeAreDebugging(payload, type) {
+  console.log('post to window from context-script.js-- type:', type, 'payload:', payload)
+  let data = { from: "FROM_DEVTOOL", type, payload };
+  // send to div not window.
   window.postMessage(data, "*");
 }
