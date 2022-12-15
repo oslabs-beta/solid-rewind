@@ -10,8 +10,8 @@ import { debugComputation, debugOwnerComputations, debugSignals, debugSignal, de
 const [first, setFirst] = createSignal("AboveApp");
 
 function App() {
-  const [count, setCount] = createSignal(0);
-  const doubleCount = () => count() * 2
+  const [count, setCount] = createSignal(11);
+  const doubleCount = () => count() * 2;
 
   createEffect(() => {
     // console.log("App__debugComputation")
@@ -41,11 +41,11 @@ function App() {
         <button onclick={[setFirst, 'jim']}>changename to Jim</button>
         <button onclick={[setFirst, 'jeff']}>changename to Jeff</button>
         <button onclick={() => {
-          debugSignals(count)
+          // debugSignals(count)
           setCount(count() + 1)
         }}>+</button>
         <button onclick={() => {
-          debugSignals(count)
+          // debugSignals(count)
           setCount(count() - 1)
         }}>-</button>
         <div>{doubleCount()}</div>
