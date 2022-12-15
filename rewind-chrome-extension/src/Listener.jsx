@@ -13,9 +13,9 @@ function Listener() {
   console.log('ONCE: adding event listener to listen for incoming messages from page');
   chrome.runtime.onMessage.addListener(
     function(request, sender, sendResponse) {
-      if (request.value === 'TEXT') {
+      if (request.type === 'TEXT') {
         console.log("DevTab --- App.js:", request)
-        updateData(request.text);
+        updateData(request.payload);
       }
     }
   );//let data = { type: "FROM_PAGE", value: 'STATE_INCREMENT' };

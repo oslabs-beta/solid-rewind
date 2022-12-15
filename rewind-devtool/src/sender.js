@@ -2,15 +2,16 @@ const debugMode = true;
 let initComplete = false;
 
 // function to send message to devtool
-export function sendData( data, type  ) {
+export function sendData( data, type ) {
   // stringify data (in case it's an objec or array)
-  postMessageToDebugger(JSON.stringify(data), type)
+  const payload = (typeof data === 'object') ? JSON.stringify(data) : data;
+  postMessageToDebugger(payload, type)
 }
 
-function postMessageToDebugger (data, type) {
-  const msgObj = { form: "FROM_PAGE", type, payload: data };
+function postMessageToDebugger (payload, type) {
+  const msgObj = { from: "FROM_PAGE", type, payload };
   // this should be send on something besides the window.
-  window.postMessage(data, "*");
+  window.postMessage(msgObj, "*");
   if (debugMode) console.log('message sent from page', msgObj)
 }
 
@@ -23,11 +24,11 @@ export function senderInit () {
   window.addEventListener("message", (event) => {
     // only pay attetion to messages from the devtool
     if (event.data.from === "FROM_DEVTOOL" ) {
-      if (debugMode) console.log('message from devtool', event);
+      if (debugMode) console.log('message from devtool', event.data);
 
-      // dispatch an event with the type as the message type. Listeners can then grab it
-      const msgRecievedEvent = new CustomEvent(event.type, {
-        detail: { ...event } 
+      // dispatch an event with the 'type' as the message type. Listeners can then grab it
+      const msgRecievedEvent = new CustomEvent(event.data.type, {
+        detail: { ...event.data } 
       });
       document.dispatchEvent(msgRecievedEvent);
     }
@@ -35,7 +36,7 @@ export function senderInit () {
 }
 
 export function listenFor ( type, callback ) {
-  subscribe(type, callback);
+  document.addEventListener( type, callback );
 }
 
 

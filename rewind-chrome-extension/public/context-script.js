@@ -7,13 +7,38 @@
 window.addEventListener("message", function(event) {
   // We only accept messages from the window. change this to a specific div
   if (event.source !== window) return;
-  
-  if (event.data.from && (event.data.from === "FROM_PAGE")) {
-      console.log("message from app to devtool - in content-script.js: " + event.data);
-      sendMessageToDevTool(event.data);
+
+  // send from page to devtoool
+  if (event.data.from && event.data.from === "FROM_PAGE") {
+    console.log('FROM_PAGE - in content-script.js: ', event.data);
+    sendMessageToDevTool(event.data);
   }
 });
 
+// pass message along to dev tool
+const sendMessageToDevTool = async ( message ) => {
+  chrome.runtime.sendMessage({...message});
+}
+const sendReplayToAppWeAreDebugging = (payload, type) => {
+  let data = { from: "FROM_DEVTOOL", type, payload };
+  console.log('sending to page...', data);
+  window.postMessage(data, "*"); // send to div not window.
+}
+
+// For some reason this additional connect is needed;
+///////// FROM DEV TOOL TOO APP //////////
+chrome.runtime.connect().onMessage.addListener(function(message, sender, sendResponse) {
+  sendReplayToAppWeAreDebugging(message.payload, message.type);
+});
+
+// function sendReplayToAppWeAreDebugging(payload, type) {
+//   console.log('post to window from context-script.js-- type:', type, 'payload:', payload)
+//   let data = { from: "FROM_DEVTOOL", type, payload };
+//   // send to div not window.
+//   window.postMessage(data, "*");
+// }
+
+/*
 // pass message along to dev tool
 const sendMessageToDevTool = async ( message ) => {
   console.log("sending message to dev tool:", message);
@@ -24,19 +49,4 @@ const sendMessageToDevTool = async ( message ) => {
   // do something with response here, not outside the function ??
   //console.log(response);
 }
-
-
-///////// FROM DEV TOOL TOO APP //////////
-
-// sends message to window.
-chrome.runtime.connect().onMessage.addListener(function(message, sender, sendResponse){
-  console.log('message recieved from devtool:', message)
-  sendReplayToAppWeAreDebugging(message.payload, message.type);
-});
-
-function sendReplayToAppWeAreDebugging(payload, type) {
-  console.log('post to window from context-script.js-- type:', type, 'payload:', payload)
-  let data = { from: "FROM_DEVTOOL", type, payload };
-  // send to div not window.
-  window.postMessage(data, "*");
-}
+*/

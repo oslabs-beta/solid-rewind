@@ -14,7 +14,10 @@ function SendBack() {
 
   const sendMessageBackToWebpage = async (msg) => {
     console.log("try to send message back to webpage...", msg);
-    const response = await chrome.runtime.sendMessage({reply: msg});
+    const response = await chrome.runtime.sendMessage({
+      type: 'INCOMING_TEXT',
+      payload: msg
+    });
   }
   
   return (

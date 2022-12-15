@@ -12,7 +12,7 @@ chrome.runtime.onConnect.addListener(function(devToolsConnection) {
       if (request.reply) {
         console.log("reply recieved", request.reply);
 
-        sendReplayToAppWeAreDebugging(request.reply);
+        sendReplayToAppWeAreDebugging(request.reply, 'type...');
 
         chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
           console.log('sending to each tab... total tabs:', tabs.length);
@@ -24,8 +24,8 @@ chrome.runtime.onConnect.addListener(function(devToolsConnection) {
   });
 })
 
-function sendReplayToAppWeAreDebugging(msg) {
+function sendReplayToAppWeAreDebugging(payload, type) {
   console.log("sending from backgroud.js")
-  let data = { type: "FROM_DEVTOOL", text: msg };
+  let data = { from: "FROM_DEVTOOL", type, payload };
   window.postMessage(data, "*");
 }
