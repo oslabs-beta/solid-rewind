@@ -19,13 +19,23 @@ export function senderInit () {
   // listen elsehwere than the window. Make a div and listen there perhase
   if (debugMode) console.log('integrated-devtool: message listener setup');
 
+  // there will only be one listener which recieves messages and delegates out events
   window.addEventListener("message", (event) => {
     // only pay attetion to messages from the devtool
     if (event.data.from === "FROM_DEVTOOL" ) {
       if (debugMode) console.log('message from devtool', event);
-      return data.payload;
+
+      // dispatch an event with the type as the message type. Listeners can then grab it
+      const msgRecievedEvent = new CustomEvent(event.type, {
+        detail: { ...event } 
+      });
+      document.dispatchEvent(msgRecievedEvent);
     }
   }, false);
+}
+
+export function listenFor ( type, callback ) {
+  subscribe(type, callback);
 }
 
 
