@@ -56,7 +56,6 @@ function TimelineScrubber() {
 
   return (
     <div class={styles.timelineContainer}>
-
       <input type="range" name="quantity" min="0" max={maxSteps()} class={styles.timelineSlider} onInput={(e) => onInput(e)} value={currentStep()} ></input>
       {/* <Form.Label>Timeline</Form.Label><br></br> */}
       {/* <Form.Range min="0" max={maxSteps()} class={styles.timelineSlider} onInput={onInput} onChange={sliderChange} value={currentStep()} /> */}
