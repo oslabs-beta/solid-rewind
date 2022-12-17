@@ -6,14 +6,12 @@ export default class OwnershipTree {
 
         this.path = path ? path : 'getOwner()';
 
-        this.sources = this.getSources(owner);
-
         this.children = this.getChildren(owner);
 
-        this.sourceMap = this.getSources(owner);
+        this.sourceMap = this.getSourceMap(owner);
 
-     
-        
+        this.sources = this.getSources(owner);
+
     }
 
     //this method gets the children for a particular owner. 
@@ -21,12 +19,10 @@ export default class OwnershipTree {
 
     getName(owner) {
         if (owner?.name) return owner.name; 
-        else return 'null'
     }
 
     getSources(owner) {
-        if (owner?.sources) return owner.sources; 
-        else return 'null'
+            if (owner?.sources) return owner.sources;    
     }
 
     getChildren(owner) {
@@ -45,7 +41,7 @@ export default class OwnershipTree {
     
     //this method gets the sourcemap for a particular owner. 
     //it is invocted in the constructor
-    getSources(owner) {
+    getSourceMap(owner) {
         const listOfSignals = [];
             if (owner?.sourceMap) {
                 const srcMap = owner.sourceMap; 
@@ -78,7 +74,7 @@ export default class OwnershipTree {
 
     //This method parses the entire ownership tree, looks for signals and pushes them onto an array. 
     //it will gather all of the signals that are within components
-    parseAllSourcesSourceMap(stack = []) {
+    parseSourceMap(stack = []) {
         //searches a particular owner for sources
             if (this.sourceMap?.length > 0) {
                 this.sourceMap.forEach(source => {
@@ -90,7 +86,7 @@ export default class OwnershipTree {
             if (this.children.length > 0) {
                 this.children.forEach(child => {
                     if (child) {
-                        child.parseAllSourcesSourceMap(stack)
+                        child.parseSourceMap(stack)
                     }
                 })
             }
@@ -100,25 +96,25 @@ export default class OwnershipTree {
     }
 
     //still a work in progress. This method will be used to find signals that are outside of the owner components
-    parseAllSourcesSources(stack = []) {
+    parseSources(stack = []) {
         if (this.sources?.length > 0) {
             this.sources.forEach(source => {
                 //inspect s9 more...seems to relate to rendered components 
                 //but for now we can ignore it
-                if (source.name && source.name === 's9') return 
-                else stack.push(source)
+                // if (source.name && source.name === 's9') return 
+                // else {
+                    stack.push(source)
+                // }
             })
         }
         //moves on to the next child and recursively runs the search function on every child node in the tree
-        if (this.children) {
-            if (this.children.length > 0) {
+            if (this.children?.length > 0) {
                 this.children.forEach(child => {
                     if (child) {
-                        child.parseAllSourcesSourceMap(stack)
+                        child.parseSources(stack)
                     }                
                 })
             }
-        }
         return stack
     }
 }

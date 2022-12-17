@@ -6,7 +6,6 @@ import Tree from './Tree'
 
 
 const Rewind = (props) => {
-  const RewindOwner = getOwner();
   console.log(getOwner())
 
 
@@ -52,21 +51,20 @@ const Rewind = (props) => {
   // }  
 
   const listen = async () => {
-    
-
-
+ 
     const GraphUpdateListeners = new Set();
     const setUpRenderChangeEvent = () => {
       GraphUpdateListeners.add(async () => {
   
           let ownerObj = await getOwner();
-          console.log("here's the ownership tree", ownerObj)
+          console.log("here's the app's tree without parsing", ownerObj)
           let ownerTree = await new Tree(ownerObj); 
-          let ownerState = ownerTree.parseAllSourcesSourceMap();
-          let sourcesState = ownerTree.parseAllSourcesSources()
           console.log("owner tree", ownerTree)
-          console.log("sourcesState", sourcesState)
-          console.log('ownerState', ownerState)
+
+          let sourceMapState = await ownerTree.parseSourceMap()
+          console.log("sourceMapState", sourceMapState)
+          let sourcesState = await ownerTree.parseSources();
+          console.log('sourcesState', sourcesState)
     
       });
       const runListeners = () => GraphUpdateListeners.forEach(f => f())
