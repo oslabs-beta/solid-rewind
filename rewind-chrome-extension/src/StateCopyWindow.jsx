@@ -18,8 +18,12 @@ function displayFullState( state ) {
 const copyState = () => {
   sendData(undefined, 'COPY_STATE');
 }
-const loadState = () => {
-  sendData(copyiedState(), 'LOAD_STATE');
+const loadState = async () => {
+  // get state from CB
+  // loadTextFromClipboard();
+  // const cbData = await navigator.clipboard.readText();
+  // console.log("CB STATE:", cbData);
+  sendData(loadTextFromClipboard(), 'LOAD_STATE');
 }
 
 const copyToClipboard = (e) => {
@@ -28,6 +32,7 @@ const copyToClipboard = (e) => {
   // navigator.clipboard.writeText(e.target[0].value); 
 
   copyTextToClipboard(e.target[0].value);
+  setCopiedState
 }
 
 // crazy workaround to get copying to work in the extention window.
@@ -57,6 +62,32 @@ function copyTextToClipboard(text) {
   document.body.removeChild(copyFrom);
 }
 
+// crazy workaround to get copying to work in the extention window.
+function loadTextFromClipboard() {
+  //Create a textbox field where we can insert text to. 
+  var loadForm = document.createElement("textarea");
+
+  loadForm.textContent = "";
+
+  document.body.appendChild(loadForm);
+
+  // focus on the textbox
+  loadForm.focus();
+
+  const result = document.execCommand('paste');
+
+  const textFromCB = loadForm.value;
+  console.log('content of paste:', loadForm.value);
+
+  //(Optional) De-select the text using blur(). 
+  loadForm.blur();
+
+  //Remove the textbox field from the document.body, so no other JavaScript nor 
+  //other elements can get access to this.
+  document.body.removeChild(loadForm);
+  return textFromCB;
+}
+
 function StateCopyWindow() {
 
 
@@ -65,14 +96,15 @@ function StateCopyWindow() {
   return (
     <div>
       <div class={ styles.timeButtonContainer }>
-        <button variant="primary" onClick={copyState}>COPY STATE</button>
-        <button variant="primary" onClick={loadState}>LOAD STATE</button>
+
+        <button onClick={copyState} class="btn btn-outline btn-accent no-animation">COPY STATE</button>
+        <button onClick={loadState} class="btn btn-outline btn-accent no-animation">LOAD STATE</button>
+
+        {/* <button variant="primary" onClick={copyState}>COPY STATE</button>
+        <button variant="primary" onClick={loadState}>LOAD STATE</button> */}
       </div>
-      <br></br>
-      {/* <form onSubmit={copyToClipboard}>
-        <textarea value={copyiedState()} class={styles.copyStateTextArea}></textarea>
-        <button type='submit'>COPY</button>
-      </form> */}
+      {/* this invisible text area has a copy of teh copied state so it can be grabbed and sent to the client */}
+      <textarea value={copyiedState()} class='displayNone'></textarea>
     </div>
   );
 }

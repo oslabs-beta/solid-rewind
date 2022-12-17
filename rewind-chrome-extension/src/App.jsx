@@ -17,6 +17,10 @@ function App() {
   return (
     <div class={styles.App}>
       <header class={styles.header}>
+        {/* <input type="radio" name="radio-1" className="radio" checked />
+        <input type="radio" name="radio-1" className="radio" />
+        <button class="btn" >Hello daisyUI</button>
+        <button class="btn btn-primary">One</button> */}
         <TimeTravel />
       </header>
     </div>

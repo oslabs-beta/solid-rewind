@@ -56,13 +56,17 @@ function TimelineScrubber() {
 
   return (
     <div class={styles.timelineContainer}>
-      <input type="range" name="quantity" min="0" max={maxSteps()} class={styles.timelineSlider} onInput={(e) => onInput(e)} value={currentStep()} ></input>
+
+      <input type="range" min="0" max={maxSteps()} onInput={(e) => onInput(e)} value={currentStep()} className="range range-warning" />
+      {/* <input type="range" name="quantity" min="0" max={maxSteps()} class={styles.timelineSlider} onInput={(e) => onInput(e)} value={currentStep()} ></input> */}
       {/* <Form.Label>Timeline</Form.Label><br></br> */}
       {/* <Form.Range min="0" max={maxSteps()} class={styles.timelineSlider} onInput={onInput} onChange={sliderChange} value={currentStep()} /> */}
       <br></br>
       <div class={ styles.timeButtonContainer }>
-        <button onClick={goBack}>Back</button>
-        <button onClick={goForward}>Forward</button>
+        <button onClick={goBack} class="btn btn-primary">Back</button>
+        <button onClick={goForward} class="btn btn-primary">Forward</button>
+        {/* <button onClick={goBack}>Back</button>
+        <button onClick={goForward}>Forward</button> */}
       </div>
       
     </div>
