@@ -1,12 +1,25 @@
-import { createSignal, createEffect, getOwner, DEV, runWithOwner, useContext, } from 'solid-js';
+import { createSignal, createEffect, getOwner, DEV, runWithOwner, useContext, createRenderEffect } from 'solid-js';
 
 import 'solid-devtools';
 import { debugComputation, debugOwnerComputations, debugSignals, debugSignal, debugOwnerSignals, debugProps } from '@solid-devtools/logger'
 import Tree from './Tree'
 
-
+let runListenerOnce = 1;
 const Rewind = (props) => {
-  console.log(getOwner())
+  const rewind = getOwner(); 
+
+
+  const changeScore = (owner) => {
+    createRenderEffect(() => {
+      runWithOwner(owner, async () => {
+        const root = await getOwner()
+        console.log("path", root.owned[0].owned[0].owned[0].owned[6].sources[0].value)
+        const source = root.owned[0].owned[0].owned[0].owned[6].sources[0]; 
+        Object.assign(source, { value : 15 })
+        console.log(root.owned[0].owned[0].owned[0].owned[6].sources[0])
+        })
+    })
+  }
 
 
 //this was the original iteration to find signals throughout the app, 
@@ -49,24 +62,27 @@ const Rewind = (props) => {
   //   }
   //   return arr;
   // }  
-
   const listen = async () => {
  
     const GraphUpdateListeners = new Set();
     const setUpRenderChangeEvent = () => {
       GraphUpdateListeners.add(async () => {
-  
-          let ownerObj = await getOwner();
-          console.log("here's the app's tree without parsing", ownerObj)
-          let ownerTree = await new Tree(ownerObj); 
-          console.log("owner tree", ownerTree)
-
-          let sourceMapState = await ownerTree.parseSourceMap()
-          console.log("sourceMapState", sourceMapState)
-          let sourcesState = await ownerTree.parseSources();
-          console.log('sourcesState', sourcesState)
-    
-      });
+        runListenerOnce--
+        if (runListenerOnce === 0) {
+          runWithOwner(rewind, async () => {
+            console.log("====================================")
+            let ownerObj = await getOwner();
+            console.log("here's the app's tree without parsing", ownerObj)
+            let ownerTree = await new Tree(ownerObj); 
+            console.log("owner tree", ownerTree)
+            // let sourceMapState = await ownerTree.parseSourceMap()
+            // console.log("sourceMapState", sourceMapState)
+            let sourcesState = await ownerTree.parseSources();
+            console.log('sourcesState', sourcesState)
+          })
+        }
+      })
+      GraphUpdateListeners.add(() => runListenerOnce++)
       const runListeners = () => GraphUpdateListeners.forEach(f => f())
       if (typeof window._$afterUpdate === 'function') {
         GraphUpdateListeners.add(window._$afterUpdate)
@@ -77,7 +93,12 @@ const Rewind = (props) => {
   
   }
   listen()
-    return <div class='rewind'>hello {props.children} </div>
+    return (
+      <>
+      <button onClick={() => changeScore(rewind)}>SETBACKCOUNT</button>
+    <div class='rewind'>{props.children} </div>
+    </>
+    )
 }
 
 export default Rewind;
