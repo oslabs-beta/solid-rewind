@@ -1,46 +1,124 @@
-import { createResource } from "solid-js";
+import { createResource, getOwner } from "solid-js";
 
 export default class OwnershipTree {
-    constructor(owner) {
-        this.name = owner.name;
+    constructor(owner, path) {
+        this.name = this.getName(owner);
 
-        this.children = this.getChildren(owner);
+        this.path = path ? path : 'getOwner()';
 
         this.sources = this.getSources(owner);
 
-        this.owner = owner;
+        this.children = this.getChildren(owner);
+
+        this.sourceMap = this.getSources(owner);
+
+     
+        
     }
 
-    getChildren(obj) {
-        const arr = [obj]
-        const owner = arr.pop();     
-        console.log('line 15', owner)
+    //this method gets the children for a particular owner. 
+    //it is invocted in the constructor, and it effectively builds the entire ownership tree
+
+    getName(owner) {
+        if (owner?.name) return owner.name; 
+        else return 'null'
+    }
+
+    getSources(owner) {
+        if (owner?.sources) return owner.sources; 
+        else return 'null'
+    }
+
+    getChildren(owner) {
         const childArray = [];
-        console.log("ownerowned", owner.owned)
-        if (owner.owned) {
-            for (const child of owner.owned) {
-                console.log(child)
-                childArray.push("hello")
+            if (owner?.owned) {
+                for (const key in owner.owned) {
+                    const child = owner.owned[key];
+                    const childPath = this.path + `.owned[${key}]`
+                    if (child) {
+                        childArray.push(new OwnershipTree(child, childPath))
+                    }
+                }
             }
-        }
         return childArray;
     }
     
-    getSources(obj) {
-        const arr = [obj]
-        const owner = arr.pop();
-        console.log(owner.owned)   
+    //this method gets the sourcemap for a particular owner. 
+    //it is invocted in the constructor
+    getSources(owner) {
         const listOfSignals = [];
-        if (owner.sourceMap) {
-            const srcMap = owner.sourceMap
-            for (const signal in srcMap) {
-                console.log("name", srcMap[signal].name)
-                console.log("calue", srcMap[signal].value)
-                listOfSignals.push({name: srcMap[signal].name, value: srcMap[signal].value})
+            if (owner?.sourceMap) {
+                const srcMap = owner.sourceMap; 
+                for (const key in srcMap) {
+                    //this means it's a regular signal
+                    if (srcMap[key].name) {
+                        let sourcePath = this.path + `.sourceMap.${key}`; 
+                        listOfSignals.push({
+                            name: srcMap[key].name,
+                            value: srcMap[key].value, 
+                            path: sourcePath,
+                            store: false
+                        })
+                    }
+                    //this means it's a store
+                    else {
+                        let sourcePath = this.path + `.sourceMap.${key}.value`; 
+                        listOfSignals.push({
+                            name: srcMap[key].value["Symbol(store-name)"],
+                            value: srcMap[key].value, 
+                            path: sourcePath,
+                            store: true
+                        })
+                    }
+                }
+            return listOfSignals
+        }
+    }
+
+
+    //This method parses the entire ownership tree, looks for signals and pushes them onto an array. 
+    //it will gather all of the signals that are within components
+    parseAllSourcesSourceMap(stack = []) {
+        //searches a particular owner for sources
+            if (this.sourceMap?.length > 0) {
+                this.sourceMap.forEach(source => {
+                        stack.push(source)
+                })
+            }
+        //moves on to the next child and recursively runs the search function on every child node in the tree
+        if (this.children) {
+            if (this.children.length > 0) {
+                this.children.forEach(child => {
+                    if (child) {
+                        child.parseAllSourcesSourceMap(stack)
+                    }
+                })
             }
         }
-        
-        return listOfSignals
+
+        return stack;
     }
-    
+
+    //still a work in progress. This method will be used to find signals that are outside of the owner components
+    parseAllSourcesSources(stack = []) {
+        if (this.sources?.length > 0) {
+            this.sources.forEach(source => {
+                //inspect s9 more...seems to relate to rendered components 
+                //but for now we can ignore it
+                if (source.name && source.name === 's9') return 
+                else stack.push(source)
+            })
+        }
+        //moves on to the next child and recursively runs the search function on every child node in the tree
+        if (this.children) {
+            if (this.children.length > 0) {
+                this.children.forEach(child => {
+                    if (child) {
+                        child.parseAllSourcesSourceMap(stack)
+                    }                
+                })
+            }
+        }
+        return stack
+    }
 }
