@@ -10,16 +10,20 @@ const Rewind = (props) => {
 
 
   const changeScore = (owner) => {
-    createRenderEffect(() => {
       runWithOwner(owner, async () => {
         const root = await getOwner()
-        console.log("path", root.owned[0].owned[0].owned[0].owned[6].sources[0].value)
+        const observers = root.owned[0].owned[0].owned[0].owned[6].sources[0].observers
+        for (const observer of observers) {
+          
+        }
+
+        console.log("defineGetter", root.owned[0].owned[0].owned[0].owned[6].sources[0].__lookupGetter__)
         const source = root.owned[0].owned[0].owned[0].owned[6].sources[0]; 
         Object.assign(source, { value : 15 })
         console.log(root.owned[0].owned[0].owned[0].owned[6].sources[0])
         })
-    })
   }
+
 
 
 //this was the original iteration to find signals throughout the app, 
