@@ -9,7 +9,7 @@
 }
 
 .header {
-  background-color: #282c34;
+  background-color: #e;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
@@ -24,6 +24,7 @@
   width: 80%;
 }
 
+/* TIMELINE */
 .timelineContainer {
   display: flex;
   flex-direction: column;
@@ -37,9 +38,22 @@
   width: 100%;
 }
 
+
+/* COPY + LOAD TEXT */
+.copyStateTextArea {
+  max-width: 100%;
+  min-width: 100%;
+  max-height: 100px;
+  min-height: 100px;
+}
+
+
+
+
 .link {
   color: #b318f0;
 }
+
 
 @keyframes logo-spin {
   from {

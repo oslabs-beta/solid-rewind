@@ -53,6 +53,11 @@ function App() {
           // debugSignals(count)
           setCount(count() + 1)
         }}>+</button>
+        
+        <button onclick={() => {
+          // debugSignals(count)
+          setCount(count() + 1)
+        }}>Fib Button</button>
         <button onclick={() => {
           // debugSignals(count)
           setCount(count() - 1)

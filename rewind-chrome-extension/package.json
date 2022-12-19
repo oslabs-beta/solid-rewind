@@ -5,15 +5,19 @@
   "scripts": {
     "start": "vite",
     "dev": "vite",
+    "daisy": "npx tailwindcss -i ./src/index.css -o ./dist/output.css --watch",
     "build": "vite build",
     "serve": "vite preview"
   },
   "license": "MIT",
   "devDependencies": {
+    "tailwindcss": "^3.2.4",
     "vite": "^3.0.9",
     "vite-plugin-solid": "^2.3.0"
   },
   "dependencies": {
+    "@tailwindcss/typography": "^0.5.8",
+    "daisyui": "^2.45.0",
     "solid-bootstrap": "^1.0.11",
     "solid-js": "^1.5.1"
   }

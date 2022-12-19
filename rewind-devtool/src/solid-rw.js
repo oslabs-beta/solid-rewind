@@ -84,12 +84,20 @@ export default function createSignal( _default ) {
     
     // actually set the value
     s(v);
+
+    // send message that state changed
+    sendStateIncrement();
   }
 
   setterDictionary[uuid] = [g, setter, s];
   
   // maybe just output the normal getter?
   return [g, setter];
+}
+
+///////////// SEND STATE CHANGE ////////////////
+function sendStateIncrement () {
+  sender.sendData(undefined, 'STATE_INCREMENT');
 }
 
 
@@ -120,20 +128,46 @@ export function next() {
 
 // save full state
 export function copyState() {
-  sender.sendData(stateStack, 'COPY_OF_STATE')
-  document.focus();
-  navigator.clipboard.writeText(JSON.stringify(stateStack));
+  // sender.sendData(stateStack, 'COPY_OF_STATE')
+  copyTextToClipboard(JSON.stringify(stateStack));
+  //navigator.clipboard.writeText(JSON.stringify(stateStack));
+}
+
+function copyTextToClipboard(text) {
+  //Create a textbox field where we can insert text to. 
+  var copyFrom = document.createElement("textarea");
+
+  //Set the text content to be the text you wished to copy.
+  copyFrom.textContent = text;
+
+  //Append the textbox field into the body as a child. 
+  //"execCommand()" only works when there exists selected text, and the text is inside 
+  //document.body (meaning the text is part of a valid rendered HTML element).
+  document.body.appendChild(copyFrom);
+
+  //Select all the text!
+  copyFrom.select();
+
+  //Execute command
+  document.execCommand('copy');
+
+  //(Optional) De-select the text using blur(). 
+  copyFrom.blur();
+
+  //Remove the textbox field from the document.body, so no other JavaScript nor 
+  //other elements can get access to this.
+  document.body.removeChild(copyFrom);
 }
 
 // load state
 export async function loadState (state) {
   console.log('incoming state to load:', state);
-  // get state from clipboard. Normally this would be done elsewhere.
-  let stateData;
 
-  // try to get form clipboard but othewrise use the paseed in state
-  if (!state.payload) stateData = await navigator.clipboard.readText();
-  else stateData = state.payload;
+  // get state from payload
+  let stateData = state?.payload;
+
+  // return if empty
+  if (stateData === "") return;
 
   // reverse saved state
   const stateToDo = JSON.parse(stateData).reverse();

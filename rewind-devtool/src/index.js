@@ -1,5 +1,6 @@
 import { srInit } from './solid-rw';
 import { senderInit } from './sender';
+import * as stateParser from './stateParser';
 
 export function helloWorld() {
   const message = 'Hello World from my example modern npm package!';
@@ -14,6 +15,7 @@ export function goodBye() {
 export function init() {
   srInit();
   senderInit();
+  stateParser.createDummyStateHistory();
 }
 
 export * from './solid-rw';

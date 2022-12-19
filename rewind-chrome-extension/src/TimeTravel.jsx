@@ -6,7 +6,7 @@ import SendBack from './SendBack';
 import TimelineScrubber from './TimelineScrubber';
 import StateCopyWindow from './StateCopyWindow';
 
-function Listener() {
+function TimeTravel() {
 
   const [data, updateData] = createSignal('waiting...');
 
@@ -23,13 +23,10 @@ function Listener() {
 
   return (
     <div class={styles.container}>
-
-      {data}
-      <SendBack />
       <TimelineScrubber />
       <StateCopyWindow />
     </div>
   );
 }
 
-export default Listener;
+export default TimeTravel;

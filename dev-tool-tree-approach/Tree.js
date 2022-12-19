@@ -32,8 +32,17 @@ export default class OwnershipTree {
                         childArray.push(new OwnershipTree(child, childPath))
                     }
                 }
+            if (owner?.owned) {
+                for (const key in owner.owned) {
+                    const child = owner.owned[key];
+                    const childPath = this.path + `.owned[${key}]`
+                    if (child) {
+                        childArray.push(new OwnershipTree(child, childPath))
+                    }
+                }
             }
         return childArray;
+    }
     }
 
     
@@ -73,7 +82,8 @@ export default class OwnershipTree {
     //it is invoked in the constructor
     getSources(owner) {
         if (owner?.sources) return owner.sources;    
-}
+    }
+
     /*
     This method parses the entire ownership tree, looking at the sourceMap
     for signals and pushes them onto an array. 
@@ -156,3 +166,4 @@ export default class OwnershipTree {
         }
     
     }
+
