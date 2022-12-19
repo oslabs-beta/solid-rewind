@@ -1,6 +1,6 @@
 import logo from './logo.svg';
 import styles from './App.module.css';
-import { createSignal, createEffect, getOwner, DEV, runWithOwner, useContext} from 'solid-js';
+import { createSignal, createEffect, getOwner, DEV, runWithOwner, useContext, createMemo} from 'solid-js';
 import Hello from './Hello';
 import 'solid-devtools';
 import { debugComputation, debugOwnerComputations, debugSignals, debugSignal, debugOwnerSignals, debugProps } from '@solid-devtools/logger'
@@ -10,8 +10,17 @@ import { debugComputation, debugOwnerComputations, debugSignals, debugSignal, de
 const [first, setFirst] = createSignal("AboveApp");
 
 function App() {
-  const [count, setCount] = createSignal(11);
+
+
+  const [count, setCount] = createSignal(5);
+
   const doubleCount = () => count() * 2;
+  function fibonacci(num) {
+    if (num <= 1) return 1;
+  
+    return fibonacci(num - 1) + fibonacci(num - 2);
+  }
+  const fib = createMemo(() => fibonacci(count()));
 
   createEffect(() => {
     // console.log("App__debugComputation")
@@ -44,11 +53,18 @@ function App() {
           // debugSignals(count)
           setCount(count() + 1)
         }}>+</button>
+        
+        <button onclick={() => {
+          // debugSignals(count)
+          setCount(count() + 1)
+        }}>Fib Button</button>
         <button onclick={() => {
           // debugSignals(count)
           setCount(count() - 1)
         }}>-</button>
         <div>{doubleCount()}</div>
+        <div>1. {fib()} {fib()} {fib()} {fib()} {fib()}</div>
+
       </header>
     </div>
   );
