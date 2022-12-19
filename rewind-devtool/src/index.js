@@ -1,24 +1,23 @@
-import { srInit } from './solid-rw';
+// import { srInit } from './solid-rw-wr'; // DELETE THIS 
 import { senderInit } from './sender';
 import * as stateParser from './stateParser';
+import { initSR } from './solid-rw';
 
-export function helloWorld() {
-  const message = 'Hello World from my example modern npm package!';
-  return message;
-}
-
-export function goodBye() {
-  const message = 'Goodbye from my example modern npm package!';
-  return message;
-}
 
 export function init() {
-  srInit();
+  // srInit();   // DELETE THIS 
+  initSR();
   senderInit();
-  stateParser.createDummyStateHistory();
+  stateParser.createDummyStateHistory();  //  CREATES DUMMY DATA FOR TESTING. SHOULD DELETE
 }
 
-export * from './solid-rw';
+
+// example of exporting default funcitons
+export function helloWorld() { return 'Hello World from my example modern npm package!'; }
+export function goodBye() { return 'Goodbye from my example modern npm package!'; }
+
+
+// export * from './solid-rw-wr';  // willem version. will delete once I am confident we don't need any of this code as an example
 export * from './sender';
 
 export default {
@@ -26,18 +25,3 @@ export default {
   helloWorld,
   goodBye,
 };
-
-// function helloWorld() {
-//   console.log('Hello World!');
-// }
-// function doSomethingAwesome() {
-//   console.log('Doing something awesome...');  
-// }
-// function doSomethingElse() {
-//   console.log('Now something else...'); 
-// }
-// module.exports = {
-//   helloWorld: helloWorld,
-//   doSomethingAwesome: doSomethingAwesome,
-//   doSomethingElse: doSomethingElse
-// }

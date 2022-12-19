@@ -1,3 +1,4 @@
+import { addToChangeStack } from './solid-rw';
 
 type StateObject = {
   name: string,
@@ -6,7 +7,7 @@ type StateObject = {
   value: any
 }
 
-type changeObj = {
+export type changeObj = {
   name: string,
   prev: any,
   next: any,
@@ -15,8 +16,8 @@ type changeObj = {
 }
 
 // change stacks
-const changeStack: any = [];
-const changeFutureStack: any = [];
+// const changeStack: any = [];
+// const changeFutureStack: any = [];
 
 // stack of state changes
 //const stateStack: Array<Array<StateObject>> = [];
@@ -33,7 +34,6 @@ export const createDummyStateHistory = ( amountOfHistory: number = 2 ) => {
   // compare states and find changes
   findStateChanges();
 }
-
 
 
 // compare states to find changes
@@ -74,7 +74,13 @@ const findStateChanges = () => {
 
   // long changes and push them to the change stack
   console.log('CHANGES:', changes);
-  changeStack.push(changes);
+  //changeStack.push(changes);
+
+  // add changes to change stack
+  for (const change of changes) {
+    addToChangeStack(change);
+  }
+  
 }
 
 const createChange = (obj:StateObject, changedTo = '', newItem = false) => {

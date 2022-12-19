@@ -1,5 +1,5 @@
-const debugMode = true;
-let initComplete = false;
+const debugMode = true; // turn on debug messages
+let initComplete = false; // may not be needed. This just makes sure we don't init more than once as a fail-safe.
 
 // function to send message to devtool
 export function sendData( data, type ) {
@@ -8,6 +8,7 @@ export function sendData( data, type ) {
   postMessageToDebugger(payload, type)
 }
 
+// format the data into an object with the from, type and payload. Send it.
 function postMessageToDebugger (payload, type) {
   const msgObj = { from: "FROM_PAGE", type, payload };
   // this should be send on something besides the window.
@@ -15,6 +16,7 @@ function postMessageToDebugger (payload, type) {
   if (debugMode) console.log('message sent from page', msgObj)
 }
 
+// Initilize the sender. This should only ever be run once.
 export function senderInit () {
   if (initComplete) return;
   // listen elsehwere than the window. Make a div and listen there perhase
@@ -41,14 +43,8 @@ export function senderInit () {
   };
 }
 
-
+// function to call to listen for messages from dev tool
 export function listenFor ( type, callback ) {
   // pass along only the payload to the callback
   document.addEventListener( type, (data) => callback(data.detail) );
 }
-
-
-// export declare function createSignal<T>(value: T, options?: SignalOptions<T>): Signal<T>;
-// export interface BaseOptions {
-//     name?: string;
-// }
