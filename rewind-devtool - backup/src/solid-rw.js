@@ -1,15 +1,5 @@
-import * as sender from "./sender";
-import { DEV, runWithOwner } from 'solid-js';
-import { flagDontRecordNextChange, sendStateIncrement } from "./stateParser";
-
-// call this once to set up listeners
 export function initSR() {
   setupListeners();
-}
-
-// call this once to save the original owner object //
-export function saveOwner( ownerObj ) {
-  if (owner.length === 0) owner.push( ownerObj );
 }
 
 ////////////// TIME CONTROL LISTENERS FOR EVENTS FORM CHROME DEVTOOL /////////////////////
@@ -20,69 +10,56 @@ function setupListeners() {
   sender.listenFor('LOAD_STATE', loadState);
 }
 
-// REF TO ORIGINAL OWERN
-const owner = [];
-
 // CHANGE STACKS
 const changeStack = [];
 const changeFutureStack = [];
 
-// debug function to log current change stack. attach this to a button or something for debugging
-export const logChangeStack = () => {
-  console.log ('change stack:', changeStack);
-}
-
-// pushes change to stack. called from stateParser
 export const addToChangeStack = ( change ) => {
   changeStack.push(change);
   clearFutureStack();
 }
 
-// clear the future stack. used when recording new things while in the past.
 const clearFutureStack = () => {
   changeFutureStack.length = 0;
 }
 
 // GO BACK IN TIME
-export const reverse = () => {
+const reverse = () => {
   // if stack is empty, do nothing
   if (changeStack.length === 0) return;
   // get the change to reverse
   const rev = changeStack.pop();
 
-  if (rev.store) return;   // IGNORE STORES <---- remove this when stores are supported
-
   // execute change
-  setState(rev.prev, rev.path);
+  setState();
+
   // add change to future stack
   changeFutureStack.push(rev);
 }
 
 
 // GO FORWARD IN TIME
-export const next = () => {
+const next = () => {
   // if stack is empty, do nothing
   if (changeFutureStack.length === 0) return;
   // get the next change
   const next = changeFutureStack.pop();
   
-  if (next.store) return; // IGNORE STORES <---- remove this when stores are supported
-
   // excute change
-  setState(next.next, next.path);
+  setState();
+
   // add change to change stack
   changeStack.push(next);
 }
 
-
-
-// THESE ARE USED TO TRAVEL FORWARD IN BACK MULTIPLE STEPS AT A TIME
+// Travel back or forth multiple steps
 function travelBack( data ) {
   const steps = data.payload;
   for (let i = 0; i < steps; i++) {
     reverse();
   }
 }
+
 function travelForward( data ) {
   const steps = data.payload;
   for (let i = 0; i < steps; i++) {
@@ -95,7 +72,6 @@ function travelForward( data ) {
 
 // COPY AND PASTE STATE //
 export function copyState() {
-  console.log('COPY STATE FUNCTION ENVOKED');
   copyTextToClipboard(JSON.stringify(changeStack));
 }
 
@@ -128,7 +104,6 @@ function copyTextToClipboard(text) {
 
 // load state
 export async function loadState (state) {
-  console.log('LOAD STATE FUNCTION ENVOKED');
   console.log('incoming state to load:', state);
 
   // get state from payload
@@ -146,42 +121,20 @@ export async function loadState (state) {
     const curr = stateToDo.pop();
     console.log(curr);
 
-    // push change into past stack
-    addToChangeStack( curr );
-    sendStateIncrement();
-
     // set state
-    setState(curr.next, curr.path);
+    setState();
   }
 
   // clear future stack
   clearFutureStack();
 }
 
-// call this to set the state
-const setState = ( value, path ) => {
-  runWithOwner(owner[0], async () => {
-    const source = getPathEnd(path);
 
-    // flag upcoming change as one not to record
-    flagDontRecordNextChange();
 
-    DEV.writeSignal(source, value);
-  });
-}
 
-// traverses the string path to actually find the object who's data needs to be set
-const getPathEnd = ( path ) => {
-  // get path
-  const splitPath = path.split('.');
-  // will be the end of teh path
-  let pathEnd = owner[0];
-  // traverse the path
-  for (const p of splitPath) {
-    if (p === '') continue;
-    const pathItem = p.split(/[[\]]+/);
-    pathEnd = pathEnd[pathItem[0]][Number(pathItem[1])];
-  }
-  // return the path
-  return pathEnd;
+
+//// FUNCTION FOR ROBBIE TO DO ////
+
+const setState = (x, y, z) => {
+
 }
