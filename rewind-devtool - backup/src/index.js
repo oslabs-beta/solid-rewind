@@ -2,6 +2,7 @@
 import { senderInit } from './sender';
 import * as stateParser from './stateParser';
 import { initSR } from './solid-rw';
+import { Rewind } from './Rewind';
 
 
 export function init() {
@@ -19,6 +20,8 @@ export function goodBye() { return 'Goodbye from my example modern npm package!'
 
 // export * from './solid-rw-wr';  // willem version. will delete once I am confident we don't need any of this code as an example
 export * from './sender';
+
+export { Rewind } from './Rewind';
 
 export default {
   init,
