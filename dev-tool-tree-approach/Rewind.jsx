@@ -4,9 +4,28 @@ import 'solid-devtools';
 import { debugComputation, debugOwnerComputations, debugSignals, debugSignal, debugOwnerSignals, debugProps } from '@solid-devtools/logger'
 import Tree from './Tree'
 
+import { sendData } from './temp-send-to-chrome';
+
+const stringifyCircularJSON = obj => {
+  const seen = new WeakSet();
+  return JSON.stringify(obj, (k, v) => {
+    if (v !== null && typeof v === 'object') {
+      if (seen.has(v)) return;
+      seen.add(v);
+    }
+    return v;
+  });
+};
+
 let runListenerOnce = 1;
 const Rewind = (props) => {
   const rewind = getOwner(); 
+
+  const nonCiruclar = stringifyCircularJSON(rewind);
+  console.log('nonCicular tree', JSON.parse(nonCiruclar));
+  
+  setTimeout( () => sendData(stringifyCircularJSON(nonCiruclar), 'TREE'), 500 );
+
 
 
   const changeScore = (owner) => {
@@ -79,6 +98,7 @@ const Rewind = (props) => {
             console.log("here's the app's tree without parsing", ownerObj)
             let ownerTree = await new Tree(ownerObj); 
             console.log("owner tree", ownerTree)
+
             // let sourceMapState = await ownerTree.parseSourceMap()
             // console.log("sourceMapState", sourceMapState)
             let sourcesState = await ownerTree.parseSources();
