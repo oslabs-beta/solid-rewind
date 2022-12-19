@@ -1,6 +1,6 @@
 import * as sender from "./sender";
 import { DEV, runWithOwner } from 'solid-js';
-import { flagDontRecordNextChange } from "./stateParser";
+import { flagDontRecordNextChange, sendStateIncrement } from "./stateParser";
 
 // call this once to set up listeners
 export function initSR() {
@@ -145,6 +145,10 @@ export async function loadState (state) {
     // get element of state to set
     const curr = stateToDo.pop();
     console.log(curr);
+
+    // push change into past stack
+    addToChangeStack( curr );
+    sendStateIncrement();
 
     // set state
     setState(curr.next, curr.path);

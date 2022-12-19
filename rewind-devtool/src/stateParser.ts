@@ -109,7 +109,7 @@ const findStateChanges = () => {
 }
 
 ///////////// SEND STATE CHANGE ////////////////
-function sendStateIncrement () {
+export function sendStateIncrement () {
   sendData(undefined, 'STATE_INCREMENT');
 }
 
