@@ -24,7 +24,7 @@ import { debugComputation, debugOwnerComputations, debugSignals, debugSignal, de
 const [newName, setNewName] = createSignal('AboveHello')
 
 
-const Hello = () => {
+const Hello = (props) => {
   
   // createEffect(() => {
   //   // console.log("Hello__debugComputation")
@@ -56,6 +56,8 @@ const Hello = () => {
   return (
     <>
       <div>
+        count:
+        {props.count}<br></br>
         <input ref={input} />
         <button
           onClick={(e) => {

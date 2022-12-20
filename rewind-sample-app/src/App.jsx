@@ -4,13 +4,25 @@ import { createSignal, createEffect, getOwner, DEV, runWithOwner, useContext, cr
 import Hello from './Hello';
 import 'solid-devtools';
 import { debugComputation, debugOwnerComputations, debugSignals, debugSignal, debugOwnerSignals, debugProps } from '@solid-devtools/logger'
-
+import { buildComponentTree } from './assets/compTree';
 
 
 const [first, setFirst] = createSignal("AboveApp");
 
 function App() {
 
+
+  logCompTree();
+
+  async function logCompTree() {
+    const rewind = await getOwner(); 
+    console.log('full tree', rewind);
+
+    console.log('SG', DEV.serializeGraph(rewind));
+    
+    const compTree = await buildComponentTree(rewind);
+    console.log('COMP TREE', compTree);
+  }
 
   const [count, setCount] = createSignal(5);
 
@@ -45,7 +57,7 @@ function App() {
         <p>
           Edit {first()}<code> src/App.jsx</code> and save to reload.
         </p>
-        < Hello/>
+        < Hello count={count}/>
         <div>The current count is... {count()}</div>
         <button onclick={[setFirst, 'jim']}>changename to Jim</button>
         <button onclick={[setFirst, 'jeff']}>changename to Jeff</button>

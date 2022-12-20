@@ -22,10 +22,19 @@ function setupListeners() {
 
 // REF TO ORIGINAL OWERN
 const owner = [];
+const childMap = [{}];
 
 // CHANGE STACKS
 const changeStack = [];
 const changeFutureStack = [];
+
+// get comp tree
+export const getChildMap = () => childMap[0];
+// set comp tree
+export const setChildMap = cm => {
+  Object.assign(childMap[0], cm);
+}
+
 
 // debug function to log current change stack. attach this to a button or something for debugging
 export const logChangeStack = () => {

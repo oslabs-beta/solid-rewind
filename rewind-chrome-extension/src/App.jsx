@@ -2,6 +2,7 @@ import logo from './logo.svg';
 import styles from './App.module.css';
 
 import TimeTravel from './TimeTravel';
+import TreeView from './TreeView';
 
 // import {listenFor} from './listener';
 
@@ -16,11 +17,8 @@ function App() {
 
   return (
     <div class={styles.App}>
+      <TreeView />
       <header class={styles.header}>
-        {/* <input type="radio" name="radio-1" className="radio" checked />
-        <input type="radio" name="radio-1" className="radio" />
-        <button class="btn" >Hello daisyUI</button>
-        <button class="btn btn-primary">One</button> */}
         <TimeTravel />
       </header>
     </div>

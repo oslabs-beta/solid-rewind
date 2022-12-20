@@ -1,4 +1,4 @@
-import { addToChangeStack } from './solid-rw';
+import { addToChangeStack, getChildMap } from './solid-rw';
 import { sendData } from './sender';
 
 type StateObject = {
@@ -13,7 +13,8 @@ export type changeObj = {
   prev: any,
   next: any,
   path: string,
-  store: boolean
+  store: boolean,
+  observers: any
 }
 
 // new and old state
@@ -54,7 +55,16 @@ export const analizeStateChange = ( sourcesState: any ) => {
 }
 
 
-
+// get all observers of this state item
+const getObserverNamesFromChange = ( change: any ) : any => {
+  const observers = []
+  if (change?.underlyingSource?.observers?.length) {
+    for (const o of change.underlyingSource.observers) {
+      observers.push(o.name);
+    }
+  }
+  return observers;
+}
 
 
 
@@ -105,6 +115,9 @@ const findStateChanges = () => {
     sendStateIncrement();
     // add change to stack
     addToChangeStack(change);
+
+    // this is not the right place for this... or at least not the only place
+    logNamedAppThatChangeAffected(change.observers);
   }
 }
 
@@ -120,10 +133,29 @@ const createChange = (obj:StateObject, changedTo = '', newItem = false) => {
     prev: newItem ? '__new__' : obj.value,
     next: changedTo,
     path: obj.path,
-    store: obj.store
+    store: obj.store,
+    observers: getObserverNamesFromChange(obj)
   }
   return change;
 }
 
+
+// WHEN DO I CALL THIS ?????
+const logNamedAppThatChangeAffected = ( observers: Array<string> ) => {
+  console.log('changes observers:', observers);
+
+  const childMap = getChildMap();
+  console.log('child map:', childMap);
+
+  if (!childMap) {
+    console.log("ALERT!!! COMP TREE EMPTY!")
+    return;
+  }
+
+  for (const o of observers) {
+    console.log("COMPONENT TOUCHED:", childMap[o])
+  }
+
+}
 
 

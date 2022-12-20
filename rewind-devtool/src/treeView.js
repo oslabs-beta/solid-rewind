@@ -1,12 +1,13 @@
 import { sendData } from "./sender";
 
-
 export const sendTreeToChrome = tree => {
-  const nonCiruclar = stringifyCircularJSON(rewind);
+  console.log('sending inital tree to app...');
+
+  const nonCiruclar = stringifyCircularJSON(tree);
   console.log('nonCicular tree', JSON.parse(nonCiruclar));
   
   // give chrome tool a moment to load before we send the tree.
-  setTimeout( () => sendData(stringifyCircularJSON(nonCiruclar), 'TREE'), 500 );
+  sendData(nonCiruclar, 'TREE');
 }
 
 // uncircularize object json

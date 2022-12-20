@@ -3,6 +3,7 @@ import {  getOwner, DEV, runWithOwner } from 'solid-js';
 import 'solid-devtools';
 import Tree from './Tree'
 import * as rewind from './rewind';
+import { buildComponentTree } from './compTree';
 
 import { analizeStateChange, unflagDontRecordNextChange, getDontRecordFlag } from './stateParser';
 import { reverse, next, saveOwner, logChangeStack } from './solid-rw';
@@ -21,12 +22,30 @@ const Rewind = (props) => {
   //establish the owner at the top level component, so that we can pass this owner to internal functions and keep it consistent 
   //if we tried to run these internal functions with their internal owner, we'd see a very different ownership tree
   const rewind = getOwner(); 
+  console.log('full tree', rewind);
+
+  // console.log('SG', DEV.serializeGraph(rewind));
+  // console.log('comp tree', buildComponentTree(rewind));
 
   // save owner
   saveOwner(rewind);
 
+  // get intial comp tree
+  getCompTreeAndChildMap();
+
+  async function getCompTreeAndChildMap() {    
+    const compTree = await buildComponentTree(rewind);
+    console.log("COMP TREE:", compTree);
+  }
+
   // send tree to chrome
-  sendTreeToChrome(rewind);
+  const sendTreeStructure = async () => {
+    let ownerTree = await new Tree(rewind);  // replace with my own tree calculator
+    console.log("sending owner tree to chrome", ownerTree)
+    sendTreeToChrome(ownerTree) // send to chrome extention
+  }
+  // give it a moment then call
+  setTimeout( sendTreeStructure, 2000 );
 
   //function allows us to reset state of a signal
   const changeScore = ( value, path ) => {
@@ -55,12 +74,15 @@ const Rewind = (props) => {
         if (runListenerOnce === 0) {
           runWithOwner(rewind, async () => {
             console.log("====================================")
+            console.log('SERIALIZED GRAPH', DEV.serializeGraph(rewind));
             let ownerObj = await getOwner();
             console.log("here's the app's tree without parsing", ownerObj)
             let ownerTree = await new Tree(ownerObj); 
             console.log("owner tree", ownerTree)
             let sourcesState = await ownerTree.parseSources();
             console.log('sourcesState', sourcesState)
+            // get and save comp tree
+            getCompTreeAndChildMap();
             // send this sourcesState to stateParser
             analizeStateChange( sourcesState );
           })

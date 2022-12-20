@@ -17,8 +17,11 @@ code {
 }
 
 .treeView {
+  max-height: 250px;
+  overflow: scroll;
   color: black;
   font-size: 11px;
+  background-color: antiquewhite;
 }
 
 /* button {

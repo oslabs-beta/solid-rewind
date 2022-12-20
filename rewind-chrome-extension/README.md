@@ -1,34 +1,36 @@
-## Usage
+# Solid Rewind
 
-Those templates dependencies are maintained via [pnpm](https://pnpm.io) via `pnpm up -Lri`.
+A time-travel debugger for SoldJs.
+This works with our chrome extention found here: _link to will be posted soon_
+<br><br>
 
-This is the reason you see a `pnpm-lock.yaml`. That being said, any package manager will work. This file can be safely be removed once you clone a template.
+### ATTENTION: This extention is IN DEVELOPMENT.
 
-```bash
-$ npm install # or pnpm install or yarn install
+Please expect a full relese by Jan 15th. Features that will be done then:
+
+- support for sate in stores.
+- dev-only code. currently our code runs even in production mode.
+- (potential) tree view
+
+# instructions:
+
+install our package with
+
+```javascript
+npm i solid-rewind
 ```
 
-### Learn more on the [Solid Website](https://solidjs.com) and come chat with us on our [Discord](https://discord.com/invite/solidjs)
+Then import our Rewind component at the top level of your app.
+Then wrap your top level component in our <Rewind> component.
 
-## Available Scripts
+```javascript
+import Rewind from "solid-rewind";
 
-In the project directory, you can run:
+render(() => {
+  <Rewind>
+    <App />
+  </Rewind>;
+}, document.getElementById("root"));
+```
 
-### `npm dev` or `npm start`
-
-Runs the app in the development mode.<br>
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
-
-The page will reload if you make edits.<br>
-
-### `npm run build`
-
-Builds the app for production to the `dist` folder.<br>
-It correctly bundles Solid in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.<br>
-Your app is ready to be deployed!
-
-## Deployment
-
-You can deploy the `dist` folder to any static host provider (netlify, surge, now, etc.)
+That's it. Build your project and open our chrome extention along-side it.
