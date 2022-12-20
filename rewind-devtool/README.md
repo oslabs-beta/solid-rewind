@@ -2,13 +2,11 @@
 # Solid Rewind
 
 A time-travel debugger for SoldJs.
-This works with our chrome extention found here: <extention>
+This works with our chrome extention found here: *link to will be posted soon*
+<br><br>
 
-
-##ATTENTION: This extention is IN DEVELOPMENT.
-Please expect a full relese by Jan 15th. 
-
-Features that will be done then:
+### ATTENTION: This extention is IN DEVELOPMENT.
+Please expect a full relese by Jan 15th. Features that will be done then:
 * support for sate in stores.
 * dev-only code. currently our code runs even in production mode.
 * (potential) tree view
@@ -34,4 +32,4 @@ render( () => {
 
 ```
 
-That's it! Build your project and open our chrome extention along-side it.
+That's it. Build your project and open our chrome extention along-side it.
