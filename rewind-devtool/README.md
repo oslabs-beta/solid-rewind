@@ -5,7 +5,7 @@ A time-travel debugger for SoldJs.
 This works with our chrome extention found here: <extention>
 
 
-###ATTENTION: This extention is IN DEVELOPMENT.
+##ATTENTION: This extention is IN DEVELOPMENT.
 Please expect a full relese by Jan 15th. 
 
 Features that will be done then:
