@@ -17,6 +17,7 @@ function Level2(props) {
     <div id='top' class='level'>
     level2: {state()}<br></br>
       <Level3 drill={props.drill}/>
+      <Level3 drill={props.drill}/>
       <button onclick={updateStaet}>Level 2</button>
     </div>
   );

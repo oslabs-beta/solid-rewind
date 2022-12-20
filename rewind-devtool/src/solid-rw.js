@@ -2,6 +2,8 @@ import * as sender from "./sender";
 import { DEV, runWithOwner } from 'solid-js';
 import { flagDontRecordNextChange, sendStateIncrement } from "./stateParser";
 
+const debugMode = true;
+
 // call this once to set up listeners
 export function initSR() {
   setupListeners();
@@ -59,8 +61,10 @@ export const reverse = () => {
   // get the change to reverse
   const rev = changeStack.pop();
 
+  if (debugMode) console.log("REVERSE CHANGE:", rev);
+  
   if (rev.store) return;   // IGNORE STORES <---- remove this when stores are supported
-
+  
   // execute change
   setState(rev.prev, rev.path);
   // add change to future stack
@@ -171,6 +175,9 @@ export async function loadState (state) {
 const setState = ( value, path ) => {
   runWithOwner(owner[0], async () => {
     const source = getPathEnd(path);
+
+    if (debugMode) console.log("SOURCE TO SET:", source, "  PATH", path);
+    if (debugMode) console.log("TREE", owner[0]);
 
     // flag upcoming change as one not to record
     flagDontRecordNextChange();

@@ -18,7 +18,7 @@ function App() {
 
   return (
     <div id='top' class='level'>
-    top: {state()}<br></br>
+      top: {state()}<br></br>
       <Level2 drill={state} />
       <button onclick={updateStaet}>App Level</button>
     </div>
