@@ -16,6 +16,11 @@ code {
     monospace;
 }
 
+.treeView {
+  color: black;
+  font-size: 11px;
+}
+
 /* button {
   background-color: #45a0ce;
   border: none;

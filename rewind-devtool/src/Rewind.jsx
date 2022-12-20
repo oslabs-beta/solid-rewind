@@ -6,6 +6,7 @@ import * as rewind from './rewind';
 
 import { analizeStateChange, unflagDontRecordNextChange, getDontRecordFlag } from './stateParser';
 import { reverse, next, saveOwner, logChangeStack } from './solid-rw';
+import { sendTreeToChrome } from './treeView';
 
 // initilize rewind
 rewind.init();
@@ -23,6 +24,9 @@ const Rewind = (props) => {
 
   // save owner
   saveOwner(rewind);
+
+  // send tree to chrome
+  sendTreeToChrome(rewind);
 
   //function allows us to reset state of a signal
   const changeScore = ( value, path ) => {

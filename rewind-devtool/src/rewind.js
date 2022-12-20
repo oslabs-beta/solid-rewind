@@ -1,6 +1,7 @@
 import { senderInit } from './sender';
 import * as stateParser from './stateParser';
 import { initSR } from './solid-rw';
+import Rewind from './Rewind';
 
 
 // failsafe to be sure this can only be initilized once
@@ -19,9 +20,6 @@ export function init() {
 
 // do i need this
 export * from './sender';
-
-
-
 
 
 
