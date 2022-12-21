@@ -1,5 +1,6 @@
 import { setChildMap } from "./solid-rw";
 
+const debugMode = false;
 
 export async function buildComponentTree(root) {
   //console.log('PRE TREEED ROOT', root);
@@ -67,7 +68,7 @@ export async function buildComponentTree(root) {
 
   function buildMapOfChildren( cName, parent ) {
     if (!cName || !parent) return;
-    console.log('adding to child map - CHILD', cName, 'parentObj:', parent);
+    if (debugMode) console.log('adding to child map - CHILD', { cName, parent } );
     // if no value is found, make a new set
     if (childMap[cName] === undefined) {
       childMap[cName] = new Set();
@@ -75,7 +76,7 @@ export async function buildComponentTree(root) {
     // add to child map
     childMap[cName].add(parent);
     // log it
-    console.log('child:', cName, childMap[cName], '!');
+    if (debugMode) console.log('child:', cName, childMap[cName]);
   }
 
   // saveChildMap

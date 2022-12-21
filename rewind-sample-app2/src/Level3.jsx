@@ -4,7 +4,7 @@ import Level4 from './Level4';
 
 
 
-function Level3(props) {
+const Level33o = (props) => {
 
   const [state, setStateData] = createSignal('level3');
 
@@ -25,4 +25,4 @@ function Level3(props) {
 
 
 
-export default Level3;
+export default Level33o;
