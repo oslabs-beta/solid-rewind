@@ -8,6 +8,7 @@ import { buildComponentTree } from './compTree';
 import { analizeStateChange, unflagDontRecordNextChange, getDontRecordFlag } from './stateParser';
 import { reverse, next, saveOwner, logChangeStack } from './solid-rw';
 import { sendTreeToChrome } from './treeView';
+import { rewindStores, addStoreStateToHistory  } from './rewind-store';
 
 // initilize rewind
 rewind.init();
@@ -63,6 +64,7 @@ const Rewind = (props) => {
  
     const GraphUpdateListeners = new Set();
     const setUpRenderChangeEvent = () => {
+      GraphUpdateListeners.add(addStoreStateToHistory);
       GraphUpdateListeners.add(async () => {
         // dont run this at all if we are reversing or nexting
         if (getDontRecordFlag()) {
@@ -105,7 +107,8 @@ const Rewind = (props) => {
       {/* <button onClick={() => logChangeStack()}>log changes</button>
       <button onClick={() => reverse()}>Rewind</button>
       <button onClick={() => next()}>Forward</button> */}
-      {/* <button onClick={() => changeScore(rewind, 15)}>Set Back State</button> */}
+      <button onClick={() => rewindStores(true)}>Rewind State</button>
+      <button onClick={() => rewindStores(false)}>Fast Forward State</button>
     <div class='rewind'>{props.children} </div>
     </>
     )
