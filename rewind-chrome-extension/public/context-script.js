@@ -1,5 +1,6 @@
 /* global chrome */
 
+const debugMode = false;
 
 ///////// FROM APP TOO DEV TOOL //////////
 
@@ -10,7 +11,7 @@ window.addEventListener("message", function(event) {
 
   // send from page to devtoool
   if (event.data.from && event.data.from === "FROM_PAGE") {
-    console.log('FROM_PAGE - in content-script.js: ', event.data);
+    if (debugMode) console.log('c% context-script.js - ', 'color:orange; font-weight:bold', 'FROM_PAGE - in content-script.js: ', event.data);
     sendMessageToDevTool(event.data);
   }
 });
@@ -21,7 +22,7 @@ const sendMessageToDevTool = async ( message ) => {
 }
 const sendReplayToAppWeAreDebugging = (payload, type) => {
   let data = { from: "FROM_DEVTOOL", type, payload };
-  console.log('From devtool to page:', data);
+  if (debugMode) console.log('c% context-script.js - ', 'color:orange; font-weight:bold', 'From devtool to page:', data);
   window.postMessage(data, "*"); // send to div not window.
 }
 

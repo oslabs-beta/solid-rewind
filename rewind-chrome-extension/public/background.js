@@ -1,21 +1,24 @@
 /* global chrome */
 /* global browser */
 
+const debugMode = false;
+
 // INTERCEPT MESSAGES and sends them to the PAGE
 chrome.runtime.onConnect.addListener(function(devToolsConnection) {
   chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
 
-      console.log("background.js recieved:", request);
+    if (debugMode) console.log("background.js - recieved:", request);
       devToolsConnection.postMessage(request)
 
       // in the event of a reply (I.E. a message from the dev tool to the app we are debugging)
       if (request.reply) {
-        console.log("reply recieved", request.reply);
+        if (debugMode) console.log("background.js - reply recieved", request.reply);
 
         sendReplayToAppWeAreDebugging(request.reply, 'type...');
 
+        // WTF IS THIS!?!?!
         chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
-          console.log('sending to each tab... total tabs:', tabs.length);
+          if (debugMode) console.log('background.js - sending to each tab... total tabs:', tabs.length);
           for (const tab of tabs) {
             chrome.tabs.sendMessage(tab.id, { greeting: "Hi from background script" })
           }
@@ -25,7 +28,7 @@ chrome.runtime.onConnect.addListener(function(devToolsConnection) {
 })
 
 function sendReplayToAppWeAreDebugging(payload, type) {
-  console.log("sending from backgroud.js")
+  if (debugMode) console.log("background.js - sending from backgroud.js")
   let data = { from: "FROM_DEVTOOL", type, payload };
   window.postMessage(data, "*");
 }

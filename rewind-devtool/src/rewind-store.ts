@@ -1,5 +1,7 @@
 import { DEV } from "solid-js/store";
 import {  getOwner, runWithOwner, createSignal, batch, $PROXY } from 'solid-js';
+import { ChangeObj, sendStateIncrement } from "./stateParser";
+import { addToChangeStack } from './solid-rw';
 
 
 let CurrentUpdates = new Map();
@@ -34,7 +36,6 @@ export function rewindStores(rewind) {
             if (current) past.push(current)
             current = future.pop();
             current.forEach((OldStateCopy, state) => {
-            console.log(OldStateCopy, state)
             map.set(state, OldStateCopy)});
         }
         else return;
@@ -42,8 +43,6 @@ export function rewindStores(rewind) {
         trigger();
 
         map.forEach((OldStateCopy, state) => {
-        console.log("STARTcopy", JSON.stringify(OldStateCopy))
-        console.log("STARTstate", JSON.stringify(state))
 
 
 
@@ -67,17 +66,30 @@ export function rewindStores(rewind) {
             stateKeys.delete(key);
             }
             for (const key of stateKeys) {
-            console.log("meee", state[key])
             delete state[key];
             nodes[key]?.$(undefined);
             }
         }
         nodes._?.$();
-        console.log("ENDSTATE", JSON.stringify(state))
 
 
         });
     });
+}
+
+const logChangeToChromeTool = () => {
+    const change: ChangeObj = {
+        name: '',
+        prev: '',
+        next: '',
+        path: '',
+        store: true,
+        observers: []
+    }
+    // send message that state changed
+    sendStateIncrement();
+    // add change to stack
+    addToChangeStack(change);
 }
 
 export const addStoreStateToHistory = () => {
@@ -89,6 +101,7 @@ export const addStoreStateToHistory = () => {
         if (!CurrentUpdates.size) return;
         past.push(CurrentUpdates);
         CurrentUpdates = new Map();
+        logChangeToChromeTool(); // store change
     }
 
   }

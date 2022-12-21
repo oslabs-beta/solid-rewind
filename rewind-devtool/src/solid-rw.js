@@ -1,8 +1,10 @@
 import * as sender from "./sender";
 import { DEV, runWithOwner } from 'solid-js';
 import { flagDontRecordNextChange, sendStateIncrement } from "./stateParser";
+import { rewindStores } from "./rewind-store";
+import log from "./logger";
 
-const debugMode = true;
+const debugMode = false;
 
 // call this once to set up listeners
 export function initSR() {
@@ -46,6 +48,7 @@ export const logChangeStack = () => {
 // pushes change to stack. called from stateParser
 export const addToChangeStack = ( change ) => {
   changeStack.push(change);
+  console.log('CHANGE STACK', changeStack);
   clearFutureStack();
 }
 
@@ -62,13 +65,18 @@ export const reverse = () => {
   const rev = changeStack.pop();
 
   if (debugMode) console.log("REVERSE CHANGE:", rev);
-  
-  if (rev.store) return;   // IGNORE STORES <---- remove this when stores are supported
+
+  if (rev.store) console.log("R-STORE");
   
   // execute change
-  setState(rev.prev, rev.path);
+  if (!rev.store) setState(rev.prev, rev.path);
+  else rewindStores(true); // if it is a store
+
   // add change to future stack
   changeFutureStack.push(rev);
+
+  // log change stack
+  log(changeStack, 'change stack');
 }
 
 
@@ -78,13 +86,18 @@ export const next = () => {
   if (changeFutureStack.length === 0) return;
   // get the next change
   const next = changeFutureStack.pop();
-  
-  if (next.store) return; // IGNORE STORES <---- remove this when stores are supported
+
+  if (next.store) console.log("N-STORE");
 
   // excute change
-  setState(next.next, next.path);
+  if (!next.store) setState(next.next, next.path);
+  else rewindStores(false); // handle stores
+
   // add change to change stack
   changeStack.push(next);
+
+  // log change stack
+  log(changeStack, 'change stack');
 }
 
 

@@ -11,9 +11,6 @@ const [first, setFirst] = createSignal("AboveApp");
 
 function App() {
 
-
-  //logCompTree();
-
   async function logCompTree() {
     const rewind = await getOwner(); 
     console.log('full tree', rewind);

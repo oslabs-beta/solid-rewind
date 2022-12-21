@@ -1,8 +1,8 @@
 import {  getOwner, DEV, runWithOwner } from 'solid-js';
 
 import 'solid-devtools';
-import Tree from './Tree'
-import * as rewind from './rewind';
+import Tree from './tree'
+import { init } from './rewind-init';
 import { buildComponentTree } from './compTree';
 
 import { analizeStateChange, unflagDontRecordNextChange, getDontRecordFlag } from './stateParser';
@@ -10,8 +10,11 @@ import { reverse, next, saveOwner, logChangeStack } from './solid-rw';
 import { sendTreeToChrome } from './treeView';
 import { rewindStores, addStoreStateToHistory  } from './rewind-store';
 
+// DEBUG
+const debugMode = false;
+
 // initilize rewind
-rewind.init();
+init();
 
 //this helps to manage the listener, so that changes are only observed once
 //we should clean this up to make it into a boolean
@@ -22,27 +25,27 @@ const Rewind = (props) => {
   
   //establish the owner at the top level component, so that we can pass this owner to internal functions and keep it consistent 
   //if we tried to run these internal functions with their internal owner, we'd see a very different ownership tree
-  const rewind = getOwner(); 
-  console.log('full tree', rewind);
+  const owner = getOwner(); 
+  if (debugMode) console.log('full tree', owner);
 
   // console.log('SG', DEV.serializeGraph(rewind));
   // console.log('comp tree', buildComponentTree(rewind));
 
   // save owner
-  saveOwner(rewind);
+  saveOwner(owner);
 
   // get intial comp tree
   getCompTreeAndChildMap();
 
   async function getCompTreeAndChildMap() {    
-    const compTree = await buildComponentTree(rewind);
-    console.log("COMP TREE:", compTree);
+    const compTree = await buildComponentTree(owner);
+    if (debugMode) console.log("COMP TREE:", compTree);
   }
 
   // send tree to chrome
   const sendTreeStructure = async () => {
-    let ownerTree = await new Tree(rewind);  // replace with my own tree calculator
-    console.log("sending owner tree to chrome", ownerTree)
+    let ownerTree = await new Tree(owner);  // replace with my own tree calculator
+    if (debugMode) console.log("sending owner tree to chrome", ownerTree)
     sendTreeToChrome(ownerTree) // send to chrome extention
   }
   // give it a moment then call
@@ -58,13 +61,14 @@ const Rewind = (props) => {
         })
   }
 
+  addStoreStateToHistory();
+
   //listener watches for changes in the reactive graph
   //when there is a state change in solid, this listener will run
   const listen = async () => {
  
     const GraphUpdateListeners = new Set();
     const setUpRenderChangeEvent = () => {
-      GraphUpdateListeners.add(addStoreStateToHistory);
       GraphUpdateListeners.add(async () => {
         // dont run this at all if we are reversing or nexting
         if (getDontRecordFlag()) {
@@ -74,15 +78,15 @@ const Rewind = (props) => {
 
         runListenerOnce--
         if (runListenerOnce === 0) {
-          runWithOwner(rewind, async () => {
-            console.log("====================================")
-            console.log('SERIALIZED GRAPH', DEV.serializeGraph(rewind));
+          runWithOwner(owner, async () => {
+            if (debugMode) console.log("====================================")
+            if (debugMode) console.log('SERIALIZED GRAPH', DEV.serializeGraph(owner));
             let ownerObj = await getOwner();
-            console.log("here's the app's tree without parsing", ownerObj)
+            if (debugMode) console.log("here's the app's tree without parsing", ownerObj)
             let ownerTree = await new Tree(ownerObj); 
-            console.log("owner tree", ownerTree)
+            if (debugMode) console.log("owner tree", ownerTree)
             let sourcesState = await ownerTree.parseSources();
-            console.log('sourcesState', sourcesState)
+            if (debugMode) console.log('sourcesState', sourcesState)
             // get and save comp tree
             getCompTreeAndChildMap();
             // send this sourcesState to stateParser
@@ -91,7 +95,9 @@ const Rewind = (props) => {
         }
       })
       GraphUpdateListeners.add(() => runListenerOnce++)
-      const runListeners = () => GraphUpdateListeners.forEach(f => f())
+      const runListeners = () => {
+        GraphUpdateListeners.forEach(f => f());
+      }
       if (typeof window._$afterUpdate === 'function') {
         GraphUpdateListeners.add(window._$afterUpdate)
       }

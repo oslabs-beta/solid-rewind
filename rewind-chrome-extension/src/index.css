@@ -17,7 +17,7 @@ code {
 }
 
 .treeView {
-  max-height: 250px;
+  max-height: 60px;
   overflow: scroll;
   color: black;
   font-size: 11px;

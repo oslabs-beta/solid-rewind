@@ -1,6 +1,9 @@
 import { addToChangeStack, getChildMap } from './solid-rw';
 import { sendData } from './sender';
 
+const debugMode = false;
+const debugShowStore = false;
+
 type StateObject = {
   name: string,
   path: string,
@@ -8,7 +11,7 @@ type StateObject = {
   value: any
 }
 
-export type changeObj = {
+export type ChangeObj = {
   name: string,
   prev: any,
   next: any,
@@ -37,15 +40,15 @@ export const getDontRecordFlag = () => {
 
 export const analizeStateChange = ( sourcesState: any ) => {
 
-  console.log("INCOMING STATE CHANGE TO ANALIZE:", sourcesState);
+  if (debugMode) console.log("INCOMING STATE CHANGE TO ANALIZE:", sourcesState);
 
-  console.log('oldState initial:', stateChange);
+  if (debugMode) console.log('oldState initial:', stateChange);
 
   // add state to our last / newState
   stateChange.push( sourcesState );
 
-  console.log('oldState:', stateChange[0]);
-  console.log('newState:', stateChange[1]);
+  if (debugMode) console.log('oldState:', stateChange[0]);
+  if (debugMode) console.log('newState:', stateChange[1]);
 
   // if newState exists, compare the two
   if (stateChange.length === 2) findStateChanges();
@@ -106,7 +109,7 @@ const findStateChanges = () => {
   }
 
   // long changes and push them to the change stack
-  console.log('CHANGES:', changes);
+  if (debugShowStore) console.log('CHANGES:', changes);
   //changeStack.push(changes);
 
   // add changes to change stack
@@ -128,7 +131,7 @@ export function sendStateIncrement () {
 
 
 const createChange = (obj:StateObject, changedTo = '', newItem = false) => {
-  const change: changeObj = {
+  const change: ChangeObj = {
     name: obj.name,
     prev: newItem ? '__new__' : obj.value,
     next: changedTo,
@@ -142,18 +145,18 @@ const createChange = (obj:StateObject, changedTo = '', newItem = false) => {
 
 // WHEN DO I CALL THIS ?????
 const logNamedAppThatChangeAffected = ( observers: Array<string> ) => {
-  console.log('changes observers:', observers);
+  if (debugMode) console.log('changes observers:', observers);
 
   const childMap = getChildMap();
-  console.log('child map:', childMap);
+  if (debugMode) console.log('child map:', childMap);
 
   if (!childMap) {
-    console.log("ALERT!!! COMP TREE EMPTY!")
+    if (debugMode) console.log("ALERT!!! COMP TREE EMPTY!")
     return;
   }
 
   for (const o of observers) {
-    console.log("COMPONENT TOUCHED:", childMap[o])
+    if (debugMode) console.log("COMPONENT TOUCHED:", childMap[o])
   }
 
 }
