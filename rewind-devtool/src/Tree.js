@@ -110,7 +110,7 @@ export default class OwnershipTree {
                     same name as the signal already in our stack, we check if that signal is being observed by the exact same components
                     If not, we know it's a unique signal and we add it to our stack at the relevant key
                     */
-                    if (source?.name[0].toString() == 's') {
+                    if (source?.name && source.name[0].toString() == 's') {
                         //initially, the stack's values will be an array of signals. Each signal in
                         // the respective array will have the same name, but a unique set of observers
                         if (!stack[source.name]) stack[source.name] = [];
