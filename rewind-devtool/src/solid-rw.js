@@ -5,6 +5,7 @@ import { rewindStores } from "./rewind-store";
 import log from "./logger";
 
 const debugMode = false;
+const consoleLogChangeStack = true;
 
 // call this once to set up listeners
 export function initSR() {
@@ -42,13 +43,14 @@ export const setChildMap = cm => {
 
 // debug function to log current change stack. attach this to a button or something for debugging
 export const logChangeStack = () => {
-  console.log ('change stack:', changeStack);
+  log(changeStack, 'solid-rw.js: CHANGE STACK:', 'DarkViolet')
+  // console.log ('CHANGE STACK:', changeStack);
 }
 
 // pushes change to stack. called from stateParser
 export const addToChangeStack = ( change ) => {
   changeStack.push(change);
-  console.log('CHANGE STACK', changeStack);
+  if (consoleLogChangeStack) logChangeStack();
   clearFutureStack();
 }
 

@@ -13,7 +13,6 @@ function App() {
   const updateStaet = () => {
     if (state() === 'app-level-set') setStateData( 'app-level' );
     else setStateData( 'app-level-set' );
-    console.log("WTF");
   }
 
   return (

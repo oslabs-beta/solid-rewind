@@ -1,5 +1,6 @@
 import { addToChangeStack, getChildMap } from './solid-rw';
 import { sendData } from './sender';
+import log from './logger';
 
 const debugMode = false;
 const debugShowStore = false;
@@ -87,11 +88,14 @@ const findStateChanges = () => {
 
   // checks for elements that were changed or removed
   for (const k of oldKeys) {
+
     // key removed
-    if (!newState[k]) {
-      const change = createChange(oldState[k], '__removed__');
-      changes.push(change);
+    if (!newState[k]) { // dont need this
+      log(['REMOVED STATE', k], 'NOTE!', 'red');
+      //const change = createChange(oldState[k], '__removed__');
+      //changes.push(change);
     }
+
     // change occured
     else if (oldState[k].value != newState[k].value) {
       const change = createChange(oldState[k], newState[k].value);
@@ -102,11 +106,13 @@ const findStateChanges = () => {
   }
 
   // next add changes that are new elements
+  /*
   const newKeys = Object.keys(remainingNewKeys);
   for (const k of newKeys) {
     const change = createChange(newState[k], newState[k].value, true);
     changes.push(change);
   }
+  */
 
   // long changes and push them to the change stack
   if (debugShowStore) console.log('CHANGES:', changes);
@@ -132,7 +138,6 @@ export function sendStateIncrement () {
 
 
 const createChange = (obj:StateObject, changedTo = '', newItem = false) => {
-  console.log('here is the state obj', obj)
   const change: ChangeObj = {
     name: obj.name,
     prev: newItem ? '__new__' : obj.value,
