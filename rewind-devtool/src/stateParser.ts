@@ -25,6 +25,7 @@ export type ChangeObj = {
 
 // new and old state
 const stateChange: any = [];
+const stateHistory: any = [];
 
 
 const flagDontRecord = [false];
@@ -41,7 +42,7 @@ export const getDontRecordFlag = () => {
   return flagDontRecord[0];
 }
 
-export const analizeStateChange = ( sourcesState: any ) => {
+export const analizeStateChange = ( sourcesState: any, back = false ) => {
   if (debugMode) log(['stateParser.ts'], `NEW STATE TO PRASE ${debugIncrement[0]}`)
   debugIncrement[0]++;
 
@@ -57,8 +58,15 @@ export const analizeStateChange = ( sourcesState: any ) => {
   // if newState exists, compare the two
   if (stateChange.length === 2) findStateChanges();
 
+  // push old state into stateHistory
+  stateHistory.push(stateChange[0]);
   // move new state to lastState
   stateChange[0] = stateChange.pop();
+}
+
+// when we go back in time, we need to also reverse the saved state history
+export const reverseSavedStateHistory = () => {
+  stateChange[0] = stateHistory.pop();
 }
 
 

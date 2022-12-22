@@ -1,6 +1,6 @@
 import * as sender from "./sender";
 import { DEV, runWithOwner } from 'solid-js';
-import { flagDontRecordNextChange, sendStateIncrement } from "./stateParser";
+import { flagDontRecordNextChange, reverseSavedStateHistory, sendStateIncrement } from "./stateParser";
 import { rewindStores } from "./rewind-store";
 import log from "./logger";
 
@@ -86,6 +86,9 @@ export const reverse = () => {
 
   // add change to future stack
   changeFutureStack.push(rev);
+
+  // revese saved state history
+  reverseSavedStateHistory();
 
   // log change stack
   if (debugMode) log(changeStack, 'solid-rw');

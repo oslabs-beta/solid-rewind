@@ -17,7 +17,7 @@
     "@solid-devtools/logger": "^0.5.3",
     "solid-devtools": "^0.24.0",
     "solid-js": "^1.5.1",
-    "solid-rewind": "^0.0.326",
+    "solid-rewind": "^0.0.41",
     "typescript": "^4.9.4"
   }
 }
