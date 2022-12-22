@@ -5,8 +5,8 @@
   "manifest_version": 3,
   "devtools_page": "devtools.html",
   "action": {
-    "default_popup": "index.html",
-    "default_title": "Popup"
+    // "default_popup": "index.html",
+    // "default_title": "Popup"
   },
   "background": {
     "service_worker" : "background.js"
