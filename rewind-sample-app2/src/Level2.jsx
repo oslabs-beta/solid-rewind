@@ -14,7 +14,7 @@ function Level2(props) {
   }
 
   return (
-    <div id='top' class='level'>
+    <div id='lvl2' class='level'>
     level2: {state()}<br></br>
       <Level3 drill={props.drill}/>
       <Level3 drill={props.drill}/>

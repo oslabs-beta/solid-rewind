@@ -1,4 +1,4 @@
-import { setChildMap } from "./solid-rw";
+import { setChildMap } from "../solid-rw";
 
 const debugMode = false;
 

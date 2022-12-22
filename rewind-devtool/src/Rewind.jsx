@@ -3,15 +3,16 @@ import {  getOwner, DEV, runWithOwner } from 'solid-js';
 import 'solid-devtools';
 import Tree from './tree'
 import { init } from './rewind-init';
-import { buildComponentTree } from './compTree';
+import { buildComponentTree } from './logger-treeview/compTree';
 
 import { analizeStateChange, unflagDontRecordNextChange, getDontRecordFlag } from './stateParser';
 import { reverse, next, saveOwner, logChangeStack } from './solid-rw';
-import { sendTreeToChrome } from './treeView';
-import { rewindStores, addStoreStateToHistory  } from './rewind-store';
+import { sendTreeToChrome } from './logger-treeview/treeView';
+import { rewindStores, addStoreStateToHistory, setHistoryAfterUpdate  } from './rewind-store';
+import log from './logger';
 
 // DEBUG
-const debugMode = false;
+const debugMode = true;
 
 // initilize rewind
 init();
@@ -26,12 +27,8 @@ const Rewind = (props) => {
   //establish the owner at the top level component, so that we can pass this owner to internal functions and keep it consistent 
   //if we tried to run these internal functions with their internal owner, we'd see a very different ownership tree
   const owner = getOwner(); 
-  if (debugMode) console.log('full tree', owner);
 
-  // console.log('SG', DEV.serializeGraph(rewind));
-  // console.log('comp tree', buildComponentTree(rewind));
-
-  // save owner
+  // save owner, passed to dev-tool functions
   saveOwner(owner);
 
   // get intial comp tree
@@ -39,82 +36,73 @@ const Rewind = (props) => {
 
   async function getCompTreeAndChildMap() {    
     const compTree = await buildComponentTree(owner);
-    if (debugMode) console.log("COMP TREE:", compTree);
   }
 
   // send tree to chrome
   const sendTreeStructure = async () => {
     let ownerTree = await new Tree(owner);  // replace with my own tree calculator
-    if (debugMode) console.log("sending owner tree to chrome", ownerTree)
     sendTreeToChrome(ownerTree) // send to chrome extention
   }
   // give it a moment then call
   setTimeout( sendTreeStructure, 2000 );
 
   //function allows us to reset state of a signal
-  const changeScore = ( value, path ) => {
-      runWithOwner(owner, async () => {
-        const root = await getOwner()
-        const source = root.owned[0].owned[0].owned[0].owned[6].sources[0]; 
-        //const source = 'root.' + path;
-        DEV.writeSignal(source, value);
-        })
-  }
-
   addStoreStateToHistory();
 
   //listener watches for changes in the reactive graph
   //when there is a state change in solid, this listener will run
-  const listen = async () => {
+  const listen = () => {
  
     const GraphUpdateListeners = new Set();
     const setUpRenderChangeEvent = () => {
-      GraphUpdateListeners.add(async () => {
+
+      GraphUpdateListeners.add( () => {
         // dont run this at all if we are reversing or nexting
         if (getDontRecordFlag()) {
           unflagDontRecordNextChange();
           return;
         }
-
         runListenerOnce--
+
         if (runListenerOnce === 0) {
           runWithOwner(owner, async () => {
-            if (debugMode) console.log("====================================")
-            if (debugMode) console.log('SERIALIZED GRAPH', DEV.serializeGraph(owner));
             let ownerObj = await getOwner();
-            if (debugMode) console.log("here's the app's tree without parsing", ownerObj)
             let ownerTree = await new Tree(ownerObj); 
-            if (debugMode) console.log("owner tree", ownerTree)
             let sourcesState = await ownerTree.parseSources();
-            if (debugMode) console.log('sourcesState', sourcesState)
             // get and save comp tree
             getCompTreeAndChildMap();
             // send this sourcesState to stateParser
             analizeStateChange( sourcesState );
-          })
-        }
+        })}
+
       })
-      GraphUpdateListeners.add(() => runListenerOnce++)
+
+      GraphUpdateListeners.add(() => {
+        runListenerOnce++ 
+      })
+
+      GraphUpdateListeners.add(setHistoryAfterUpdate)
+
       const runListeners = () => {
         GraphUpdateListeners.forEach(f => f());
       }
-      if (typeof window._$afterUpdate === 'function') {
-        GraphUpdateListeners.add(window._$afterUpdate)
-      }
+
+      // if (typeof window._$afterUpdate === 'function') {
+      //   GraphUpdateListeners.add(window._$afterUpdate)
+      // }
+
       window._$afterUpdate = runListeners
     }
+
     setUpRenderChangeEvent();
-  
+
+
   }
+  
   listen()
 
     return (
     <>
-      {/* <button onClick={() => logChangeStack()}>log changes</button>
-      <button onClick={() => reverse()}>Rewind</button>
-      <button onClick={() => next()}>Forward</button> */}
-      <button onClick={() => rewindStores(true)}>Rewind State</button>
-      <button onClick={() => rewindStores(false)}>Fast Forward State</button>
     <div class='rewind'>{props.children} </div>
     </>
     )

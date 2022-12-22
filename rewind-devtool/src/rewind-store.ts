@@ -1,14 +1,14 @@
 import { DEV } from "solid-js/store";
-import {  getOwner, runWithOwner, createSignal, batch, $PROXY } from 'solid-js';
+import {  createSignal, batch, $PROXY } from 'solid-js';
 import { ChangeObj, sendStateIncrement } from "./stateParser";
 import { addToChangeStack } from './solid-rw';
 
 
 let CurrentUpdates = new Map();
-  const past = []; 
-  const future = [];
-  let current 
-  const [track, trigger] = createSignal(undefined, { equals: false });
+const past = []; 
+const future = [];
+let current 
+const [track, trigger] = createSignal(undefined, { equals: false });
 
 export function rewindStores(rewind) {
     batch(() => {
@@ -96,12 +96,13 @@ export const addStoreStateToHistory = () => {
     window._$onStoreNodeUpdate = (state, property, value, prev) => {
       const Oldcopy = Array.isArray(state) ? state.slice() : Object.assign({}, state);
       CurrentUpdates.set(state, Oldcopy);
+      console.log("Current Updates" , CurrentUpdates)
     };
-    window._$afterUpdate = () => {
-        if (!CurrentUpdates.size) return;
-        past.push(CurrentUpdates);
-        CurrentUpdates = new Map();
-        logChangeToChromeTool(); // store change
-    }
-
   }
+  
+export const setHistoryAfterUpdate  = () => {
+    if (!CurrentUpdates.size) return;
+    past.push(CurrentUpdates);
+    CurrentUpdates = new Map();
+    logChangeToChromeTool(); // store change
+}

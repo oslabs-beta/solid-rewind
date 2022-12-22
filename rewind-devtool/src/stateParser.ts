@@ -114,6 +114,7 @@ const findStateChanges = () => {
 
   // add changes to change stack
   for (const change of changes) {
+    if (change.path.includes('sourceMap')) change.store = true;
     // send message that state changed
     sendStateIncrement();
     // add change to stack
@@ -131,6 +132,7 @@ export function sendStateIncrement () {
 
 
 const createChange = (obj:StateObject, changedTo = '', newItem = false) => {
+  console.log('here is the state obj', obj)
   const change: ChangeObj = {
     name: obj.name,
     prev: newItem ? '__new__' : obj.value,

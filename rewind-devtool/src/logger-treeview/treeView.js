@@ -1,4 +1,4 @@
-import { sendData } from "./sender";
+import { sendData } from "../sender";
 
 export const sendTreeToChrome = tree => {
   const nonCiruclar = stringifyCircularJSON(tree);

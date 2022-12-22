@@ -76,7 +76,7 @@ export const reverse = () => {
   changeFutureStack.push(rev);
 
   // log change stack
-  log(changeStack, 'change stack');
+  log(changeStack, 'solid-rw');
 }
 
 

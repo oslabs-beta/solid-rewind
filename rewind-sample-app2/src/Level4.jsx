@@ -21,7 +21,7 @@ function Level4() {
   }
 
   return (
-    <div id='top' class='level'>
+    <div id='lvl4' class='level'>
       level4: {state()}<br></br>
       {hider()}
       <button onclick={updateStaet}>Level 4</button>

@@ -13,7 +13,7 @@ function Hider() {
   }
 
   return (
-    <div id='top' class='level'>
+    <div id='hiderComp' class='level'>
       hider: {state()}<br></br>
       <button onclick={updateStaet}>SetHider</button>
     </div>

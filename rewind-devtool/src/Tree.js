@@ -1,5 +1,3 @@
-import { getOwner } from "solid-js";
-
 export default class OwnershipTree {
     constructor(owner, path) {
         this.name = this.getName(owner);
@@ -15,7 +13,7 @@ export default class OwnershipTree {
     }
 
     //this method gets the name for a particular owner. 
-    //it is invocted in the constructor
+    //it is invoked in the constructor
     getName(owner) {
         if (owner?.name) return owner.name; 
     }
@@ -24,25 +22,16 @@ export default class OwnershipTree {
     //it is invoked in the constructor
     getChildren(owner) {
         const childArray = [];
-            if (owner?.owned) {
-                for (const key in owner.owned) {
-                    const child = owner.owned[key];
-                    const childPath = this.path + `.owned[${key}]`
-                    if (child) {
-                        childArray.push(new OwnershipTree(child, childPath))
-                    }
-                }
-            if (owner?.owned) {
-                for (const key in owner.owned) {
-                    const child = owner.owned[key];
-                    const childPath = this.path + `.owned[${key}]`
-                    if (child) {
-                        childArray.push(new OwnershipTree(child, childPath))
-                    }
+        if (owner?.owned) {
+            for (const key in owner.owned) {
+                const child = owner.owned[key];
+                const childPath = this.path + `.owned[${key}]`
+                if (child) {
+                    childArray.push(new OwnershipTree(child, childPath))
                 }
             }
+        }
         return childArray;
-    }
     }
 
     
@@ -84,35 +73,18 @@ export default class OwnershipTree {
         if (owner?.sources) return owner.sources;    
     }
 
-    /*
-    This method parses the entire ownership tree, looking at the sourceMap
-    for signals and pushes them onto an array. 
-    it will gather all of the signals that are within components and contained within the sourceMap
-    we're abandoning it right now in favor of searching through sources
-    */
-    parseSourceMap(stack = []) {
-        //searches a particular owner for sources
-            if (this.sourceMap?.length > 0) {
-                this.sourceMap.forEach(source => {
-                        stack.push(source)
-                })
-            }
-        //moves on to the next child and recursively runs the search function on every child node in the tree
-        if (this.children) {
-            if (this.children.length > 0) {
-                this.children.forEach(child => {
-                    if (child) {
-                        child.parseSourceMap(stack)
-                    }
-                })
-            }
-        }
-        return stack;
-    }
-
     //this method parses the source key of every owner on our owner tree
-    //it returns an array of all of the relevant sources 
-    parseSources(stack = {}) {
+    //it returns an object of all of the relevant sources 
+    parseSources(stack = {}, sourceMapSources = {}) {
+
+        // uncomment if we want to explore sourceMap features
+        // if (this.sourceMap?.length > 0) {
+        //     this.sourceMap.forEach(source => {
+        //         sourceMapSources[source.name] = source;
+        //     })
+        // }
+
+
         if (this.sources?.length > 0) {
             for (let i = 0; i < this.sources.length; i++) {
                 const source = this.sources[i]
@@ -121,49 +93,68 @@ export default class OwnershipTree {
 
                     //inspect s9 more...seems to relate to rendered components 
                     //but for now we can ignore it
-                    if (source.name && source.name === 's9') continue;
+
+                    //''''consider adding this back if s9 proves unhelpful
+                    // if (source.name && source.name === 's9') continue;
+
                     //comparator seems to be a function that allows these signals/components know if they need to re-render
                     //everything that gets rendered appears to  have a comparator key
-                    if (source.comparator) {
-                        //the following if block find pure signals made with create signal
-                        if (source?.name[0].toString() == 's') {
-                            stack[source.name] = {
-                                name: source.name,
-                                value: source.value, 
-                                path: sourcePath,
-                                type: "signal",
-                                underlyingSource: source
+
+                    //'''''consider adding
+                    // if (source.comparator) {
+
+                    /*
+                    the following if block finds pure signals made with create signal. Sometimes signals
+                    can have the same signal name, even if they're in different components (for example, if a single
+                    signal is a passed down to multiple child components). If we find a signal that goes by the
+                    same name as the signal already in our stack, we check if that signal is being observed by the exact same components
+                    If not, we know it's a unique signal and we add it to our stack at the relevant key
+                    */
+                    if (source?.name[0].toString() == 's') {
+                        //initially, the stack's values will be an array of signals. Each signal in
+                        // the respective array will have the same name, but a unique set of observers
+                        if (!stack[source.name]) stack[source.name] = [];
+                        let observerString = ''
+                        if (source.observers) {
+                            const observers = source.observers;
+                            for (const obs of observers) {
+                                observerString += (obs.name + '|||'); 
                             }
                         }
-                        else if (source?.sourceMap) {
-                            sourcePath += '.sourceMap'
-                            for (const key in source.sourceMap) {
-                                if (!stack[key]) {
-                                    stack[key] = {
-                                        name: key,
-                                        value: source.value, 
-                                        path: sourcePath + `[${key}]`,
-                                        type: 'store',
-                                        underlyingSource: source.sourceMap[key]
-                                    }
-                                }
-                                
-                            } 
-                    } 
-                    // else console.log(source)
+                    
+                    if (stack[source.name].every(el => el.observerString !== observerString)) {
+                        stack[source.name].push({
+                            name: source.name,
+                            value: source.value, 
+                            path: sourcePath,
+                            type: "signal",
+                            observerString: observerString,
+                            underlyingSource: source
+                        })
+                    }
+                }
             }
         }
-    }
+
         //moves on to the next child and recursively runs the search function on every child node in the tree
-            if (this.children?.length > 0) {
-                this.children.forEach(child => {
-                    if (child) {
-                        child.parseSources(stack)
-                    }                
-                })
-            }
-            return stack
+        if (this.children?.length > 0) {
+            this.children.forEach(child => {
+                if (child) {
+                    child.parseSources(stack, sourceMapSources)
+                }                
+            })
         }
-    
+
+        const returnObj = {};
+        
+        //flattens the existing stack of signals
+        for (const keys of Object.values(stack)) {
+            keys.forEach((el, idx) => returnObj[el.name + "%%%" + idx] = el)
+        }
+
+    return Object.keys(sourceMapSources).length ? {sources: returnObj, sourceMaps: sourceMapSources} : returnObj;
+
     }
+    
+}
 
