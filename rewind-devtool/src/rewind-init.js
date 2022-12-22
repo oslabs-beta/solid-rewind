@@ -1,5 +1,4 @@
 import { senderInit } from './sender';
-import * as stateParser from './stateParser';
 import { initSR } from './solid-rw';
 
 
@@ -17,16 +16,6 @@ export function init() {
   initilized = true;
 }
 
-// do i need this
-export * from './sender';
 
 
 
-// example of exporting default funcitons
-// export function helloWorld() { return 'Hello World from my example modern npm package!'; }
-// export function goodBye() { return 'Goodbye from my example modern npm package!'; }
-// export default {
-//   init,
-//   helloWorld,
-//   goodBye,
-// };

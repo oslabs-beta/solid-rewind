@@ -1,5 +1,3 @@
-import { getOwner } from "solid-js";
-
 export default class OwnershipTree {
     constructor(owner, path) {
         this.name = this.getName(owner);
@@ -24,25 +22,16 @@ export default class OwnershipTree {
     //it is invoked in the constructor
     getChildren(owner) {
         const childArray = [];
-            if (owner?.owned) {
-                for (const key in owner.owned) {
-                    const child = owner.owned[key];
-                    const childPath = this.path + `.owned[${key}]`
-                    if (child) {
-                        childArray.push(new OwnershipTree(child, childPath))
-                    }
-                }
-            if (owner?.owned) {
-                for (const key in owner.owned) {
-                    const child = owner.owned[key];
-                    const childPath = this.path + `.owned[${key}]`
-                    if (child) {
-                        childArray.push(new OwnershipTree(child, childPath))
-                    }
+        if (owner?.owned) {
+            for (const key in owner.owned) {
+                const child = owner.owned[key];
+                const childPath = this.path + `.owned[${key}]`
+                if (child) {
+                    childArray.push(new OwnershipTree(child, childPath))
                 }
             }
+        }
         return childArray;
-    }
     }
 
     
@@ -89,11 +78,11 @@ export default class OwnershipTree {
     parseSources(stack = {}, sourceMapSources = {}) {
 
         // uncomment if we want to explore sourceMap features
-        if (this.sourceMap?.length > 0) {
-            this.sourceMap.forEach(source => {
-                sourceMapSources[source.name] = source;
-            })
-        }
+        // if (this.sourceMap?.length > 0) {
+        //     this.sourceMap.forEach(source => {
+        //         sourceMapSources[source.name] = source;
+        //     })
+        // }
 
 
         if (this.sources?.length > 0) {

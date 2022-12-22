@@ -1,5 +1,5 @@
 import { DEV } from "solid-js/store";
-import {  getOwner, runWithOwner, createSignal, batch, $PROXY } from 'solid-js';
+import {  createSignal, batch, $PROXY } from 'solid-js';
 import { ChangeObj, sendStateIncrement } from "./stateParser";
 import { addToChangeStack } from './solid-rw';
 
