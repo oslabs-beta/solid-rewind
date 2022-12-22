@@ -62,8 +62,6 @@ const Rewind = (props) => {
           unflagDontRecordNextChange();
           return;
         }
-
-        console.log("rlonce just before decrement",runListenerOnce )
         runListenerOnce--
 
         if (runListenerOnce === 0) {
@@ -80,7 +78,6 @@ const Rewind = (props) => {
       })
 
       GraphUpdateListeners.add(() => {
-        console.log("runListenerOnce", runListenerOnce)
         runListenerOnce++ 
       })
 
@@ -88,7 +85,6 @@ const Rewind = (props) => {
 
       const runListeners = () => {
         GraphUpdateListeners.forEach(f => f());
-        console.log('inside run listeners')
       }
 
       // if (typeof window._$afterUpdate === 'function') {
@@ -96,8 +92,6 @@ const Rewind = (props) => {
       // }
 
       window._$afterUpdate = runListeners
-      log('ONCE','Rewind.jsx');
-      console.log("Here's graph update listeners", GraphUpdateListeners)
     }
 
     setUpRenderChangeEvent();
