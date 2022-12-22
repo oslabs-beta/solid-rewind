@@ -85,6 +85,7 @@ const Rewind = (props) => {
 
       const runListeners = () => {
         GraphUpdateListeners.forEach(f => f());
+        runListenerOnce = 1;
       }
 
       // if (typeof window._$afterUpdate === 'function') {
