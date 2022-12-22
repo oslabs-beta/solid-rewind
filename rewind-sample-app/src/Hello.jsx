@@ -5,45 +5,15 @@ import { createStore } from "solid-js/store";
 import { debugComputation, debugOwnerComputations, debugSignals, debugSignal, debugOwnerSignals, debugProps } from '@solid-devtools/logger'
 
 
-// createEffect(() => {
-//   // console.log("ABOVEHello__debugComputation")
-//   // debugComputation()
-//   // console.log("ABOVEHello__debugOwnerComputation")
-//   // debugOwnerComputations()
-//   // console.log("ABOVEHello__debugSignal")
-//   // debugSignal()
-//   // console.log("ABOVEHello__debugOwnerSignal")
-//   // debugOwnerSignals()
-//   // console.log("ABOVEHello__debugProps")
-//   // debugProps()
-//   // console.log("ABOVEHello__debugSignals")
-//   // debugSignals()
-
-// })
 
 const [newName, setNewName] = createSignal('AboveHello')
 
 
 const Hello = (props) => {
   
-  // createEffect(() => {
-  //   // console.log("Hello__debugComputation")
-  //   // debugComputation()
-  //   // console.log("Hello__debugOwnerComputation")
-  //   // debugOwnerComputations()
-  //   // console.log("Hello__debugSignal")
-  //   // debugSignal()
-  //   // console.log("Hello__debugOwnerSignal")
-  //   // debugOwnerSignals()
-  //   // console.log("Hello__debugProps")
-  //   // debugProps()
-  //   // console.log("Hello__debugSignals")
-  //   // debugSignals()
-  
-  // })
   let input;
   let todoId = 0;
-  const [todos, setTodos] = createStore(['storeArr']);
+  const [todos, setTodos] = createStore([]);
 
   const addTodo = (text) => {
     setTodos([...todos, { id: ++todoId, text, completed: false }]);

@@ -3,7 +3,8 @@ import { render } from 'solid-js/web';
 
 import './index.css';
 import App from './App';
-import Rewind from 'solid-rewind';
+// import Rewind from 'solid-rewind';
+import Rewind from '../../rewind-devtool/src/Rewind';
 
 
 
