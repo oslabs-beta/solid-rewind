@@ -2,8 +2,10 @@ import { addToChangeStack, getChildMap } from './solid-rw';
 import { sendData } from './sender';
 import log from './logger';
 
-const debugMode = false;
+const debugMode = true;
 const debugShowStore = false;
+const debugShowPropigation = false;
+const debugIncrement = [0];
 
 type StateObject = {
   name: string,
@@ -40,9 +42,10 @@ export const getDontRecordFlag = () => {
 }
 
 export const analizeStateChange = ( sourcesState: any ) => {
+  if (debugMode) log(['stateParser.ts'], `NEW STATE TO PRASE ${debugIncrement[0]}`)
+  debugIncrement[0]++;
 
   if (debugMode) console.log("INCOMING STATE CHANGE TO ANALIZE:", sourcesState);
-
   if (debugMode) console.log('oldState initial:', stateChange);
 
   // add state to our last / newState
@@ -152,18 +155,18 @@ const createChange = (obj:StateObject, changedTo = '', newItem = false) => {
 
 // WHEN DO I CALL THIS ?????
 const logNamedAppThatChangeAffected = ( observers: Array<string> ) => {
-  if (debugMode) console.log('changes observers:', observers);
+  if (debugShowPropigation) console.log('changes observers:', observers);
 
   const childMap = getChildMap();
-  if (debugMode) console.log('child map:', childMap);
+  if (debugShowPropigation) console.log('child map:', childMap);
 
   if (!childMap) {
-    if (debugMode) console.log("ALERT!!! COMP TREE EMPTY!")
+    if (debugShowPropigation) console.log("ALERT!!! COMP TREE EMPTY!")
     return;
   }
 
   for (const o of observers) {
-    if (debugMode) console.log("COMPONENT TOUCHED:", childMap[o])
+    if (debugShowPropigation) console.log("COMPONENT TOUCHED:", childMap[o])
   }
 
 }

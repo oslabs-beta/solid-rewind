@@ -5,7 +5,7 @@ import { rewindStores } from "./rewind-store";
 import log from "./logger";
 
 const debugMode = false;
-const consoleLogChangeStack = true;
+const clChangeStack = true;
 
 // call this once to set up listeners
 export function initSR() {
@@ -43,14 +43,21 @@ export const setChildMap = cm => {
 
 // debug function to log current change stack. attach this to a button or something for debugging
 export const logChangeStack = () => {
-  log(changeStack, 'solid-rw.js: CHANGE STACK:', 'DarkViolet')
+  const stringChangeStack = []
+  for (const si of changeStack) {
+    stringChangeStack.push(JSON.stringify(si));
+    log([si, 'soid-rw.js'], `CS Item: ${changeStack.length}`, 'DarkViolet')
+  }
+  console.log('CS END');
+  //log([changeStack], `solid-rw.js: CHANGE STACK: ${changeStack.length}`, 'DarkViolet')
   // console.log ('CHANGE STACK:', changeStack);
 }
 
 // pushes change to stack. called from stateParser
 export const addToChangeStack = ( change ) => {
+  if (debugMode) log([change], 'ADDED TO CHANGE STACK', 'BLUE');
   changeStack.push(change);
-  if (consoleLogChangeStack) logChangeStack();
+  if (clChangeStack) logChangeStack();
   clearFutureStack();
 }
 
@@ -66,7 +73,10 @@ export const reverse = () => {
   // get the change to reverse
   const rev = changeStack.pop();
 
-  if (debugMode) console.log("REVERSE CHANGE:", rev);
+  if (debugMode) {
+    console.log("REVERSE CHANGE:", rev);
+    console.log("REMAINING STACK:", changeStack);
+  }
 
   if (rev.store) console.log("R-STORE");
   
@@ -78,7 +88,7 @@ export const reverse = () => {
   changeFutureStack.push(rev);
 
   // log change stack
-  log(changeStack, 'solid-rw');
+  if (debugMode) log(changeStack, 'solid-rw');
 }
 
 
@@ -99,7 +109,7 @@ export const next = () => {
   changeStack.push(next);
 
   // log change stack
-  log(changeStack, 'change stack');
+  if (debugMode) log(changeStack, 'change stack');
 }
 
 
