@@ -88,6 +88,9 @@ const findStateChanges = () => {
   const oldState: any = stateChange[0];
   const newState: any = stateChange[1];
 
+  console.log('OLD STATE:', oldState);
+  console.log('NEW STATE:', newState);
+
   // gets old keys to itterate over
   const oldKeys = Object.keys(oldState);
 
