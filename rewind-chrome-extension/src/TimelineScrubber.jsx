@@ -15,18 +15,13 @@ function TimelineScrubber() {
 
   // LISTEN FOR STATE EVENTS
   listenFor('STATE_INCREMENT', stateIncrementOccured)
-  function stateIncrementOccured() {
-    console.log("increment state function hit");
-    // max steps is current step
-    setMaxSteps(currentStep()+1);
-        
-    // increment current step
-    setCurrentStep(Number(currentStep())+1); // needs number wrapper
-
-    console.log('cstep:', currentStep());
-    console.log('maxstep:', maxSteps());
+  function stateIncrementOccured( newMaxSteps ) {
+    const steps = JSON.parse(newMaxSteps)[0];
+    setMaxSteps(steps);
+    setCurrentStep(steps);
   }
 
+  // LISTEN FOR RESET
   listenFor('RESET_STATE', restState);
   function restState() {
     console.log("RESET STATE RECIEVED");
