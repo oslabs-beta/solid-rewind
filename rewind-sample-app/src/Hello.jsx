@@ -27,7 +27,6 @@ const Hello = (props) => {
     <>
 
       <div>
-
         count:
         {props.count}<br></br>
         <input ref={input} />
