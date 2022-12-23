@@ -3,7 +3,7 @@ import { render } from "solid-js/web";
 import { For } from "solid-js";
 import { createStore } from "solid-js/store";
 import { debugComputation, debugOwnerComputations, debugSignals, debugSignal, debugOwnerSignals, debugProps } from '@solid-devtools/logger'
-
+import storeComp from "./store-comp";
 
 
 const [newName, setNewName] = createSignal('AboveHello')
@@ -25,7 +25,9 @@ const Hello = (props) => {
 
   return (
     <>
+
       <div>
+
         count:
         {props.count}<br></br>
         <input ref={input} />
@@ -39,6 +41,7 @@ const Hello = (props) => {
           Add Todo
         </button>
         <div>{newName()}</div>
+        <storeComp/>
         <button
           onClick={(e) => {
             setNewName("BrandNewName");
