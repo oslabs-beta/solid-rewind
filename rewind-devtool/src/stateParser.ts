@@ -88,6 +88,9 @@ const findStateChanges = () => {
   const oldState: any = stateChange[0];
   const newState: any = stateChange[1];
 
+  console.log('OLD STATE:', oldState);
+  console.log('NEW STATE:', newState);
+
   // gets old keys to itterate over
   const oldKeys = Object.keys(oldState);
 
@@ -132,8 +135,7 @@ const findStateChanges = () => {
   // add changes to change stack
   for (const change of changes) {
     if (change.path.includes('sourceMap')) change.store = true;
-    // send message that state changed
-    sendStateIncrement();
+
     // add change to stack
     addToChangeStack(change);
 
@@ -143,9 +145,6 @@ const findStateChanges = () => {
 }
 
 ///////////// SEND STATE CHANGE ////////////////
-export function sendStateIncrement () {
-  sendData(undefined, 'STATE_INCREMENT');
-}
 
 
 const createChange = (obj:StateObject, changedTo = '', newItem = false) => {

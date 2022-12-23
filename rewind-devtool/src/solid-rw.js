@@ -1,8 +1,9 @@
 import * as sender from "./sender";
 import { DEV, runWithOwner } from 'solid-js';
-import { flagDontRecordNextChange, reverseSavedStateHistory, sendStateIncrement } from "./stateParser";
+import { flagDontRecordNextChange, reverseSavedStateHistory } from "./stateParser";
 import { rewindStores } from "./rewind-store";
 import log from "./logger";
+import { sendData } from './sender';
 
 const debugMode = true;
 const logChangeStackIndivitually = false;
@@ -72,6 +73,9 @@ export const addToChangeStack = ( change ) => {
   changeStack.push(change);
   if (clChangeStack) logChangeStack();
   clearFutureStack();
+
+  // increment staet in chrome tool
+  sendData([changeStack.length], 'STATE_INCREMENT');
 }
 
 // clear the future stack. used when recording new things while in the past.
@@ -202,7 +206,6 @@ export async function loadState (state) {
 
     // push change into past stack
     addToChangeStack( curr );
-    sendStateIncrement();
 
     // set state
     setState(curr.next, curr.path);

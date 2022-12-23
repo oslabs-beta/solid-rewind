@@ -1,6 +1,6 @@
 import { DEV } from "solid-js/store";
 import {  createSignal, batch, $PROXY } from 'solid-js';
-import { ChangeObj, sendStateIncrement } from "./stateParser";
+import { ChangeObj } from "./stateParser";
 import { addToChangeStack } from './solid-rw';
 
 
@@ -70,8 +70,6 @@ const logChangeToChromeTool = () => {
         store: true,
         observers: []
     }
-    // send message that state changed
-    sendStateIncrement();
     // add change to stack
     addToChangeStack(change);
 }

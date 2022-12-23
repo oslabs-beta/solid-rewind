@@ -13,8 +13,6 @@ import TreeView from './TreeView';
 
 function App() {
 
-  // listenFor('COPY_OF_STATE', copyStateToClipboard);
-
   return (
     <div class={styles.App}>
       <TreeView />
