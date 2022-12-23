@@ -1,0 +1,64 @@
+Arguments: 
+  /Users/willem/.nvm/versions/node/v18.12.1/bin/node /Users/willem/.nvm/versions/node/v18.12.1/bin/yarn login
+
+PATH: 
+  /Users/willem/.nvm/versions/node/v18.12.1/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/Library/Frameworks/Mono.framework/Versions/Current/Commands
+
+Yarn version: 
+  1.22.19
+
+Node version: 
+  18.12.1
+
+Platform: 
+  darwin x64
+
+Trace: 
+  Error: canceled
+      at Interface.<anonymous> (/Users/willem/.nvm/versions/node/v18.12.1/lib/node_modules/yarn/lib/cli.js:137150:13)
+      at Interface.emit (node:events:513:28)
+      at [_ttyWrite] [as _ttyWrite] (node:internal/readline/interface:1124:18)
+      at ReadStream.onkeypress (node:internal/readline/interface:273:20)
+      at ReadStream.emit (node:events:513:28)
+      at emitKeys (node:internal/readline/utils:357:14)
+      at emitKeys.next (<anonymous>)
+      at ReadStream.onData (node:internal/readline/emitKeypressEvents:64:36)
+      at ReadStream.emit (node:events:513:28)
+      at addChunk (node:internal/streams/readable:324:12)
+
+npm manifest: 
+  {
+    "name": "solid-rewind",
+    "version": "0.0.41",
+    "description": "SolidJS time-travel debugger",
+    "main": "src/Rewind.jsx",
+    "scripts": {
+      "start": "vite",
+      "dev": "vite",
+      "build": "vite build",
+      "serve": "vite preview"
+    },
+    "keywords": [],
+    "author": "Moonwalk Team",
+    "license": "MIT",
+    "repository": {
+      "type": "git",
+      "url": "https://github.com/oslabs-beta/solid-rewind.git"
+    },
+    "bugs": {
+      "url": "https://github.com/oslabs-beta/solid-rewind.git"
+    },
+    "homepage": "https://github.com/oslabs-beta/solid-rewind#readme",
+    "dependencies": {
+      "@solid-devtools/logger": "^0.5.3",
+      "solid-devtools": "^0.24.0",
+      "solid-js": "^1.6.4",
+      "typescript": "^4.9.4"
+    }
+  }
+
+yarn manifest: 
+  No manifest
+
+Lockfile: 
+  No lockfile

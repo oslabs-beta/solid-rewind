@@ -5,9 +5,9 @@ import { addToChangeStack } from './solid-rw';
 
 
 let CurrentUpdates = new Map();
-const past = []; 
-const future = [];
-let current 
+const past: any = []; 
+const future: any = [];
+let current: any;
 const [track, trigger] = createSignal(undefined, { equals: false });
 
 export function rewindStores(rewind) {
@@ -75,6 +75,11 @@ export function rewindStores(rewind) {
 
         });
     });
+
+    // CONSOLE LOG
+    console.log('Store_Past:', past);
+    console.log('Store_Futu:', future);
+    console.log('Store_Curr:', current);
 }
 
 const logChangeToChromeTool = () => {
@@ -105,4 +110,8 @@ export const setHistoryAfterUpdate  = () => {
     past.push(CurrentUpdates);
     CurrentUpdates = new Map();
     logChangeToChromeTool(); // store change
+
+    // clear future
+    current = future.pop();
+    future.length = 0;
 }
