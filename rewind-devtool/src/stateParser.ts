@@ -2,7 +2,7 @@ import { addToChangeStack, getChildMap } from './solid-rw';
 import { sendData } from './sender';
 import log from './logger';
 
-const debugMode = true;
+const debugMode = false;
 const debugShowStore = false;
 const debugShowPropigation = false;
 const debugIncrement = [0];

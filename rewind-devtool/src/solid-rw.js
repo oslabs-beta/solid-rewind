@@ -4,7 +4,8 @@ import { flagDontRecordNextChange, reverseSavedStateHistory, sendStateIncrement 
 import { rewindStores } from "./rewind-store";
 import log from "./logger";
 
-const debugMode = false;
+const debugMode = true;
+const logChangeStackIndivitually = false;
 const clChangeStack = true;
 
 // call this once to set up listeners
@@ -43,14 +44,19 @@ export const setChildMap = cm => {
 
 // debug function to log current change stack. attach this to a button or something for debugging
 export const logChangeStack = () => {
-  const stringChangeStack = []
-  for (const si of changeStack) {
-    stringChangeStack.push(JSON.stringify(si));
-    log([si, 'soid-rw.js'], `CS Item: ${changeStack.length}`, 'DarkViolet')
+  if (logChangeStackIndivitually) {
+    const stringChangeStack = []
+    for (const si of changeStack) {
+      stringChangeStack.push(JSON.stringify(si));
+      log([si, 'soid-rw.js'], `CS Item: ${changeStack.length}`, 'DarkViolet')
+    }
+    console.log('CS END');
   }
-  console.log('CS END');
   //log([changeStack], `solid-rw.js: CHANGE STACK: ${changeStack.length}`, 'DarkViolet')
-  // console.log ('CHANGE STACK:', changeStack);
+  else {
+    log('', `CHANGE STACK: ${changeStack.length}`, 'DarkViolet')
+    console.log ('CHANGE STACK:', changeStack);
+  }
 }
 
 // pushes change to stack. called from stateParser
