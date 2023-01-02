@@ -5,7 +5,6 @@ import log from './logger';
 const debugMode = false;
 const debugShowStore = false;
 const debugShowPropigation = false;
-const debugIncrement = [0];
 
 type StateObject = {
   name: string,
@@ -24,8 +23,8 @@ export type ChangeObj = {
 }
 
 // new and old state
-const stateChange: any = [];
 const stateHistory: any = [];
+const stateFuture: any = [];
 
 
 const flagDontRecord = [false];
@@ -43,30 +42,24 @@ export const getDontRecordFlag = () => {
 }
 
 export const analizeStateChange = ( sourcesState: any, back = false ) => {
-  if (debugMode) log(['stateParser.ts'], `NEW STATE TO PRASE ${debugIncrement[0]}`)
-  debugIncrement[0]++;
-
-  if (debugMode) console.log("INCOMING STATE CHANGE TO ANALIZE:", sourcesState);
-  if (debugMode) console.log('oldState initial:', stateChange);
-
   // add state to our last / newState
-  stateChange.push( sourcesState );
-
-  if (debugMode) console.log('oldState:', stateChange[0]);
-  if (debugMode) console.log('newState:', stateChange[1]);
+  stateHistory.push( sourcesState );
 
   // if newState exists, compare the two
-  if (stateChange.length === 2) findStateChanges();
-
-  // push old state into stateHistory
-  stateHistory.push(stateChange[0]);
-  // move new state to lastState
-  stateChange[0] = stateChange.pop();
+  if (stateHistory.length >= 2) findStateChanges();
 }
 
 // when we go back in time, we need to also reverse the saved state history
 export const reverseSavedStateHistory = () => {
-  stateChange[0] = stateHistory.pop();
+  stateFuture.push( stateHistory.pop() );
+}
+
+export const forwardInSavedStateHistory = () => {
+  stateHistory.push( stateFuture.pop() );
+}
+
+export const clearSavedStateFuture = () => {
+  stateFuture.length = 0;
 }
 
 
@@ -85,11 +78,8 @@ const getObserverNamesFromChange = ( change: any ) : any => {
 
 // compare states to find changes
 const findStateChanges = () => {
-  const oldState: any = stateChange[0];
-  const newState: any = stateChange[1];
-
-  console.log('OLD STATE:', oldState);
-  console.log('NEW STATE:', newState);
+  const oldState: any = stateHistory[stateHistory.length-2];
+  const newState: any = stateHistory[stateHistory.length-1];
 
   // gets old keys to itterate over
   const oldKeys = Object.keys(oldState);

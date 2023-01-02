@@ -3,31 +3,7 @@ import {  createSignal, batch, $PROXY } from 'solid-js';
 import { ChangeObj, flagDontRecordNextChange } from "./stateParser";
 import { addToChangeStack } from './solid-rw';
 
-
 let currentUpdates = {};
-
-
-
-batch(() => {
-    //         if (rewind === true) {
-    //             if (past.length) {
-    //                 const change = past.pop();
-    //                 changeStoreState(change.oldState, change.state)
-    //                 future.push(change);
-    //             }
-    //             else return;
-    //         }
-    
-    //         if (rewind === false) {
-    //             if (future.length) {
-    //                 const change = future.pop();
-    //                 changeStoreState(change.newState, change.state)
-    //                 past.push(change)
-    //             }
-    //             else return;
-    //         }
-        })
-
 
 export function changeStoreState(stateToSet, state) {
     const nodes = state[DEV.$NODE];
