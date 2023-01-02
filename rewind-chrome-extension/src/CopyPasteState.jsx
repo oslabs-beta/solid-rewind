@@ -88,8 +88,7 @@ function loadTextFromClipboard() {
   return textFromCB;
 }
 
-function StateCopyWindow() {
-
+function CopyPasteState() {
 
   listenFor('COPY_OF_STATE', displayFullState);
 
@@ -109,4 +108,4 @@ function StateCopyWindow() {
   );
 }
 
-export default StateCopyWindow;
+export default CopyPasteState;
