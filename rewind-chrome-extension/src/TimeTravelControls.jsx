@@ -8,7 +8,7 @@ import styles from './App.module.css';
 import { sendData } from './sender';
 import { listenFor } from './listener';
 
-function TimelineScrubber() {
+function TimeTravelControls() {
 
   const [maxSteps, setMaxSteps] = createSignal(0);
   const [currentStep, setCurrentStep] = createSignal(0);
@@ -59,7 +59,7 @@ function TimelineScrubber() {
       <br></br>
       <div class={ styles.timeButtonContainer }>
         <button onClick={goBack} class="btn btn-primary">Back</button>
-        <button onClick={goForward} class="btn btn-primary">Forward</button>
+        <button onClick={goForward} class="btn btn-primary">Next</button>
         {/* <button onClick={goBack}>Back</button>
         <button onClick={goForward}>Forward</button> */}
       </div>
@@ -68,4 +68,4 @@ function TimelineScrubber() {
   );
 }
 
-export default TimelineScrubber;
+export default TimeTravelControls;
