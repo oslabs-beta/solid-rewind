@@ -31,17 +31,10 @@ const Rewind = (props) => {
   // save owner, passed to dev-tool functions
   saveOwner(owner);
 
-  // get intial comp tree
-  getCompTreeAndChildMap();
-
-  async function getCompTreeAndChildMap() {    
-    const compTree = await buildComponentTree(owner);
-  }
-
   // send tree to chrome
   const sendTreeStructure = async () => {
-    let ownerTree = await new Tree(owner);  // replace with my own tree calculator
-    sendTreeToChrome(ownerTree) // send to chrome extention
+    let compTree = await buildComponentTree(owner);
+    sendTreeToChrome(compTree) // send to chrome extention
   }
   // give it a moment then call
   setTimeout( sendTreeStructure, 2000 );
@@ -69,8 +62,7 @@ const Rewind = (props) => {
             let ownerObj = await getOwner();
             let ownerTree = await new Tree(ownerObj); 
             let sourcesState = await ownerTree.parseSources();
-            // get and save comp tree
-            getCompTreeAndChildMap();
+
             // send this sourcesState to stateParser
             analizeStateChange( sourcesState );
         })}

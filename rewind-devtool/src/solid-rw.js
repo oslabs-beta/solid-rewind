@@ -1,6 +1,6 @@
 import * as sender from "./sender";
 import { DEV, runWithOwner } from 'solid-js';
-import { flagDontRecordNextChange, reverseSavedStateHistory } from "./stateParser";
+import { flagDontRecordNextChange, reverseSavedStateHistory, getDontRecordFlag } from "./stateParser";
 import { rewindStores } from "./rewind-store";
 import log from "./logger";
 import { sendData } from './sender';
@@ -225,6 +225,7 @@ const setState = ( value, path ) => {
 
     // flag upcoming change as one not to record
     flagDontRecordNextChange();
+    console.log("DONT RECORD CHANGE:", getDontRecordFlag());
 
     DEV.writeSignal(source, value);
   });
