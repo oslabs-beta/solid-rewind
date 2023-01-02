@@ -1,6 +1,6 @@
 import * as sender from "./sender";
 import { DEV, runWithOwner } from 'solid-js';
-import { flagDontRecordNextChange, reverseSavedStateHistory, getDontRecordFlag } from "./stateParser";
+import { flagDontRecordNextChange, reverseSavedStateHistory, getDontRecordFlag, clearSavedStateFuture, forwardInSavedStateHistory } from "./stateParser";
 import { changeStoreState } from "./rewind-store";
 import log from "./logger";
 import { sendData } from './sender';
@@ -60,7 +60,7 @@ export const logChangeStack = () => {
   }
   //log([changeStack], `solid-rw.js: CHANGE STACK: ${changeStack.length}`, 'DarkViolet')
   else {
-    log('', `CHANGE STACK: ${changeStack.length}`, 'DarkViolet')
+    //log('', `CHANGE STACK: ${changeStack.length}`, 'DarkViolet')
     console.log ('CHANGE STACK:', changeStack);
   }
 }
@@ -79,6 +79,9 @@ export const addToChangeStack = ( change ) => {
 // clear the future stack. used when recording new things while in the past.
 const clearFutureStack = () => {
   changeFutureStack.length = 0;
+
+  // clears saved state future in stateParser
+  clearSavedStateFuture();
 }
 
 // GO BACK IN TIME
@@ -87,11 +90,6 @@ export const reverse = () => {
   if (changeStack.length === 0) return;
   // get the change to reverse
   const rev = changeStack.pop();
-
-  if (debugMode) {
-    console.log("REVERSE CHANGE:", rev);
-    console.log("REMAINING STACK:", changeStack);
-  }
 
   if (rev.store) console.log("R-STORE");
   
@@ -106,9 +104,6 @@ export const reverse = () => {
 
   // revese saved state history
   reverseSavedStateHistory();
-
-  // log change stack
-  if (debugMode) log(changeStack, 'solid-rw');
 }
 
 
@@ -132,6 +127,9 @@ export const next = () => {
 
   // log change stack
   if (debugMode) log(changeStack, 'change stack');
+
+  // foward in saved state history
+  forwardInSavedStateHistory();
 }
 
 
