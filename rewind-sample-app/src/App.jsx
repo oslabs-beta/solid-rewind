@@ -21,7 +21,7 @@ function App() {
     console.log('COMP TREE', compTree);
   }
 
-  const [count, setCount] = createSignal(5);
+  const [count, setCount] = createSignal(1);
 
   const doubleCount = () => count() * 2;
   function fibonacci(num) {
