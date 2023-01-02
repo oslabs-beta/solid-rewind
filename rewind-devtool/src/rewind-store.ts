@@ -7,38 +7,63 @@ import { addToChangeStack } from './solid-rw';
 let currentUpdates = {};
 
 
+
+batch(() => {
+    //         if (rewind === true) {
+    //             if (past.length) {
+    //                 const change = past.pop();
+    //                 changeStoreState(change.oldState, change.state)
+    //                 future.push(change);
+    //             }
+    //             else return;
+    //         }
+    
+    //         if (rewind === false) {
+    //             if (future.length) {
+    //                 const change = future.pop();
+    //                 changeStoreState(change.newState, change.state)
+    //                 past.push(change)
+    //             }
+    //             else return;
+    //         }
+        })
+
+
 export function changeStoreState(stateToSet, state) {
     const nodes = state[DEV.$NODE];
 
     // flag dont record
     flagDontRecordNextChange();
 
-    if (Array.isArray(stateToSet)) {
-        const len = state.length; 
-        for (let i = 0; i < stateToSet.length; i++) {
-            state[i] = stateToSet[i];
-            nodes[i]?.$(() => stateToSet[i]);
+    // execute changes
+    batch(() => {
+        if (Array.isArray(stateToSet)) {
+            const len = state.length; 
+            for (let i = 0; i < stateToSet.length; i++) {
+                state[i] = stateToSet[i];
+                nodes[i]?.$(() => stateToSet[i]);
+            }
+
+            if (len !== stateToSet.length) {
+                state.length = stateToSet.length;
+                nodes.length?.$(stateToSet.length);
+            }
         }
 
-        if (len !== stateToSet.length) {
-            state.length = stateToSet.length;
-            nodes.length?.$(stateToSet.length);
+        else {
+            const stateKeys = new Set(Object.keys(state));
+            for (const [key, value] of Object.entries(stateToSet)) {
+                state[key] = value;
+                nodes[key]?.$(() => value);
+                stateKeys.delete(key);
+            }
+            for (const key of stateKeys) {
+                delete state[key];
+                nodes[key]?.$(undefined);
+            }
         }
-    }
-
-    else {
-        const stateKeys = new Set(Object.keys(state));
-        for (const [key, value] of Object.entries(stateToSet)) {
-            state[key] = value;
-            nodes[key]?.$(() => value);
-            stateKeys.delete(key);
-        }
-        for (const key of stateKeys) {
-            delete state[key];
-            nodes[key]?.$(undefined);
-        }
-    }
-    nodes._?.$();
+        nodes._?.$();
+    });
 };
 
 const saveChangToHistory = (storeChange: any) => {
