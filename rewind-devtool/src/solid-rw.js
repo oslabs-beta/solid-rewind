@@ -1,7 +1,7 @@
 import * as sender from "./sender";
 import { DEV, runWithOwner } from 'solid-js';
-import { flagDontRecordNextChange, reverseSavedStateHistory } from "./stateParser";
-import { rewindStores } from "./rewind-store";
+import { flagDontRecordNextChange, reverseSavedStateHistory, getDontRecordFlag } from "./stateParser";
+import { changeStoreState } from "./rewind-store";
 import log from "./logger";
 import { sendData } from './sender';
 
@@ -19,8 +19,6 @@ export const getChildMap = () => childMap[0];
 export const setChildMap = cm => {
   Object.assign(childMap[0], cm);
 }
-
-
 
 
 // call this once to set up listeners
@@ -99,7 +97,9 @@ export const reverse = () => {
   
   // execute change
   if (!rev.store) setState(rev.prev, rev.path);
-  else rewindStores(true); // if it is a store
+  else { // store
+    changeStoreState(rev.store.oldState, rev.store.state)
+  }
 
   // add change to future stack
   changeFutureStack.push(rev);
@@ -123,7 +123,9 @@ export const next = () => {
 
   // excute change
   if (!next.store) setState(next.next, next.path);
-  else rewindStores(false); // handle stores
+  else { // store
+    changeStoreState(next.store.newState, next.store.state)
+  }
 
   // add change to change stack
   changeStack.push(next);
@@ -225,6 +227,7 @@ const setState = ( value, path ) => {
 
     // flag upcoming change as one not to record
     flagDontRecordNextChange();
+    console.log("DONT RECORD CHANGE:", getDontRecordFlag());
 
     DEV.writeSignal(source, value);
   });
