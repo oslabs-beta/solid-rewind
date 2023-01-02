@@ -4,24 +4,16 @@
   "version": "1.0",
   "manifest_version": 3,
   "devtools_page": "devtools.html",
-  "action": {
-    // "default_popup": "index.html",
-    // "default_title": "Popup"
-  },
   "background": {
     "service_worker" : "background.js"
   },
   "content_scripts": [
     {
-      // "matches": ["http://*/*", "https://*/*"],
       "matches": ["<all_urls>"],
       "js": ["context-script.js"]
     }
   ],
-  // "web_accessible_resources" : ["inject-script.js"],
   "permissions": [
-    "storage",
-    "tabs",
     "activeTab",
     "clipboardWrite",
     "clipboardRead"
