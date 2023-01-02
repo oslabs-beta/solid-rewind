@@ -8,7 +8,7 @@ import { buildComponentTree } from './logger-treeview/compTree';
 import { analizeStateChange, unflagDontRecordNextChange, getDontRecordFlag } from './stateParser';
 import { reverse, next, saveOwner, logChangeStack } from './solid-rw';
 import { sendTreeToChrome } from './logger-treeview/treeView';
-import { rewindStores, addStoreStateToHistory, setHistoryAfterUpdate  } from './rewind-store';
+import { addStoreStateToHistory, setHistoryAfterUpdate  } from './rewind-store';
 import log from './logger';
 
 // DEBUG
