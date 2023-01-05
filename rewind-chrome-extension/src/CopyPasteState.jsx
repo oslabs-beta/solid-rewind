@@ -1,17 +1,14 @@
 import styles from './App.module.css';
-
 import { createSignal } from 'solid-js';
 import { listenFor } from './listener';
 import { sendData } from './sender';
 
-
+// Deprecated feature, doesn't work with stores. Only works with signals.
 const [copyiedState, setCopiedState] = createSignal('');
 
 function displayFullState( state ) {
-  console.log("state recieved:", state);
   setCopiedState(state);
   copyTextToClipboard(state);
-  //navigator.clipboard.writeText(JSON.stringify(state));
 }
 
 // copy and load state
@@ -20,17 +17,11 @@ const copyState = () => {
 }
 const loadState = async () => {
   // get state from CB
-  // loadTextFromClipboard();
-  // const cbData = await navigator.clipboard.readText();
-  // console.log("CB STATE:", cbData);
   sendData(loadTextFromClipboard(), 'LOAD_STATE');
 }
 
 const copyToClipboard = (e) => {
   e.preventDefault();
-  // console.log('copy event:', e.target[0].value);
-  // navigator.clipboard.writeText(e.target[0].value); 
-
   copyTextToClipboard(e.target[0].value);
   setCopiedState
 }
@@ -77,7 +68,6 @@ function loadTextFromClipboard() {
   const result = document.execCommand('paste');
 
   const textFromCB = loadForm.value;
-  console.log('content of paste:', loadForm.value);
 
   //(Optional) De-select the text using blur(). 
   loadForm.blur();
@@ -89,20 +79,14 @@ function loadTextFromClipboard() {
 }
 
 function CopyPasteState() {
-
   listenFor('COPY_OF_STATE', displayFullState);
-
   return (
     <div>
       <div class={ styles.timeButtonContainer }>
-
         <button onClick={copyState} class="btn btn-outline btn-accent no-animation">COPY STATE</button>
         <button onClick={loadState} class="btn btn-outline btn-accent no-animation">LOAD STATE</button>
-
-        {/* <button variant="primary" onClick={copyState}>COPY STATE</button>
-        <button variant="primary" onClick={loadState}>LOAD STATE</button> */}
       </div>
-      {/* this invisible text area has a copy of teh copied state so it can be grabbed and sent to the client */}
+      {/* this invisible text area has a copy of the copied state so it can be grabbed and sent to the client */}
       <textarea value={copyiedState()} class='displayNone'></textarea>
     </div>
   );

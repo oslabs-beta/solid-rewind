@@ -55,33 +55,10 @@ code {
   border-top: 1px solid rgb(190, 189, 186);
 }
 
-.dargBarLineBottom {
+.dragBarLineBottom {
   height: 7px !important;
   border-bottom: 1px solid rgb(190, 189, 186);
 }
-
-
-/* button {
-  background-color: #45a0ce;
-  border: none;
-  color: white;
-  padding: 10px 20px;
-  text-align: center;
-  text-decoration: none;
-  display: inline-block;
-  font-size: 16px;
-  border-radius: 6px;
-  margin: 5px;
-  -webkit-transition: background-color 70ms linear;
-  -ms-transition: background-color 70ms linear;
-  transition: background-color 70ms linear;
-}
-button:hover {
-  background-color: #52b5e7;
-}
-button:active{
-  background-color: #2e769a;
- } */
 
 button:hover {
   transition: color 100ms linear !important;

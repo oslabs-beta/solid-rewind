@@ -1,5 +1,5 @@
 import { DEV } from "solid-js/store";
-import {  createSignal, batch, $PROXY } from 'solid-js';
+import { batch } from 'solid-js';
 import { ChangeObj, flagDontRecordNextChange } from "./stateParser";
 import { addToChangeStack } from './solid-rw';
 
@@ -42,7 +42,7 @@ export function changeStoreState(stateToSet, state) {
     });
 };
 
-const saveChangToHistory = (storeChange: any) => {
+const saveChangeToHistory = (storeChange: any) => {
     const change: ChangeObj = {
         name: '',
         prev: '',
@@ -69,7 +69,7 @@ export const setHistoryAfterUpdate  = () => {
     currentUpdates.newState = newCopy;
 
     // send change
-    saveChangToHistory(currentUpdates);
+    saveChangeToHistory(currentUpdates);
 
     // clear current update
     currentUpdates = {};

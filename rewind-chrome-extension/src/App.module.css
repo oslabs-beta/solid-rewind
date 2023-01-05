@@ -10,7 +10,6 @@
 
 .header {
   background-color: rgb(255, 255, 255);
-  /* min-height: 100vh; */
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -40,7 +39,6 @@
   justify-content: space-around;
 }
 
-
 /* COPY + LOAD TEXT */
 .copyStateTextArea {
   max-width: 100%;
@@ -49,13 +47,9 @@
   min-height: 100px;
 }
 
-
-
-
 .link {
   color: #b318f0;
 }
-
 
 @keyframes logo-spin {
   from {

@@ -41,7 +41,7 @@ export const getDontRecordFlag = () => {
   return flagDontRecord[0];
 }
 
-export const analizeStateChange = ( sourcesState: any, back = false ) => {
+export const analyzeStateChange = ( sourcesState: any ) => {
   // add state to our last / newState
   stateHistory.push( sourcesState );
 
@@ -96,8 +96,6 @@ const findStateChanges = () => {
     // key removed
     if (!newState[k]) { // dont need this
       log(['REMOVED STATE', k], 'NOTE!', 'red');
-      //const change = createChange(oldState[k], '__removed__');
-      //changes.push(change);
     }
 
     // change occured
@@ -109,18 +107,8 @@ const findStateChanges = () => {
     if (newState[k]) delete remainingNewKeys[k]// remove key from both
   }
 
-  // next add changes that are new elements
-  /*
-  const newKeys = Object.keys(remainingNewKeys);
-  for (const k of newKeys) {
-    const change = createChange(newState[k], newState[k].value, true);
-    changes.push(change);
-  }
-  */
-
   // long changes and push them to the change stack
   if (debugShowStore) console.log('CHANGES:', changes);
-  //changeStack.push(changes);
 
   // add changes to change stack
   for (const change of changes) {

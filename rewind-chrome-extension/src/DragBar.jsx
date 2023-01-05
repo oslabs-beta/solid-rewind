@@ -44,7 +44,7 @@ function DragBar(props) {
     <div class='dragBar' onMouseDown={startDrag}>
       <div class='dragBoxIcon'>
         <div class='dragBarLine'></div>
-        <div class='dragBarLine dargBarLineBottom'></div>
+        <div class='dragBarLine dragBarLineBottom'></div>
       </div>
     </div>
   );
