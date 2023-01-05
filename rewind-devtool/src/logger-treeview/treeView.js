@@ -15,7 +15,6 @@ export const sendTreeToChrome = tree => {
 const convertNameSetToObj = (tree) => {
   if (tree.names) {
     const nameSet = tree.names;
-    console.log(nameSet)
     tree.names = Object.assign(...Array.from(nameSet, v => ({[v]:''})));
   }
 
