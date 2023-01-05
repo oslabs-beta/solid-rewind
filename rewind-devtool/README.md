@@ -1,7 +1,7 @@
 # Solid Rewind
 
 A time-travel debugger for SolidJS.
-This works with our chrome extension found here: <extension>
+This works with our chrome extension found here: [Solid Rewind Extension](https://chrome.google.com/webstore/detail/solid-rewind/ejdinegdopmimnkbonknknhfmmcgcdoh) 
 
 
 ATTENTION: This extension is IN DEVELOPMENT.
