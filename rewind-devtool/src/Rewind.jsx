@@ -32,12 +32,12 @@ const Rewind = (props) => {
   saveOwner(owner);
 
   // send tree to chrome
-  const sendTreeStructure = async () => {
-    let compTree = await buildComponentTree(owner);
-    sendTreeToChrome(compTree) // send to chrome extention
+  const sendTreeStructure = async (_owner) => {
+    let compTree = await buildComponentTree(_owner);
+    sendTreeToChrome(compTree) // send to chrome extention + convert to a json-safe format
   }
   // give it a moment then call
-  setTimeout( sendTreeStructure, 2000 );
+  setTimeout( sendTreeStructure, 2000, owner );
 
   //function allows us to reset state of a signal
   addStoreStateToHistory();
@@ -62,6 +62,7 @@ const Rewind = (props) => {
             let ownerObj = await getOwner();
             let ownerTree = await new Tree(ownerObj); 
             let sourcesState = await ownerTree.parseSources();
+            sendTreeStructure(ownerObj); // build component tree and send it to chrome extension
 
             // send this sourcesState to stateParser
             analizeStateChange( sourcesState );

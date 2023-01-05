@@ -17,12 +17,49 @@ code {
 }
 
 .treeView {
-  max-height: 60px;
+  height: 100px;
   overflow: scroll;
   color: black;
   font-size: 11px;
   background-color: antiquewhite;
 }
+
+.dragBar {
+  height: 24px;
+  width: 100%;
+  border-top: 1px solid rgb(230, 223, 214);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.dragBoxIcon {
+  width: 30px;
+  padding-top: 6px;
+}
+
+.dragBar:hover {
+  cursor: grab;
+  cursor: -moz-grab;
+  cursor: -webkit-grab;
+}
+
+.dragBar:active {
+  cursor: grabbing;
+  cursor: -moz-grabbing;
+  cursor: -webkit-grabbing;
+}
+
+.dragBarLine {
+  height: 6px;
+  border-top: 1px solid rgb(190, 189, 186);
+}
+
+.dargBarLineBottom {
+  height: 7px !important;
+  border-bottom: 1px solid rgb(190, 189, 186);
+}
+
 
 /* button {
   background-color: #45a0ce;

@@ -3,8 +3,8 @@ import { createSignal } from 'solid-js';
 import { style } from 'solid-js/web';
 import styles from './App.module.css';
 import SendBack from './SendBack';
-import TimelineScrubber from './TimelineScrubber';
-import StateCopyWindow from './StateCopyWindow';
+import TimeTravelControls from './TimeTravelControls';
+import CopyPasteState from './CopyPasteState';
 
 function TimeTravel() {
 
@@ -23,8 +23,8 @@ function TimeTravel() {
 
   return (
     <div class={styles.container}>
-      <TimelineScrubber />
-      <StateCopyWindow />
+      <TimeTravelControls />
+      {/* <CopyPasteState /> */}
     </div>
   );
 }
