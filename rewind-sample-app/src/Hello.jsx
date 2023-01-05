@@ -1,9 +1,7 @@
-import { createEffect, createSignal, getOwner } from "solid-js";
-import { render } from "solid-js/web";
+import { createSignal } from "solid-js";
 import { For } from "solid-js";
 import { createStore } from "solid-js/store";
-import { debugComputation, debugOwnerComputations, debugSignals, debugSignal, debugOwnerSignals, debugProps } from '@solid-devtools/logger'
-import storeComp from "./store-comp";
+
 
 
 const [newName, setNewName] = createSignal('AboveHello')
@@ -25,7 +23,6 @@ const Hello = (props) => {
 
   return (
     <>
-
       <div>
         count:
         {props.count}<br></br>

@@ -7,7 +7,7 @@ export const sendTreeToChrome = tree => {
 }
 
 // uncircularize object json
-const stringifyCircularJSON = obj => {
+export const stringifyCircularJSON = obj => {
   const seen = new WeakSet();
   return JSON.stringify(obj, (k, v) => {
     if (v !== null && typeof v === 'object') {
