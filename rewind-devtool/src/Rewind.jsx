@@ -4,15 +4,10 @@ import 'solid-devtools';
 import Tree from './tree'
 import { init } from './rewind-init';
 import { buildComponentTree } from './logger-treeview/compTree';
-
-import { analizeStateChange, unflagDontRecordNextChange, getDontRecordFlag } from './stateParser';
-import { reverse, next, saveOwner, logChangeStack } from './solid-rw';
+import { analyzeStateChange, unflagDontRecordNextChange, getDontRecordFlag } from './stateParser';
+import { saveOwner } from './solid-rw';
 import { sendTreeToChrome } from './logger-treeview/treeView';
 import { addStoreStateToHistory, setHistoryAfterUpdate  } from './rewind-store';
-import log from './logger';
-
-// DEBUG
-const debugMode = true;
 
 // initilize rewind
 init();
@@ -64,40 +59,25 @@ const Rewind = (props) => {
             let sourcesState = await ownerTree.parseSources();
 
             // send this sourcesState to stateParser
-            analizeStateChange( sourcesState );
+            analyzeStateChange( sourcesState );
         })}
-
       })
-
       GraphUpdateListeners.add(() => {
         runListenerOnce++ 
       })
-
       GraphUpdateListeners.add(setHistoryAfterUpdate)
-
       const runListeners = () => {
         GraphUpdateListeners.forEach(f => f());
         runListenerOnce = 1;
       }
-
-      // if (typeof window._$afterUpdate === 'function') {
-      //   GraphUpdateListeners.add(window._$afterUpdate)
-      // }
-
       window._$afterUpdate = runListeners
     }
-
     setUpRenderChangeEvent();
-
-
   }
   
   listen()
-
     return (
-    <>
     <div class='rewind'>{props.children} </div>
-    </>
     )
 }
 

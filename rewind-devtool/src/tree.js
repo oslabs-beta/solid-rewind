@@ -1,15 +1,10 @@
 export default class OwnershipTree {
     constructor(owner, path) {
         this.name = this.getName(owner);
-
         this.path = path ? path : '';
-
         this.children = this.getChildren(owner);
-
         this.sourceMap = this.getSourceMap(owner);
-
         this.sources = this.getSources(owner);
-
     }
 
     //this method gets the name for a particular owner. 

@@ -1,6 +1,3 @@
-
-//navigator.clipboard.writeText(JSON.stringify(stateStack));
-
 // all our listners
 let initComplete = false;
 const listeners = {}
@@ -12,7 +9,6 @@ export function listenFor(type, callback) {
   // add callback
   listeners[type].set(callback, callback);
 }
-
 
 function init() {
   initComplete = true;

@@ -35,11 +35,11 @@ export function saveOwner( ownerObj ) {
 function setupListeners() {
   sender.listenFor('BACK', travelBack);
   sender.listenFor('FORWARD', travelForward);
-  sender.listenFor('COPY_STATE', copyState);
-  sender.listenFor('LOAD_STATE', loadState);
+  // sender.listenFor('COPY_STATE', copyState);
+  // sender.listenFor('LOAD_STATE', loadState);
 }
 
-// REF TO ORIGINAL OWERN
+// REF TO ORIGINAL OWNER
 const owner = [];
 
 
@@ -50,19 +50,7 @@ const changeFutureStack = [];
 
 // debug function to log current change stack. attach this to a button or something for debugging
 export const logChangeStack = () => {
-  if (logChangeStackIndivitually) {
-    const stringChangeStack = []
-    for (const si of changeStack) {
-      stringChangeStack.push(JSON.stringify(si));
-      log([si, 'soid-rw.js'], `CS Item: ${changeStack.length}`, 'DarkViolet')
-    }
-    console.log('CS END');
-  }
-  //log([changeStack], `solid-rw.js: CHANGE STACK: ${changeStack.length}`, 'DarkViolet')
-  else {
-    //log('', `CHANGE STACK: ${changeStack.length}`, 'DarkViolet')
-    console.log ('CHANGE STACK:', changeStack);
-  }
+    if(debugMode) console.log ('CHANGE STACK:', changeStack);
 }
 
 // pushes change to stack. called from stateParser
