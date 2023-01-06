@@ -9,6 +9,9 @@ import { saveOwner } from './solid-rw';
 import { sendTreeToChrome } from './logger-treeview/treeView';
 import { addStoreStateToHistory, setHistoryAfterUpdate  } from './rewind-store';
 
+// Trying to get prod mode or not.
+console.log(import.meta.env.PROD);
+
 // initilize rewind
 init();
 
@@ -18,6 +21,15 @@ let runListenerOnce = 1;
 
 //DevTool component
 const Rewind = (props) => {
+
+  console.log(`%c app mode: ${ process.env.NODE_ENV }`, `color:purple; font-weight: bold`);
+
+  // Disable in production mode
+  if (process.env.NODE_ENV === 'production') {
+    // console.log('production mode, Solid-Rewind disabled');
+    console.log(`%c production mode, Solid-Rewind disabled`, `color:orange; font-weight: bold`);
+    return ( <div class='rewind'>{props.children} </div> );
+  }
   
   //establish the owner at the top level component, so that we can pass this owner to internal functions and keep it consistent 
   //if we tried to run these internal functions with their internal owner, we'd see a very different ownership tree

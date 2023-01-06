@@ -5,9 +5,8 @@ import { changeStoreState } from "./rewind-store";
 import log from "./logger";
 import { sendData } from './sender';
 
-const debugMode = true;
-const logChangeStackIndivitually = false;
-const clChangeStack = true;
+const debugMode = false;
+const logFullChangeStack = false;
 
 
 //logic for mapping the children for purposes of mapping named components 
@@ -50,14 +49,14 @@ const changeFutureStack = [];
 
 // debug function to log current change stack. attach this to a button or something for debugging
 export const logChangeStack = () => {
-    if(debugMode) console.log ('CHANGE STACK:', changeStack);
+    console.log ('CHANGE STACK:', changeStack);
 }
 
 // pushes change to stack. called from stateParser
 export const addToChangeStack = ( change ) => {
   if (debugMode) log([change], 'ADDED TO CHANGE STACK', 'BLUE');
   changeStack.push(change);
-  if (clChangeStack) logChangeStack();
+  if (logFullChangeStack) logChangeStack();
   clearFutureStack();
 
   // increment staet in chrome tool
