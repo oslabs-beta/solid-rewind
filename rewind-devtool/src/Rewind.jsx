@@ -70,6 +70,7 @@ const Rewind = (props) => {
             let ownerTree = await new Tree(ownerObj); 
             let sourcesState = await ownerTree.parseSources();
             sendTreeStructure(ownerObj); // build component tree and send it to chrome extension
+            console.log("shouldnt see this when traversing timeline");
 
             // send this sourcesState to stateParser
             analyzeStateChange( sourcesState );
