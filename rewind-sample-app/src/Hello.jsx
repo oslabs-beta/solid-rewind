@@ -1,6 +1,6 @@
-import { createSignal } from "solid-js";
-import { For } from "solid-js";
-import { createStore } from "solid-js/store";
+import { createSignal, For, Show } from "solid-js";
+import { createStore  } from "solid-js/store";
+import StoreComp from "./Store-comp";
 
 
 
@@ -21,8 +21,18 @@ const Hello = (props) => {
     setTodos(todo => todo.id === id, "completed", completed => !completed);
   }
 
+  const [hiddenCompOpen, setHidden] = createSignal(false);
+  const toggleHidden = () => setHidden(!hiddenCompOpen()); 
+
   return (
     <>
+    <Show
+      when={hiddenCompOpen()}
+      fallback={<button onClick={toggleHidden}>Click Me to Open Component</button>}
+    >
+      <button onClick={toggleHidden}>Hide Component</button>
+      <StoreComp/>
+    </Show>
       <div>
         count:
         {props.count}<br></br>
@@ -36,6 +46,7 @@ const Hello = (props) => {
         >
           Add Todo
         </button>
+
         <div>{newName()}</div>
         <storeComp/>
         <button
