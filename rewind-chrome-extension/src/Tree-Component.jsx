@@ -35,23 +35,23 @@ let newSvg;
 
 const buildD3Tree = (treeData) => {
   newSvg = select(svg); 
-  const width = 100;
-  const height = 100;
-  const margin = { top: 10, right: 10, bottom: 25, left: 10 };
-  const innerWidth = width - margin.left - margin.right + "%";
-  const innerHeight = height - margin.top - margin.bottom + "%";
+  const width = document.body.offsetWidth;
+  const height = document.body.offsetHeight;
+  const margin = { top: 10, right: 10, bottom: 10, left: 20 };
+
   
   //this is the canvas upon which our tree will be painted 
 
   const g = newSvg
-    .attr('width', width + "%")
-    .attr('height', height + "%")
+    .attr('width', width)
+    .attr('height', height)
     .attr('id', 'componentTreeSvg')
     .append('g')
       .attr('transform', `translate(${margin.left}, ${margin.top})`);
 
   //this sets up the general tree layout and sets the overall size and node size
-  const treeLayout = tree().size([innerHeight, innerWidth]).nodeSize([50, 150]);
+  const treeLayout = tree().size([height - margin.top - margin.bottom, width - margin.right - margin.left]);
+  
   const root = hierarchy(treeData);
   const links = treeLayout(root).links();
   const handleZoom = (e) => g.attr('transform', e.transform);
@@ -59,7 +59,7 @@ const buildD3Tree = (treeData) => {
   const zoomer = zoom().on('zoom', handleZoom); 
 
   newSvg.call(zoomer);
-  newSvg.call(zoomer.transform, zoomIdentity.scale(1).translate(50,100));
+  newSvg.call(zoomer.transform, zoomIdentity.scale(1).translate(0,0));
 
   const linkPathGenerator = linkHorizontal()
     .x((d) => d.y)
@@ -100,6 +100,9 @@ const TreeComp = (props) => {
   function incomingTree(treeFromApp) {
     let parsedTree = JSON.parse(treeFromApp)
     if (parsedTree.componentName === "") {
+      parsedTree = parsedTree.children[0];
+    }
+    if (parsedTree.componentName === "Rewind") {
       parsedTree = parsedTree.children[0];
     }
     if (built === true) {
