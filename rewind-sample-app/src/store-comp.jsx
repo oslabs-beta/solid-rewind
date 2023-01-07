@@ -2,12 +2,10 @@ import { createStore } from "solid-js/store";
 import { render } from "solid-js/web";
 
 
-const storeComp = (props) => {
+const StoreComp = (props) => {
     return (
-        <>
-    <p>STORECOMP</p>
-        </>
+    <p>YOU FOUND ME!</p>
     )
 }
 
-export default storeComp;
+export default StoreComp;

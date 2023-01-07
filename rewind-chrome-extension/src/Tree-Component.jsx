@@ -103,9 +103,6 @@ const TreeComp = (props) => {
       parsedTree = parsedTree.children[0];
     }
     if (built === true) {
-      //FOR TESTING ONLY
-      treeFromApp = sampleTreeData;
-      parsedTree = JSON.parse(sampleTreeData);
       if (treeFromApp !== treeState()) {
         newSvg.selectAll('g').remove()
         updateTree(treeFromApp)
