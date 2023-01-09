@@ -7,6 +7,9 @@ export const sendTreeToChrome = tree => {
   // convert name sets into an object
   convertNameSetToObj(tree);
 
+  // save to stack
+  addToTreeStack(JSON.stringify(tree))
+
   // give chrome tool a moment to load before we send the tree.
   sendData(tree, 'TREE');
 }
@@ -38,3 +41,27 @@ export const stringifyCircularJSON = obj => {
   });
 };
 
+// stacks
+const treePast= [];
+const treeFuture = []
+
+const addToTreeStack = (compTreeString) => {
+  treePast.push(compTreeString);
+  treeFuture.length = 0;
+}
+
+export const goForwardTree = () => {
+  if (treeFuture.length === 0) return;
+  // move future to past
+  treePast.push(treeFuture.pop());
+  // send top of past to chrome
+  sendData(treePast[treePast.length-1], 'TREE');
+}
+
+export const goBackTree = () => {
+  if (treePast.length <= 1) return;
+  // move future to past
+  treeFuture.push(treePast.pop());
+  // send top of past to chrome
+  sendData(treePast[treePast.length-1], 'TREE');
+}

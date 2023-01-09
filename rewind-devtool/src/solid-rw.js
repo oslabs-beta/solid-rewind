@@ -4,6 +4,7 @@ import { flagDontRecordNextChange, reverseSavedStateHistory, getDontRecordFlag, 
 import { changeStoreState } from "./rewind-store";
 import log from "./logger";
 import { sendData } from './sender';
+import { goBackTree, goForwardTree } from "./logger-treeview/treeView";
 
 const debugMode = false;
 const logFullChangeStack = false;
@@ -91,6 +92,9 @@ export const reverse = () => {
 
   // revese saved state history
   reverseSavedStateHistory();
+
+  // reverse comp tree
+  goBackTree();
 }
 
 
@@ -117,6 +121,9 @@ export const next = () => {
 
   // foward in saved state history
   forwardInSavedStateHistory();
+
+  // forward comp tree
+  goForwardTree();
 }
 
 
