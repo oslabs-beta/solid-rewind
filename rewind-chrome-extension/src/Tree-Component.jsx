@@ -37,7 +37,7 @@ const buildD3Tree = (treeData) => {
   newSvg = select(svg); 
   const width = document.body.offsetWidth;
   const height = document.body.offsetHeight;
-  const margin = { top: 10, right: 10, bottom: 10, left: 20 };
+  const margin = { top: 10, right: 20, bottom: 10, left: 20 };
 
   
   //this is the canvas upon which our tree will be painted 
@@ -47,7 +47,6 @@ const buildD3Tree = (treeData) => {
     .attr('height', height)
     .attr('id', 'componentTreeSvg')
     .append('g')
-      .attr('transform', `translate(${margin.left}, ${margin.top})`);
 
   //this sets up the general tree layout and sets the overall size and node size
   const treeLayout = tree().size([height - margin.top - margin.bottom, width - margin.right - margin.left]);
@@ -59,7 +58,7 @@ const buildD3Tree = (treeData) => {
   const zoomer = zoom().on('zoom', handleZoom); 
 
   newSvg.call(zoomer);
-  newSvg.call(zoomer.transform, zoomIdentity.scale(1).translate(0,0));
+  newSvg.call(zoomer.transform, zoomIdentity.scale(1).translate(margin.left,margin.bottom));
 
   const linkPathGenerator = linkHorizontal()
     .x((d) => d.y)
@@ -87,7 +86,14 @@ const buildD3Tree = (treeData) => {
     .style("font", "12px times" )
     .style('text-anchor', 'middle' )
     .attr('y', -18)
-    .text(d => d.data.componentName)
+    .text(d => {
+      let compName = d.data.componentName;
+      if (compName.includes('_Hot$$')) {
+        const start = compName.indexOf("$") + 2;
+        compName = compName.slice(start)
+      }
+      return compName
+    })
     
   node.append('circle')
     .attr('r', 10)
