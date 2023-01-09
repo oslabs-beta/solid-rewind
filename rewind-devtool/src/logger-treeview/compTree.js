@@ -43,6 +43,11 @@ export async function buildComponentTree(root) {
           buildTree(c, parent);
         }
       }
+      if (owner.sdtType === "memo" && owner.sdtSubRoots.length) {
+        for (const c of owner.sdtSubRoots) {
+          buildTree(c, parent);
+        }
+      }
     }
     // if not a "named" component, handle it's children
     else {
@@ -52,8 +57,14 @@ export async function buildComponentTree(root) {
       // add to child map
       buildMapOfChildren(owner.name, parent.componentName);
       
+      // go into children
       if (owner.owned && owner.owned.length) {
         for (const c of owner.owned) {
+          buildTree(c, parent);
+        }
+      }
+      if (owner.sdtType === "memo" && owner.sdtSubRoots.length) {
+        for (const c of owner.sdtSubRoots) {
           buildTree(c, parent);
         }
       }
