@@ -3,8 +3,12 @@ import { createSignal } from 'solid-js';
 
 import TreeComp from './Tree-Component';
 import DragBar from './DragBar';
+import { sendData } from './sender';
 
 function TreeView() {
+
+  // send request for initial tree
+  sendData(undefined, 'INITAL TREE REQUEST');
 
   return (
     <>
