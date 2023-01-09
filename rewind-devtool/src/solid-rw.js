@@ -207,9 +207,6 @@ const setState = ( value, path ) => {
   runWithOwner(owner[0], async () => {
     const source = getPathEnd(path);
 
-    if (debugMode) console.log("SOURCE TO SET:", source, "  PATH", path);
-    if (debugMode) console.log("TREE", owner[0]);
-
     // flag upcoming change as one not to record
     flagDontRecordNextChange();
     console.log("DONT RECORD CHANGE:", getDontRecordFlag());
