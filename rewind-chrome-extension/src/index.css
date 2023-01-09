@@ -1,6 +1,9 @@
+@import url('https://fonts.googleapis.com/css2?family=Sofia+Sans+Condensed:wght@100;200;300;400;500;600;700&display=swap');
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+
 
 body {
   margin: 0;
@@ -11,13 +14,20 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
+/* COMPONENT TREE */
+.compName {
+  font-family: 'Sofia Sans Condensed', sans-serif;
+  font-size: 14px;
+  color: 'steelblue'; 
+}
+
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
 
 .treeView {
-  height: 100px;
+  height: 400px;
   overflow: scroll;
   color: black;
   font-size: 11px;

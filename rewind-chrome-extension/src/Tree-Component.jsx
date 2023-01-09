@@ -39,17 +39,23 @@ const buildD3Tree = (treeData) => {
   const height = document.body.offsetHeight;
   const margin = { top: 10, right: 20, bottom: 10, left: 20 };
 
+  // visual settings
+  const lineHeight = -14;
   
   //this is the canvas upon which our tree will be painted 
 
   const g = newSvg
-    .attr('width', width)
-    .attr('height', height)
+    .attr('width', screen.width) // make svg large so a scaled up window wont show cutoffs.
+    .attr('height', screen.height)
     .attr('id', 'componentTreeSvg')
     .append('g')
 
   //this sets up the general tree layout and sets the overall size and node size
-  const treeLayout = tree().size([height - margin.top - margin.bottom, width - margin.right - margin.left]);
+  const minWidth = 500;
+  const maxWidth = 900;
+  const displayScaleY = 500; //height - margin.top - margin.bottom
+  const displayScaleX = Math.max(Math.min(width - margin.right - margin.left, maxWidth), minWidth);
+  const treeLayout = tree().size([displayScaleY, displayScaleX]);
   
   const root = hierarchy(treeData);
   const links = treeLayout(root).links();
@@ -80,25 +86,58 @@ const buildD3Tree = (treeData) => {
     .attr('id', function(d) { return 'nodeID_' + (d.data.componentName ? d.data.componentName : 'null')})
     .attr('transform', function(d) { return 'translate(' + d.y + ',' + d.x + ')'; })
 
-  //appends text to the nodes
-  node.append('text')
-    .attr("fill", "steelblue")
-    .style("font", "12px times" )
-    .style('text-anchor', 'middle' )
-    .attr('y', -18)
-    .text(d => {
+
+  node.append("foreignObject")
+    // .attr("textAlign", 'center')
+    .attr("x", -50)
+    .attr('y', (d) => {
+      return -17 + getLineNumbers(d.data.componentName) * lineHeight;
+    })
+    .attr("width", 100)
+    .attr("height", 300)
+    .append("xhtml:body")
+    .style("color", "steelblue")
+    .html(d => {
       let compName = d.data.componentName;
+      // parse out _Hot$$ added by ES6 arrow functions
       if (compName.includes('_Hot$$')) {
         const start = compName.indexOf("$") + 2;
         compName = compName.slice(start)
       }
-      return compName
+      // split at capitals into multiple lines
+      const rebuildFrom = compName;
+      compName = '';
+      for (let i = 0; i < rebuildFrom.length; i++) {
+        if (rebuildFrom[i] == rebuildFrom[i].toUpperCase() && i !== 0) {
+          compName+='<br>';
+        }
+        compName += rebuildFrom[i];
+      }
+      return `<div class='compName'>${compName}</div>`; //style='position:absolute; bottom:0;
     })
-    
+
+  
   node.append('circle')
     .attr('r', 10)
-    .attr('fill', "steelblue")
+    .attr('fill', "#24425C")
+}
+
+const getLineNumbers = (compName) => {
+  let lines = 1;
+  if (compName.includes('_Hot$$')) {
+    const start = compName.indexOf("$") + 2;
+    compName = compName.slice(start)
   }
+  for (let i = 0; i < compName.length; i++) {
+    if (compName[i] == compName[i].toUpperCase() && i !== 0) {
+      lines++;
+    }
+  }
+  console.log(lines);
+  return lines;
+}
+
+  
 
 const TreeComp = (props) => {
   let built = false;
