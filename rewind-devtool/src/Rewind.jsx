@@ -26,7 +26,7 @@ const Rewind = (props) => {
 
   // Disable in production mode
   if (process.env.NODE_ENV === 'production') {
-    // console.log('production mode, Solid-Rewind disabled');
+    console.log('production mode, Solid-Rewind disabled');
     console.log(`%c production mode, Solid-Rewind disabled`, `color:orange; font-weight: bold`);
     return ( <div class='rewind'>{props.children} </div> );
   }
@@ -40,9 +40,12 @@ const Rewind = (props) => {
 
   // send tree to chrome
   const sendTreeStructure = async (_owner) => {
+    //building component trees
     let compTree = await buildComponentTree(_owner);
-    sendTreeToChrome(compTree) // send to chrome extention + convert to a json-safe format
+    // send to chrome extention + convert to a json-safe format
+    sendTreeToChrome(compTree)
   }
+
   // give it a moment then call
   setTimeout( sendTreeStructure, 2000, owner );
 
@@ -53,31 +56,43 @@ const Rewind = (props) => {
   //when there is a state change in solid, this listener will run
   const listen = () => {
  
+    //creating a new set
     const GraphUpdateListeners = new Set();
+  
     const setUpRenderChangeEvent = () => {
 
+      //adding a new data only when we are getting a new data set.
       GraphUpdateListeners.add( () => {
         // dont run this at all if we are reversing or nexting
         if (getDontRecordFlag()) {
           unflagDontRecordNextChange();
           return;
         }
+        //setting it 0 to initiate the invokation of the function.
         runListenerOnce--
 
         if (runListenerOnce === 0) {
           runWithOwner(owner, async () => {
+            //creating a new owner object
             let ownerObj = await getOwner();
+            //creating a new tree
             let ownerTree = await new Tree(ownerObj); 
+            //parsing the tree data
             let sourcesState = await ownerTree.parseSources();
-            sendTreeStructure(ownerObj); // build component tree and send it to chrome extension
+            // build component tree and send it to chrome extension
+            sendTreeStructure(ownerObj);
 
             // send this sourcesState to stateParser
             analyzeStateChange( sourcesState );
         })}
       })
+
+      //putting runListenerOnce back to 1 so that function works once
       GraphUpdateListeners.add(() => {
         runListenerOnce++ 
       })
+
+      
       GraphUpdateListeners.add(setHistoryAfterUpdate)
       const runListeners = () => {
         GraphUpdateListeners.forEach(f => f());
@@ -85,10 +100,13 @@ const Rewind = (props) => {
       }
       window._$afterUpdate = runListeners
     }
+
     setUpRenderChangeEvent();
+
   }
   
   listen()
+  
     return (
     <div class='rewind'>{props.children} </div>
     )
