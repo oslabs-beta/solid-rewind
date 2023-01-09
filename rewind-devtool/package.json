@@ -8,7 +8,7 @@
     "dev": "vite",
     "build": "vite build",
     "serve": "vite preview",
-    "test": "jest"
+    "test": "jest --verbose"
   },
   "keywords": [],
   "author": "Moonwalk Team",
@@ -28,6 +28,7 @@
     "solid-js": "^1.6.4",
     "typescript": "^4.9.4"
   },
+  
   "devDependencies": {
     "@babel/core": "^7.20.12",
     "@babel/preset-typescript": "^7.18.6",
