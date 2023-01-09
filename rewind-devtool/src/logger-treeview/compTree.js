@@ -3,36 +3,28 @@ import { setChildMap } from "../solid-rw";
 const debugMode = false;
 
 export async function buildComponentTree(root) {
-  //console.log('PRE TREEED ROOT', root);
-
+  //composition of tree
   function newParent() {
     return {
-      componentName: '',
+      componentName: "",
       children: [],
-      names: new Set()
-    }
+      names: new Set(),
+    };
   }
 
-  // child map will be here
-  const childMap = {};
-
-  // begin building tree
-  const tree = newParent('');
-  buildTree(root, tree, true);
-
-  function buildTree (owner, parent, first = false) {
+  function buildTree(owner, parent, first = false) {
     // if this is a compnent we care about
-    // set it's name
+    // set its name
     if (owner?.componentName) {
       if (!first) {
-        const np = newParent('');
+        const np = newParent("");
         parent.children.push(np);
         parent = np;
       }
       parent.componentName = owner.componentName;
-      
+
       // setup name
-      parent.names = new Set([ owner.name ]);
+      parent.names = new Set([owner.name]);
 
       // add to child map
       buildMapOfChildren(parent.name, parent.componentName);
@@ -49,11 +41,11 @@ export async function buildComponentTree(root) {
         }
       }
     }
-    // if not a "named" component, handle it's children
-    else {
+      // if not a "named" component, handle its children
+      else {
       // gets names of all non-component childen so we can see if any of them are observers of a given symbol
-      parent.names = new Set([ ...parent.names, owner.name ]); 
-      
+        parent.names = new Set([...parent.names, owner.name]);
+
       // add to child map
       buildMapOfChildren(owner.name, parent.componentName);
       
@@ -72,14 +64,21 @@ export async function buildComponentTree(root) {
     
     // base case -- is this nessesary?!?
     if (!owner) {
-      return tree
+      return tree;
     }
-
   }
 
-  function buildMapOfChildren( cName, parent ) {
+  // child map will be here
+  const childMap = {};
+
+  // begin building tree
+  const tree = newParent("");
+  buildTree(root, tree, true);
+
+  function buildMapOfChildren(cName, parent) {
     if (!cName || !parent) return;
-    if (debugMode) console.log('adding to child map - CHILD', { cName, parent } );
+    if (debugMode)
+      console.log("adding to child map - CHILD", { cName, parent });
     // if no value is found, make a new set
     if (childMap[cName] === undefined) {
       childMap[cName] = new Set();
@@ -87,7 +86,7 @@ export async function buildComponentTree(root) {
     // add to child map
     childMap[cName].add(parent);
     // log it
-    if (debugMode) console.log('child:', cName, childMap[cName]);
+    if (debugMode) console.log("child:", cName, childMap[cName]);
   }
 
   // saveChildMap

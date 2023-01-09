@@ -1,4 +1,3 @@
-
 export default function log (messages, prefixOrFile = '', color = 'orange') {
   if (prefixOrFile === '') {
     if (Array.isArray(messages)) console.log(`%c ${ messages }`, `color:${color}; font-weight: bold`);

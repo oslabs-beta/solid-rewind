@@ -1,7 +1,7 @@
 import { DEV } from "solid-js/store";
 import { batch } from 'solid-js';
 import { ChangeObj, flagDontRecordNextChange } from "./stateParser";
-import { addToChangeStack } from './solid-rw';
+import { addToChangeStack } from './solid-rw.js';
 
 let currentUpdates = {};
 
@@ -54,6 +54,7 @@ const saveChangeToHistory = (storeChange: any) => {
     // add change to stack
     addToChangeStack(change);
 }
+
 
 export const addStoreStateToHistory = () => {
     window._$onStoreNodeUpdate = (state, property, value, prev) => {
