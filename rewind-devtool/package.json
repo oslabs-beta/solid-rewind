@@ -1,6 +1,6 @@
 {
   "name": "solid-rewind",
-  "version": "0.0.509",
+  "version": "0.0.510",
   "description": "SolidJS time-travel debugger",
   "main": "src/Rewind.jsx",
   "scripts": {

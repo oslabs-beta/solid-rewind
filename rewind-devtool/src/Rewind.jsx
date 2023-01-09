@@ -8,6 +8,7 @@ import { analyzeStateChange, unflagDontRecordNextChange, getDontRecordFlag } fro
 import { saveOwner } from './solid-rw';
 import { sendTreeToChrome } from './logger-treeview/treeView';
 import { addStoreStateToHistory, setHistoryAfterUpdate  } from './rewind-store';
+import { listenFor } from './sender';
 
 // Trying to get prod mode or not.
 console.log(import.meta.env.PROD);
@@ -43,8 +44,16 @@ const Rewind = (props) => {
     let compTree = await buildComponentTree(_owner);
     sendTreeToChrome(compTree) // send to chrome extention + convert to a json-safe format
   }
-  // give it a moment then call
-  setTimeout( sendTreeStructure, 2000, owner );
+
+  // respond to initial request for the component tree
+  const requestTree = () => {
+    runWithOwner(owner, async () => {
+      let ownerObj = await getOwner();
+      sendTreeStructure(ownerObj); // build component tree and send it to chrome extension
+    })
+  }
+  // listen for initial tree requests
+  listenFor('INITAL TREE REQUEST', requestTree);
 
   //function allows us to reset state of a signal
   addStoreStateToHistory();
