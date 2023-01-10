@@ -5,27 +5,9 @@ import {
     linkHorizontal, 
     zoom, 
     zoomIdentity } from 'd3';
-import { onMount, createSignal } from 'solid-js';
+import { createSignal } from 'solid-js';
 import { listenFor } from './listener';
 
-const sampleTreeData = JSON.stringify({
-  "componentName":"App",
-  "children":[{"componentName":"_Hot$$TreeComp","children":[],"names":{"c-1-1-1-1-1-3":"","c-1-1-1-1-1-3-1":"","c-1-1-1-1-1-3-1-1":""}},
-  {
-    "componentName":"_Hot$$Hello",
-    "children":[
-    {
-      "componentName":"For",
-      "children":[
-        {"componentName":"RobbieExample", "names":{}, "children":[]}, 
-        {"componentName":"RobbieExample2", "names":{}, "children":[]}
-      ],
-      "names":{"c-1-1-1-1-1-5-1-3":"","value":""}}],
-    "names":{"c-1-1-1-1-1-5":"","c-1-1-1-1-1-5-1":"","c-1-1-1-1-1-5-1-1":"","c-1-1-1-1-1-5-1-1-1":"","c-1-1-1-1-1-5-1-2":""}}],
-  "names":{"c-1-1-1-1":"","c-1-1-1-1-1":"","c-1-1-1-1-1-1":"","c-1-1-1-1-1-2":"","c-1-1-1-1-1-4":"","c-1-1-1-1-1-6":"",
-          "c-1-1-1-1-1-6-1":"","c-1-1-1-1-1-7":"","c-1-1-1-1-1-8":"","c-1-1-1-1-1-9":"","c-1-1-1-1-1-10":"","c-1-1-1-1-1-11":"",
-          "c-1-1-1-1-1-12":"","c-1-1-1-1-1-13":"","c-1-1-1-1-1-14":""}
-})
 
 const [treeState, updateTree] = createSignal({});
 
@@ -36,7 +18,6 @@ let newSvg;
 const buildD3Tree = (treeData) => {
   newSvg = select(svg); 
   const width = document.body.offsetWidth;
-  const height = document.body.offsetHeight;
   const margin = { top: 10, right: 20, bottom: 10, left: 20 };
 
   // visual settings
@@ -88,7 +69,6 @@ const buildD3Tree = (treeData) => {
 
 
   node.append("foreignObject")
-    // .attr("textAlign", 'center')
     .attr("x", -50)
     .attr('y', (d) => {
       return -17 + getLineNumbers(d.data.componentName) * lineHeight;
@@ -133,7 +113,6 @@ const getLineNumbers = (compName) => {
       lines++;
     }
   }
-  console.log(lines);
   return lines;
 }
 
@@ -172,3 +151,4 @@ const TreeComp = (props) => {
 }
 
 export default TreeComp;
+
