@@ -10,6 +10,7 @@ import { listenFor } from './listener';
 
 
 const [treeState, updateTree] = createSignal({});
+const [position, updatePosition] = createSignal({});
 
 // callback to handle tree data
 let svg;
@@ -18,7 +19,8 @@ let newSvg;
 const buildD3Tree = (treeData) => {
   newSvg = select(svg); 
   const width = document.body.offsetWidth;
-  const margin = { top: 10, right: 20, bottom: 10, left: 20 };
+  const height = document.body.offsetHeight;
+  const margin = { top: 10, right: 20, bottom: 10, left: 50 };
 
   // visual settings
   const lineHeight = -14;
@@ -36,7 +38,7 @@ const buildD3Tree = (treeData) => {
   const maxWidth = 900;
   const displayScaleY = 500; //height - margin.top - margin.bottom
   const displayScaleX = Math.max(Math.min(width - margin.right - margin.left, maxWidth), minWidth);
-  const treeLayout = tree().size([displayScaleY, displayScaleX]);
+  const treeLayout = tree().nodeSize([displayScaleY / 10, displayScaleX / 10]);
   
   const root = hierarchy(treeData);
   const links = treeLayout(root).links();
@@ -45,7 +47,7 @@ const buildD3Tree = (treeData) => {
   const zoomer = zoom().on('zoom', handleZoom); 
 
   newSvg.call(zoomer);
-  newSvg.call(zoomer.transform, zoomIdentity.scale(1).translate(margin.left,margin.bottom));
+  newSvg.call(zoomer.transform, zoomIdentity.scale(1).translate(margin.left,(height - margin.bottom - margin.top) / 2));
 
   const linkPathGenerator = linkHorizontal()
     .x((d) => d.y)
@@ -71,7 +73,7 @@ const buildD3Tree = (treeData) => {
   node.append("foreignObject")
     .attr("x", -50)
     .attr('y', (d) => {
-      return -17 + getLineNumbers(d.data.componentName) * lineHeight;
+      return -18 + getLineNumbers(d.data.componentName) * lineHeight;
     })
     .attr("width", 100)
     .attr("height", 300)
