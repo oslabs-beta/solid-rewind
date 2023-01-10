@@ -2,7 +2,6 @@ import logo from './logo.svg';
 import styles from './App.module.css';
 import { createSignal,  getOwner, createMemo} from 'solid-js';
 import Hello from './Hello';
-import TreeComp from './tree-component';
 import 'solid-devtools';
 
 
@@ -40,7 +39,6 @@ function App() {
         <p>
           Edit {first()}<code> src/App.jsx</code> and save to reload.
         </p>
-        <TreeComp owner={rewindOwner}/>
         < Hello count={count}/>
         <div>The current count is... {count()}</div>
         
