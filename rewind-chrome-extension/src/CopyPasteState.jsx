@@ -1,7 +1,6 @@
 import styles from './App.module.css';
 import { createSignal } from 'solid-js';
-import { listenFor } from './listener';
-import { sendData } from './sender';
+import { listenFor, sendData } from './sendAndListen';
 
 // Deprecated feature, doesn't work with stores. Only works with signals.
 const [copyiedState, setCopiedState] = createSignal('');

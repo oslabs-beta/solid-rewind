@@ -34,7 +34,7 @@ code {
   background-color: antiquewhite;
 }
 
-.dragBar {
+.debugger .dragBar {
   height: 24px;
   width: 100%;
   border-top: 1px solid rgb(230, 223, 214);
@@ -43,29 +43,29 @@ code {
   align-items: center;
 }
 
-.dragBoxIcon {
+.debugger .dragBoxIcon {
   width: 30px;
   padding-top: 6px;
 }
 
-.dragBar:hover {
+.debugger .dragBar:hover {
   cursor: grab;
   cursor: -moz-grab;
   cursor: -webkit-grab;
 }
 
-.dragBar:active {
+.debugger .dragBar:active {
   cursor: grabbing;
   cursor: -moz-grabbing;
   cursor: -webkit-grabbing;
 }
 
-.dragBarLine {
+.debugger .dragBarLine {
   height: 6px;
   border-top: 1px solid rgb(190, 189, 186);
 }
 
-.dragBarLineBottom {
+.debugger .dragBarLineBottom {
   height: 7px !important;
   border-bottom: 1px solid rgb(190, 189, 186);
 }

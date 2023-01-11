@@ -6,7 +6,7 @@ import {
     zoom, 
     zoomIdentity } from 'd3';
 import { createSignal } from 'solid-js';
-import { listenFor } from './listener';
+import { listenFor } from './sendAndListen';
 
 
 const [treeState, updateTree] = createSignal({});

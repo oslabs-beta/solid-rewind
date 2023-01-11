@@ -3,7 +3,7 @@ import { createSignal } from 'solid-js';
 
 import TreeComp from './Tree-Component';
 import DragBar from './DragBar';
-import { sendData } from './sender';
+import { sendData } from './sendAndListen';
 
 function TreeView() {
 

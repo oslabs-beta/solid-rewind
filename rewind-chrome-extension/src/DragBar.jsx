@@ -41,10 +41,12 @@ function DragBar(props) {
   }
 
   return (
-    <div class='dragBar' onMouseDown={startDrag}>
-      <div class='dragBoxIcon'>
-        <div class='dragBarLine'></div>
-        <div class='dragBarLine dragBarLineBottom'></div>
+    <div class='debugger'>
+      <div class='dragBar' onMouseDown={startDrag}>
+        <div class='dragBoxIcon'>
+          <div class='dragBarLine'></div>
+          <div class='dragBarLine dragBarLineBottom'></div>
+        </div>
       </div>
     </div>
   );

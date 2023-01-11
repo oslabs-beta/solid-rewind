@@ -1,8 +1,7 @@
 /* global chrome */
 import { createSignal } from 'solid-js';
 import styles from './App.module.css';
-import { sendData } from './sender';
-import { listenFor } from './listener';
+import { sendData, listenFor } from './sendAndListen';
 
 function TimeTravelControls() {
 
