@@ -10,9 +10,6 @@ import { sendTreeToChrome } from './logger-treeview/treeView';
 import { addStoreStateToHistory, setHistoryAfterUpdate  } from './rewind-store';
 import { listenFor } from './sender';
 
-// Trying to get prod mode or not.
-console.log(import.meta.env.PROD);
-
 // initilize rewind
 init();
 
@@ -88,7 +85,6 @@ const Rewind = (props) => {
             //parsing the tree data
             let sourcesState = await ownerTree.parseSources();
             sendTreeStructure(ownerObj); // build component tree and send it to chrome extension
-            console.log("shouldnt see this when traversing timeline");
 
             // send this sourcesState to stateParser
             analyzeStateChange( sourcesState );

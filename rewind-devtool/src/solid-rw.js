@@ -78,8 +78,6 @@ export const reverse = () => {
   if (changeStack.length === 0) return;
   // get the change to reverse
   const rev = changeStack.pop();
-
-  if (rev.store) console.log("R-STORE");
   
   // execute change
   if (!rev.store) setState(rev.prev, rev.path);
@@ -104,8 +102,6 @@ export const next = () => {
   if (changeFutureStack.length === 0) return;
   // get the next change
   const next = changeFutureStack.pop();
-
-  if (next.store) console.log("N-STORE");
 
   // excute change
   if (!next.store) setState(next.next, next.path);
@@ -147,7 +143,6 @@ function travelForward( data ) {
 
 // COPY AND PASTE STATE //
 export function copyState() {
-  console.log('COPY STATE FUNCTION ENVOKED');
   copyTextToClipboard(JSON.stringify(changeStack));
 }
 
@@ -180,8 +175,6 @@ function copyTextToClipboard(text) {
 
 // load state
 export async function loadState (state) {
-  console.log('LOAD STATE FUNCTION ENVOKED');
-  console.log('incoming state to load:', state);
 
   // get state from payload
   let stateData = state?.payload;
@@ -216,7 +209,6 @@ const setState = ( value, path ) => {
 
     // flag upcoming change as one not to record
     flagDontRecordNextChange();
-    console.log("DONT RECORD CHANGE:", getDontRecordFlag());
 
     DEV.writeSignal(source, value);
   });
