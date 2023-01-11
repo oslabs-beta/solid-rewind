@@ -75,7 +75,7 @@ const buildD3Tree = (treeData) => {
     })
     .attr("width", 100)
     .attr("height", 300)
-    .append("xhtml:body")
+    .append("xhtml:section")
     .style("color", "steelblue")
     .html(d => {
       let compName = d.data.componentName;

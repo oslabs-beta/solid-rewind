@@ -12,6 +12,7 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  background-color: white;
 }
 
 /* COMPONENT TREE */
@@ -27,14 +28,14 @@ code {
 }
 
 .treeView {
-  height: 400px;
+  height: 70vh;
   overflow: scroll;
   color: black;
   font-size: 11px;
   background-color: antiquewhite;
 }
 
-.debugger .dragBar {
+.dragBar {
   height: 24px;
   width: 100%;
   border-top: 1px solid rgb(230, 223, 214);
@@ -43,29 +44,29 @@ code {
   align-items: center;
 }
 
-.debugger .dragBoxIcon {
+.dragBoxIcon {
   width: 30px;
   padding-top: 6px;
 }
 
-.debugger .dragBar:hover {
+.dragBar:hover {
   cursor: grab;
   cursor: -moz-grab;
   cursor: -webkit-grab;
 }
 
-.debugger .dragBar:active {
+.dragBar:active {
   cursor: grabbing;
   cursor: -moz-grabbing;
   cursor: -webkit-grabbing;
 }
 
-.debugger .dragBarLine {
+.dragBarLine {
   height: 6px;
   border-top: 1px solid rgb(190, 189, 186);
 }
 
-.debugger .dragBarLineBottom {
+.dragBarLineBottom {
   height: 7px !important;
   border-bottom: 1px solid rgb(190, 189, 186);
 }
