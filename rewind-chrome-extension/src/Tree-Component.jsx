@@ -21,7 +21,7 @@ const buildD3Tree = (treeData) => {
   const margin = { top: 10, right: 20, bottom: 10, left: 20 };
 
   // visual settings
-  const lineHeight = -14;
+  const lineHeight = -15;
   
   //this is the canvas upon which our tree will be painted 
 
@@ -71,7 +71,7 @@ const buildD3Tree = (treeData) => {
   node.append("foreignObject")
     .attr("x", -50)
     .attr('y', (d) => {
-      return -17 + getLineNumbers(d.data.componentName) * lineHeight;
+      return lineHeight + (getLineNumbers(d.data.componentName)) * lineHeight;
     })
     .attr("width", 100)
     .attr("height", 300)

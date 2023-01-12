@@ -20,6 +20,7 @@ body {
   font-family: 'Sofia Sans Condensed', sans-serif;
   font-size: 14px;
   color: 'steelblue'; 
+  line-height: 15px;
 }
 
 code {
@@ -36,6 +37,7 @@ code {
 }
 
 .dragBar {
+  margin-bottom: -24px;
   height: 24px;
   width: 100%;
   border-top: 1px solid rgb(230, 223, 214);
