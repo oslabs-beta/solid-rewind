@@ -34,4 +34,5 @@ render( () => {
 
 ```
 
-That's it! Build your project and open our chrome extention along-side it.
+That's it! Build your project and open our chrome extension along-side it:
+https://chrome.google.com/webstore/detail/solid-rewind/ejdinegdopmimnkbonknknhfmmcgcdoh
