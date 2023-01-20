@@ -13,7 +13,7 @@
 </p>
 
 
-<h3><ins>Features</ins></h3>
+<h3>Features</h3>
 
 * Redux-style time-travel debugging, allowing you to ‘rewind’ to previous versions of your application’s state.
 * Dynamic, D3-visualization of your component tree
@@ -23,18 +23,16 @@
 
 <h2>Installation</h2>
 
-**First, Download our Chrome extension [here](https://chrome.google.com/webstore/detail/solid-rewind/ejdinegdopmimnkbonknknhfmmcgcdoh)**
+:exclamation::exclamation:Before using, you must download our Chrome extension [here](https://chrome.google.com/webstore/detail/solid-rewind/ejdinegdopmimnkbonknknhfmmcgcdoh):exclamation::exclamation:
 
-<h3><ins>Setup</ins></h3>
-
-1. install our package with
+**1. install our package with**
 
 ```javascript
 npm i solid-rewind
 ```
 
-2. Import our Rewind component at the top level of your app.
-3. Wrap your top-level component in our <Rewind> component.
+**2. Import our Rewind component at the top level of your app.**
+**3. Wrap your top-level component in our <Rewind> component.**
 ```javascript
 import Rewind from 'solid-rewind';
 
@@ -45,7 +43,7 @@ render( () => {
 }, document.getElementById('root'));
 
 ```
-That's it! Build your project and access our tool in the chrome devtools menu!
+**That's it! Build your project and access our tool in the chrome devtools menu!**
 
 <h2>Authors</h2>
     
