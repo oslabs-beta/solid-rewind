@@ -1,21 +1,27 @@
+<p align="center">
+<img src="https://user-images.githubusercontent.com/108890716/213731944-82d1e802-9d56-492e-9c7b-0cb10b1a151c.png" />
+</p>
 
-# Solid Rewind
+<h1>Solid Rewind</h1>
 
+<h2>About</h2>
 A time-travel debugger for SolidJS.
-This works with our chrome extension found here: <extension>
 
+<h4>Features</h4>
 
-ATTENTION: This extension is IN DEVELOPMENT.
-Please expect a full release by Jan 15th. 
-
-Features that will be within scope by Jan 15 release:
 * Support for state in stores.
 * Dev-only run. Currently our code runs even in production mode.
 * Tree view of component hierarchy.
 
-# instructions:
-1. install our package with
 
+<h2>Installation</h2>
+<h3>Prerequisites</h3>
+
+Download our Chrome extension [here](https://chrome.google.com/webstore/detail/solid-rewind/ejdinegdopmimnkbonknknhfmmcgcdoh)
+
+<h3>Setup</h3>
+
+1. install our package with
 
 ```javascript
 npm i solid-rewind
@@ -33,6 +39,11 @@ render( () => {
 }, document.getElementById('root'));
 
 ```
+That's it! Build your project and access our tool in the chrome devtools menu!
 
-That's it! Build your project and run it alongside our chrome extension, which you can [download here](https://chrome.google.com/webstore/detail/solid-rewind/ejdinegdopmimnkbonknknhfmmcgcdoh). 
+
+Features that will be within scope by Jan 15 release:
+* Support for state in stores.
+* Dev-only run. Currently our code runs even in production mode.
+* Tree view of component hierarchy.
 
