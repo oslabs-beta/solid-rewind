@@ -51,7 +51,7 @@ That's it! Build your project and access our tool in the chrome devtools menu!
     
 * Robbie Gottlieb | [@Boblobblieb](https://github.com/Boblobblieb) | [LinkedIn](https://www.linkedin.com/in/robbie-gottlieb/) 
 * Willem Rosenthal | [@willemrosenthal](https://github.com/willemrosenthal) | [LinkedIn](https://www.linkedin.com/in/willem-rosenthal/)  
-* Christian Catanese [@Crescent0130](https://github.com/Crescent0130) | [LinkedIn](https://www.linkedin.com/in/christian-catanese/)   
+* Christian Catanese [@c-catanese](https://github.com/c-catanese) | [LinkedIn](https://www.linkedin.com/in/christian-catanese/)   
 * Jason Moon | [@Crescent0130](https://github.com/Crescent0130) | [LinkedIn](https://www.linkedin.com/in/jason-joonsik-moon/)
 
 
