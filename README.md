@@ -47,7 +47,7 @@ render( () => {
 
 <h2>Authors</h2>
     
-* Robbie Gottlieb | [@Boblobblieb](https://github.com/Boblobblieb) | [LinkedIn](https://www.linkedin.com/in/robbie-gottlieb/) 
+* Robbie Gottlieb | [@robbiegot](https://github.com/robbiegot) | [LinkedIn](https://www.linkedin.com/in/robbie-gottlieb/) 
 * Willem Rosenthal | [@willemrosenthal](https://github.com/willemrosenthal) | [LinkedIn](https://www.linkedin.com/in/willem-rosenthal/)  
 * Christian Catanese [@c-catanese](https://github.com/c-catanese) | [LinkedIn](https://www.linkedin.com/in/christian-catanese/)   
 * Jason Moon | [@Crescent0130](https://github.com/Crescent0130) | [LinkedIn](https://www.linkedin.com/in/jason-joonsik-moon/)
