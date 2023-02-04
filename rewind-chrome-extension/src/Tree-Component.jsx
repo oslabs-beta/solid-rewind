@@ -57,7 +57,7 @@ const buildD3Tree = (treeData) => {
     .append('path')
     .attr("fill", "none")
     .attr('stroke','black')
-    .attr('stroke-width', 2)
+    .attr('stroke-width', '1vh')
     .attr('d', linkPathGenerator); 
 
   //creates the individual node (components) and spaces them out appropriately + gives them a class so we can progrommaticaly change them
@@ -95,10 +95,11 @@ const buildD3Tree = (treeData) => {
       }
       return `<div class='compName'>${compName}</div>`; //style='position:absolute; bottom:0;
     })
+  
 
   
   node.append('circle')
-    .attr('r', 10)
+    .attr('r', '3vh')
     .attr('fill', "#24425C")
 }
 
