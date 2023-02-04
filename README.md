@@ -1,28 +1,38 @@
-
-# Solid Rewind
-
-A time-travel debugger for SolidJS.
-This works with our chrome extension found here: <extension>
+<p align="center">
+<img src="https://user-images.githubusercontent.com/108890716/213749839-3d58dbea-106d-4bfb-8724-b41fe00c55d5.png" />
+</p>
 
 
-ATTENTION: This extension is IN DEVELOPMENT.
-Please expect a full release by Jan 15th. 
+<h2>About</h2>
 
-Features that will be within scope by Jan 15 release:
-* Support for state in stores.
-* Dev-only run. Currently our code runs even in production mode.
-* Tree view of component hierarchy.
+**Solid Rewind is a time-trave debugger and component-tree visualizer for the reactive framework, SolidJS**
 
-# instructions:
-1. install our package with
 
+<p align="center">
+  <img src="https://user-images.githubusercontent.com/108890716/213750313-3eaa059f-6abe-4d18-b257-1b1d1fe5c3a2.gif" alt="animated" />
+</p>
+
+
+<h3>Features</h3>
+
+* Redux-style time-travel debugging, allowing you to ‘rewind’ to previous versions of your application’s state.
+* Dynamic, D3-visualization of your component tree
+* Integration with Chrome’s existing Dev Tools menu so you can troubleshoot your Solid App directly from your browser.
+
+
+
+<h2>Installation</h2>
+
+:exclamation::exclamation:Before using, you must download our Chrome extension [here](https://chrome.google.com/webstore/detail/solid-rewind/ejdinegdopmimnkbonknknhfmmcgcdoh):exclamation::exclamation:
+
+**1. install our package with**
 
 ```javascript
 npm i solid-rewind
 ```
 
-2. Import our Rewind component at the top level of your app.
-3. Wrap your top-level component in our <Rewind> component.
+**2. Import our Rewind component at the top level of your app.**
+**3. Wrap your top-level component in our <Rewind> component.**
 ```javascript
 import Rewind from 'solid-rewind';
 
@@ -33,5 +43,15 @@ render( () => {
 }, document.getElementById('root'));
 
 ```
+**That's it! Build your project and access our tool in the chrome devtools menu!**
 
-That's it! Build your project and open our chrome extention along-side it.
+<h2>Authors</h2>
+    
+* Robbie Gottlieb | [@robbiegot](https://github.com/robbiegot) | [LinkedIn](https://www.linkedin.com/in/robbie-gottlieb/) 
+* Willem Rosenthal | [@willemrosenthal](https://github.com/willemrosenthal) | [LinkedIn](https://www.linkedin.com/in/willem-rosenthal/)  
+* Christian Catanese [@c-catanese](https://github.com/c-catanese) | [LinkedIn](https://www.linkedin.com/in/christian-catanese/)   
+* Jason Moon | [@Crescent0130](https://github.com/Crescent0130) | [LinkedIn](https://www.linkedin.com/in/jason-joonsik-moon/)
+
+
+<h2>Contributing</h2>
+Solid Rewind launched on January 15, 2023 and is currently in active beta development through the OSlabs community initiative. The application is licensed under the terms of the MIT license, making it a fully open source product. Developers are welcome to contribute to the codebase and expand on its features.
