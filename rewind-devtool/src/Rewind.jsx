@@ -32,6 +32,7 @@ const Rewind = (props) => {
   //establish the owner at the top level component, so that we can pass this owner to internal functions and keep it consistent 
   //if we tried to run these internal functions with their internal owner, we'd see a very different ownership tree
   const owner = getOwner(); 
+  console.log(owner)
 
   // save owner, passed to dev-tool functions
   saveOwner(owner);
