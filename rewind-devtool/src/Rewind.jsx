@@ -10,6 +10,8 @@ import { sendTreeToChrome } from './logger-treeview/treeView';
 import { addStoreStateToHistory, setHistoryAfterUpdate  } from './rewind-store';
 import { listenFor } from './sender';
 
+const debugMode = true;
+
 // initilize rewind
 init();
 
@@ -20,13 +22,15 @@ let runListenerOnce = 1;
 //DevTool component
 const Rewind = (props) => {
 
-  console.log(`%c app mode: ${ process.env.NODE_ENV }`, `color:purple; font-weight: bold`);
+  //console.log(`%c app mode: ${ process.env.NODE_ENV }`, `color:purple; font-weight: bold`);
 
   // Disable in production mode
-  if (process.env.NODE_ENV === 'production') {
-    console.log('production mode, Solid-Rewind disabled');
+  if (process.env.NODE_ENV === 'production' && !props.runInProduction) {
     console.log(`%c production mode, Solid-Rewind disabled`, `color:orange; font-weight: bold`);
     return ( <div class='rewind'>{props.children} </div> );
+  }
+  if (props.runInProduction) {
+    console.log(`%cWARNING: Solid Rewind is a debugger tool meant for development mode. We do not recommend enabling it for production.`, `color:orange; font-weight: bold`);
   }
   
   //establish the owner at the top level component, so that we can pass this owner to internal functions and keep it consistent 
