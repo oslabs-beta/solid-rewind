@@ -26,6 +26,16 @@ export default class OwnershipTree {
                 }
             }
         }
+        // for momo - this occurs in for loops among other places. In this case, children are in 'sdtSubRoots' rather than 'owned'
+        if (owner?.sdtType === "memo" && owner?.sdtSubRoots?.length) {
+            for (const key in owner.sdtSubRoots) {
+                const child = owner.sdtSubRoots[key];
+                const childPath = this.path + `.sdtSubRoots[${key}]`
+                if (child) {
+                    childArray.push(new OwnershipTree(child, childPath))
+                }
+            }
+        }
         return childArray;
     }
 
