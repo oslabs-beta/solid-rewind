@@ -36,7 +36,12 @@ const buildD3Tree = (treeData) => {
   const maxWidth = 900;
   const displayScaleY = 500; //height - margin.top - margin.bottom
   const displayScaleX = Math.max(Math.min(width - margin.right - margin.left, maxWidth), minWidth);
-  const treeLayout = tree().size([displayScaleY, displayScaleX]);
+  // const treeLayout = tree().size([displayScaleY, displayScaleX]);
+
+  const treeLayout = tree().nodeSize([30,]).separation(function separation(a, b) {
+    return a.parent == b.parent ? 2 : 1;
+});
+
   
   const root = hierarchy(treeData);
   const links = treeLayout(root).links();
@@ -52,11 +57,9 @@ const buildD3Tree = (treeData) => {
     g.selectAll('foreignObject')
     .style('font-size', (1 / e.transform.k) + 'em')
     .attr("height", (7 / e.transform.k) + 'vh')
-    .attr('y', (d) => {
-      return '-' + ((lineHeight * 1.25) / e.tranform.k) + 'vh';
-      // const lines = (lineHeight + (getLineNumbers(d.data.componentName)) * lineHeight)
-      // return '-' + (lines / e.transform.k) + 'vh';
-    })
+    .attr('y', (2.1 / e.transform.k) + 'vh')
+    .style("text-anchor", "middle")
+    console.log(e.transform.k)
   }
 
   const zoomer = zoom().on('zoom', handleZoom); 
@@ -88,10 +91,7 @@ const buildD3Tree = (treeData) => {
   node.append("foreignObject")
     .style("text-anchor", "middle")
     .attr('x', '-4vh')
-    .attr('y', (d) => {
-      return (-lineHeight * 1.25) - 7 + 'vh';
-      // return '-' + (lineHeight + (getLineNumbers(d.data.componentName)) * lineHeight) + 'vh';
-    })
+    .attr('y', '2.1vh')
     .attr("width", '8vh')
     .attr("height", '7vh')
     .style('font-size', '1em')
