@@ -36,11 +36,11 @@ const buildD3Tree = (treeData) => {
   const maxWidth = 900;
   const displayScaleY = 500; //height - margin.top - margin.bottom
   const displayScaleX = Math.max(Math.min(width - margin.right - margin.left, maxWidth), minWidth);
-  // const treeLayout = tree().size([displayScaleY, displayScaleX]);
+  const treeLayout = tree().size([displayScaleY, displayScaleX]);
 
-  const treeLayout = tree().nodeSize([30,]).separation(function separation(a, b) {
-    return a.parent == b.parent ? 2 : 1;
-});
+//   const treeLayout = tree().nodeSize([30,]).separation(function separation(a, b) {
+//     return a.parent == b.parent ? 2 : 1;
+// });
 
   
   const root = hierarchy(treeData);
