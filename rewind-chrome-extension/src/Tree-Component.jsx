@@ -21,7 +21,7 @@ const buildD3Tree = (treeData) => {
   const margin = { top: 10, right: 20, bottom: 10, left: 20 };
 
   // visual settings
-  const lineHeight = -15;
+  const lineHeight = 2;
   
   //this is the canvas upon which our tree will be painted 
 
@@ -40,7 +40,24 @@ const buildD3Tree = (treeData) => {
   
   const root = hierarchy(treeData);
   const links = treeLayout(root).links();
-  const handleZoom = (e) => g.attr('transform', e.transform);
+  const handleZoom = (e) => {
+    g.attr('transform', e.transform);
+
+    g.selectAll('circle')
+    .attr('r', (2 / e.transform.k) + 'vh')
+
+    g.selectAll('path')
+    .attr('stroke-width', (1 / e.transform.k) + 'vh')
+
+    g.selectAll('foreignObject')
+    .style('font-size', (1 / e.transform.k) + 'em')
+    .attr("height", (7 / e.transform.k) + 'vh')
+    .attr('y', (d) => {
+      return '-' + ((lineHeight * 1.25) / e.tranform.k) + 'vh';
+      // const lines = (lineHeight + (getLineNumbers(d.data.componentName)) * lineHeight)
+      // return '-' + (lines / e.transform.k) + 'vh';
+    })
+  }
 
   const zoomer = zoom().on('zoom', handleZoom); 
 
@@ -69,15 +86,18 @@ const buildD3Tree = (treeData) => {
 
 
   node.append("foreignObject")
-    .attr("x", -50)
+    .style("text-anchor", "middle")
+    .attr('x', '-4vh')
     .attr('y', (d) => {
-      return lineHeight + (getLineNumbers(d.data.componentName)) * lineHeight;
+      return (-lineHeight * 1.25) - 7 + 'vh';
+      // return '-' + (lineHeight + (getLineNumbers(d.data.componentName)) * lineHeight) + 'vh';
     })
-    .attr("width", 100)
-    .attr("height", 300)
+    .attr("width", '8vh')
+    .attr("height", '7vh')
+    .style('font-size', '1em')
     .append("xhtml:section")
     .style("color", "steelblue")
-    .html(d => {
+    .text(d => {
       let compName = d.data.componentName;
       // parse out _Hot$$ added by ES6 arrow functions
       if (compName.includes('_Hot$$')) {
@@ -89,35 +109,20 @@ const buildD3Tree = (treeData) => {
       compName = '';
       for (let i = 0; i < rebuildFrom.length; i++) {
         if (rebuildFrom[i] == rebuildFrom[i].toUpperCase() && i !== 0) {
-          compName+='<br>';
+          compName+=`  `;
         }
         compName += rebuildFrom[i];
       }
-      return `<div class='compName'>${compName}</div>`; //style='position:absolute; bottom:0;
+      return `${compName}`; //style='position:absolute; bottom:0;
     })
   
 
   
   node.append('circle')
-    .attr('r', '3vh')
+    .attr('r', '2vh')
     .attr('fill', "#24425C")
-}
-
-const getLineNumbers = (compName) => {
-  let lines = 1;
-  if (compName.includes('_Hot$$')) {
-    const start = compName.indexOf("$") + 2;
-    compName = compName.slice(start)
-  }
-  for (let i = 0; i < compName.length; i++) {
-    if (compName[i] == compName[i].toUpperCase() && i !== 0) {
-      lines++;
-    }
-  }
-  return lines;
-}
-
-  
+    
+} 
 
 const TreeComp = (props) => {
   let built = false;
