@@ -1,8 +1,8 @@
 {
   "name": "Solid Rewind",
   "description": "SolidJS timetravel debugger",
-  "version": "1.1.1",
-  "manifest_version": 3,
+  "version": "1.2",
+  "manifest_version": 4,
   "devtools_page": "devtools.html",
   "background": {
     "service_worker" : "background.js"
