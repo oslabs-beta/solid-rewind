@@ -1,5 +1,22 @@
+import type { Owner } from "solid-js";
+import type { Solid } from "@solid-devtools/debugger";
+
+export type Signal = {
+    name: string,
+    value: string, 
+    path: string,
+    store: boolean
+}
+
+
 export default class OwnershipTree {
-    constructor(owner, path) {
+    private name: string | void; 
+    private path: string;
+    private children: OwnershipTree[];
+    private sourceMap: Signal[] | undefined;
+    private sources: Owner[] | undefined; 
+    
+    constructor(owner: Owner, path: string) {
         this.name = this.getName(owner);
         this.path = path ? path : '';
         this.children = this.getChildren(owner);
@@ -9,13 +26,13 @@ export default class OwnershipTree {
 
     //this method gets the name for a particular owner. 
     //it is invoked in the constructor
-    getName(owner) {
+    getName(owner: Owner): string | void {
         if (owner?.name) return owner.name; 
     }
 
     //this method gets the children for a particular owner. 
     //it is invoked in the constructor
-    getChildren(owner) {
+    getChildren(owner: Owner): OwnershipTree[] {
         const childArray = [];
         if (owner?.owned) {
             for (const key in owner.owned) {
@@ -42,7 +59,7 @@ export default class OwnershipTree {
     
     //this method gets the sourcemap for a particular owner. 
     //it is invoked in the constructor
-    getSourceMap(owner) {
+    getSourceMap(owner: Owner) {
         const listOfSignals = [];
             if (owner?.sourceMap) {
                 const srcMap = owner.sourceMap; 

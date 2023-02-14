@@ -87,6 +87,7 @@ const Rewind = (props) => {
             let ownerObj = await getOwner();
             //creating a new tree
             let ownerTree = await new Tree(ownerObj); 
+            console.log("line90", ownerTree)
             //parsing the tree data
             let sourcesState = await ownerTree.parseSources();
             sendTreeStructure(ownerObj); // build component tree and send it to chrome extension
