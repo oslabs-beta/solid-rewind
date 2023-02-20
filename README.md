@@ -31,7 +31,7 @@
 npm i solid-rewind
 ```
 
-**2. Import our Rewind component at the top level of your app.**
+**2. Import our Rewind component at the top level of your app.**  
 **3. Wrap your top-level component in our <Rewind> component.**
 ```javascript
 import Rewind from 'solid-rewind';
